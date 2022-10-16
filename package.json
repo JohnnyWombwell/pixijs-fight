@@ -1,0 +1,32 @@
+{
+  "name": "pixijs-fight",
+  "version": "0.0.0",
+  "description": "JS/TS Fight Game Using pixiJS rendering library",
+  "main": "app.js",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "tsc && copyfiles index.html ./assets/**/* dist && copyfiles -u 1 src/pixi/**/* dist",
+    "clean:build": "npm run clean && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JohnnyWombwell/pixijs-fight.git"
+  },
+  "keywords": [
+    "2D",
+    "fighting",
+    "game"
+  ],
+  "author": "John Wilson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JohnnyWombwell/pixijs-fight/issues"
+  },
+  "homepage": "https://github.com/JohnnyWombwell/pixijs-fight#readme",
+  "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "pixi.js": "^6.5.6",
+    "rimraf": "^3.0.2"
+  }
+}
