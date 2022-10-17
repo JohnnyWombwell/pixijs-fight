@@ -10,21 +10,28 @@ export interface ICharacter {
 
 enum CharacterState {
   Idle,
-  Run,
+  Walk,
   Jump,
+  Crouch,
 }
 
-const groundLevel = 300;
-const gravity = 1.2;
+const groundLevel = 180;
+const gravity = 0.4;
 
 export class CharacterSimulation implements ICharacter {
   private readonly _physics: IPhysicsComponent;
   private _state: CharacterState = CharacterState.Idle;
-
   private _size: IVector2D = {
-    x: 80,
-    y: 180,
+    x: 30,
+    y: 60,
   };
+
+  private _offset: IVector2D = {
+    x: this._size.x / -2,
+    y: -this._size.y,
+  };
+
+  private readonly _walkSpeed = 3;
 
   public constructor(initialPosition: IVector2D) {
     this._physics = {
@@ -33,13 +40,16 @@ export class CharacterSimulation implements ICharacter {
     };
   }
 
-  get physics(): IPhysicsComponent {
+  public get physics(): IPhysicsComponent {
     return this._physics;
   }
 
   public get body(): IRectangle {
     return {
-      position: this._physics.position,
+      position: {
+        x: this._physics.position.x + this._offset.x,
+        y: this._physics.position.y + this._offset.y,
+      },
       size: this._size,
     };
   }
@@ -49,8 +59,8 @@ export class CharacterSimulation implements ICharacter {
       case CharacterState.Idle:
         this.idleUpdate(input);
         break;
-      case CharacterState.Run:
-        this.runUpdate(input);
+      case CharacterState.Walk:
+        this.walkUpdate(input);
         break;
     }
 
@@ -61,8 +71,8 @@ export class CharacterSimulation implements ICharacter {
     this._physics.position.x += this._physics.velocity.x;
     this._physics.position.y += this._physics.velocity.y;
 
-    if (this._physics.position.y + this._size.y >= groundLevel) {
-      this._physics.position.y = groundLevel - this._size.y;
+    if (this._physics.position.y >= groundLevel) {
+      this._physics.position.y = groundLevel;
       this._physics.velocity.y = 0;
     } else {
       this._physics.velocity.y += gravity;
@@ -70,10 +80,10 @@ export class CharacterSimulation implements ICharacter {
 
     if (
       this._state === CharacterState.Jump &&
-      this._physics.position.y + this._size.y === groundLevel
+      this._physics.position.y === groundLevel
     ) {
       if (this._physics.velocity.x) {
-        this.changeStage(CharacterState.Run);
+        this.changeStage(CharacterState.Walk);
       } else {
         this.changeStage(CharacterState.Idle);
       }
@@ -82,12 +92,12 @@ export class CharacterSimulation implements ICharacter {
 
   private idleUpdate(input: IPlayerInput): void {
     if (input.jump) {
-      this._physics.velocity.y = -25;
+      this._physics.velocity.y = -8;
 
       if (input.left) {
-        this._physics.velocity.x = -5;
+        this._physics.velocity.x = -this._walkSpeed;
       } else if (input.right) {
-        this._physics.velocity.x = 5;
+        this._physics.velocity.x = this._walkSpeed;
       }
 
       this.changeStage(CharacterState.Jump);
@@ -95,22 +105,22 @@ export class CharacterSimulation implements ICharacter {
     }
 
     if (input.left) {
-      this._physics.velocity.x = -5;
-      this.changeStage(CharacterState.Run);
+      this._physics.velocity.x = -this._walkSpeed;
+      this.changeStage(CharacterState.Walk);
     } else if (input.right) {
-      this._physics.velocity.x = 5;
-      this.changeStage(CharacterState.Run);
+      this._physics.velocity.x = this._walkSpeed;
+      this.changeStage(CharacterState.Walk);
     }
   }
 
-  private runUpdate(input: IPlayerInput): void {
+  private walkUpdate(input: IPlayerInput): void {
     if (input.jump) {
-      this._physics.velocity.y = -25;
+      this._physics.velocity.y = -8;
 
       if (input.left) {
-        this._physics.velocity.x = -5;
+        this._physics.velocity.x = -this._walkSpeed;
       } else if (input.right) {
-        this._physics.velocity.x = 5;
+        this._physics.velocity.x = this._walkSpeed;
       }
 
       this.changeStage(CharacterState.Jump);
@@ -118,9 +128,9 @@ export class CharacterSimulation implements ICharacter {
     }
 
     if (input.left) {
-      this._physics.velocity.x = -5;
+      this._physics.velocity.x = -this._walkSpeed;
     } else if (input.right) {
-      this._physics.velocity.x = 5;
+      this._physics.velocity.x = this._walkSpeed;
     } else {
       this._physics.velocity.x = 0;
       this.changeStage(CharacterState.Idle);
@@ -135,6 +145,7 @@ export class CharacterSimulation implements ICharacter {
     console.log(
       `State: ${CharacterState[this._state]} -> ${CharacterState[newState]}`
     );
+
     this._state = newState;
   }
 }

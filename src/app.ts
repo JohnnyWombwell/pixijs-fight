@@ -4,12 +4,17 @@ import * as PIXI from './pixi/pixi.js';
 import { IPlayerInput } from './playerInput.js';
 
 // Create the application helper and add its render target to the page
-const app = new PIXI.Application({ backgroundColor: 0x000000 });
+const app = new PIXI.Application({
+  width: 384,
+  height: 224,
+  resolution: 3,
+  backgroundColor: 0x000000,
+});
 document.body.appendChild(app.view);
 
-const text = new PIXI.Text('pixijs Fighter');
-text.x = 50;
-text.y = 100;
+const text = new PIXI.Text('pixijs Fighter', { fontSize: 8 });
+text.x = 20;
+text.y = 10;
 text.style.fill = 'green';
 
 app.stage.addChild(text);
@@ -30,21 +35,31 @@ const playerInput: IPlayerInput[] = [
 ];
 
 const characterSimulations = [
-  new CharacterSimulation({ x: 50, y: 200 }),
-  new CharacterSimulation({ x: 250, y: 200 }),
+  new CharacterSimulation({ x: 50, y: 0 }),
+  new CharacterSimulation({ x: 250, y: 0 }),
 ];
 
 const gameSimulation = new GameSimulation(characterSimulations);
 
-const characterBodies = [new PIXI.Graphics(), new PIXI.Graphics()];
+const characterOrigins = [new PIXI.Graphics(), new PIXI.Graphics()];
+for (const origin of characterOrigins) {
+  origin.lineStyle({ width: 2, color: 0xffffff, alpha: 0.3 });
+  origin.moveTo(-5, 0);
+  origin.lineTo(5, 0);
+  origin.moveTo(0, 5);
+  origin.lineTo(0, -5);
 
+  app.stage.addChild(origin);
+}
+
+const characterBodies = [new PIXI.Graphics(), new PIXI.Graphics()];
 characterBodies[0].beginFill(0xff0000, 0.3);
 characterBodies[1].beginFill(0x00ff00, 0.3);
 
 for (let c = 0; c < characterBodies.length; ++c) {
   characterBodies[c].drawRect(
-    characterSimulations[c].body.position.x,
-    characterSimulations[c].body.position.y,
+    0,
+    0,
     characterSimulations[c].body.size.x,
     characterSimulations[c].body.size.y
   );
@@ -65,6 +80,7 @@ app.ticker.add((framesDelta) => {
 
     // Rendering
     for (let c = 0; c < characterSimulations.length; ++c) {
+      characterOrigins[c].position = characterSimulations[c].physics.position;
       characterBodies[c].position = characterSimulations[c].body.position;
     }
   }
