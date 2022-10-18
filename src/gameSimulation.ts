@@ -21,13 +21,30 @@ export class GameSimulation {
     // Character physics
     for (let n = 0; n < this._characters.length; ++n) {
       // TODO: commands will be submitted, not raw input
-      this._characters[n].update(input[n]);
+      this._characters[n].update(
+        input[n]
+        /* TODO: pass relative position in here
+           and allow the character to update their own direction accordingly */
+      );
     }
 
     // push collisions
     this.processPushCollisions();
 
     // facing direction
+    if (
+      this._characters[0].physics.position.x <
+      this._characters[1].physics.position.x
+    ) {
+      this._characters[0].direction = 1;
+      this._characters[1].direction = -1;
+    } else if (
+      this._characters[0].physics.position.x >
+      this._characters[1].physics.position.x
+    ) {
+      this._characters[0].direction = -1;
+      this._characters[1].direction = 1;
+    }
 
     // playfield bounds collisions
 

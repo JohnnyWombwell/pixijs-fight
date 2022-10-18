@@ -5,6 +5,8 @@ import { IPlayerInput } from './playerInput';
 export interface ICharacter {
   get body(): IRectangle;
   get physics(): IPhysicsComponent;
+  get direction(): Direction;
+  set direction(d: Direction);
   update(input: IPlayerInput): void;
 }
 
@@ -16,6 +18,8 @@ interface ICharacterState {
   enter: () => void;
   update: (input: IPlayerInput) => void;
 }
+
+export type Direction = 1 | -1;
 
 export class CharacterSimulation implements ICharacter {
   private readonly _physics: IPhysicsComponent;
@@ -29,15 +33,19 @@ export class CharacterSimulation implements ICharacter {
     y: -this._size.y,
   };
 
+  private _direction: Direction;
+
   private readonly _walkSpeed = 3;
 
   private _currentState?: ICharacterState = undefined;
 
-  public constructor(initialPosition: IVector2D) {
+  public constructor(initialPosition: IVector2D, initialDirection: Direction) {
     this._physics = {
       position: initialPosition,
       velocity: { x: 0, y: 0 },
     };
+
+    this._direction = initialDirection;
 
     this.changeState(this._states.idle);
   }
@@ -56,8 +64,26 @@ export class CharacterSimulation implements ICharacter {
     };
   }
 
+  public get direction(): Direction {
+    return this._direction;
+  }
+
+  public set direction(d: Direction) {
+    this._direction = d;
+  }
+
   public update(input: IPlayerInput): void {
-    this._currentState?.update(input);
+    let directionalInput = input;
+
+    if (this._direction < 0) {
+      directionalInput = {
+        ...input,
+        left: input.right,
+        right: input.left,
+      };
+    }
+
+    this._currentState?.update(directionalInput);
     this.applyPhysics();
   }
 
@@ -85,14 +111,14 @@ export class CharacterSimulation implements ICharacter {
     walkForward: {
       name: 'WalkForward',
       enter: () => {
-        this._physics.velocity.x = this._walkSpeed;
+        this._physics.velocity.x = this._walkSpeed * this._direction;
       },
       update: this.walkForwardUpdate.bind(this),
     },
     walkBackward: {
       name: 'WalkBackward',
       enter: () => {
-        this._physics.velocity.x = -this._walkSpeed;
+        this._physics.velocity.x = -this._walkSpeed * this._direction;
       },
       update: this.walkBackwardUpdate.bind(this),
     },
@@ -108,7 +134,7 @@ export class CharacterSimulation implements ICharacter {
       name: 'JumpForward',
       enter: () => {
         this._physics.velocity.y = -8;
-        this._physics.velocity.x = this._walkSpeed;
+        this._physics.velocity.x = this._walkSpeed * this._direction;
       },
       update: this.jumpUpdate.bind(this),
     },
@@ -116,7 +142,7 @@ export class CharacterSimulation implements ICharacter {
       name: 'JumpBackward',
       enter: () => {
         this._physics.velocity.y = -8;
-        this._physics.velocity.x = -this._walkSpeed;
+        this._physics.velocity.x = -this._walkSpeed * this._direction;
       },
       update: this.jumpUpdate.bind(this),
     },

@@ -35,8 +35,8 @@ const playerInput: IPlayerInput[] = [
 ];
 
 const characterSimulations = [
-  new CharacterSimulation({ x: 50, y: 0 }),
-  new CharacterSimulation({ x: 250, y: 0 }),
+  new CharacterSimulation({ x: 50, y: 0 }, 1),
+  new CharacterSimulation({ x: 250, y: 0 }, -1),
 ];
 
 const gameSimulation = new GameSimulation(characterSimulations);
@@ -75,8 +75,6 @@ for (let c = 0; c < characterBodies.length; ++c) {
   app.stage.addChild(characterBodies[c]);
 }
 
-characterBodies[1].scale.x *= -1;
-
 app.ticker.add((framesDelta) => {
   let frameCount = Math.round(framesDelta);
   while (frameCount-- > 0) {
@@ -91,10 +89,18 @@ app.ticker.add((framesDelta) => {
     // Rendering
     for (let c = 0; c < characterSimulations.length; ++c) {
       characterOrigins[c].position = characterSimulations[c].physics.position;
-      characterBodies[c].position = characterSimulations[c].body.position;
-    }
 
-    characterBodies[1].position.x -= characterBodies[1].width;
+      if (characterSimulations[c].direction > 0) {
+        characterBodies[c].scale.x = 1;
+        characterBodies[c].position = characterSimulations[c].body.position;
+      } else {
+        characterBodies[c].scale.x = -1;
+        characterBodies[c].position.y = characterSimulations[c].body.position.y;
+        characterBodies[c].position.x =
+          characterSimulations[c].body.position.x +
+          characterSimulations[c].body.size.x;
+      }
+    }
   }
 });
 
