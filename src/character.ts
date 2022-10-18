@@ -71,13 +71,6 @@ export class CharacterSimulation implements ICharacter {
     } else {
       this._physics.velocity.y += gravity;
     }
-
-    if (
-      this._currentState === this._states.neutralJump &&
-      this._physics.position.y === groundLevel
-    ) {
-      this.changeState(this._states.idle);
-    }
   }
 
   private readonly _states: Record<string, ICharacterState> = {
@@ -107,20 +100,31 @@ export class CharacterSimulation implements ICharacter {
       name: 'NeutralJump',
       enter: () => {
         this._physics.velocity.y = -8;
+        this._physics.velocity.x = 0;
       },
-      update: (input) => {},
+      update: this.jumpUpdate.bind(this),
+    },
+    jumpForward: {
+      name: 'JumpForward',
+      enter: () => {
+        this._physics.velocity.y = -8;
+        this._physics.velocity.x = this._walkSpeed;
+      },
+      update: this.jumpUpdate.bind(this),
+    },
+    jumpBackward: {
+      name: 'JumpBackward',
+      enter: () => {
+        this._physics.velocity.y = -8;
+        this._physics.velocity.x = -this._walkSpeed;
+      },
+      update: this.jumpUpdate.bind(this),
     },
   };
 
   private idleUpdate(input: IPlayerInput): void {
     if (input.jump) {
-      if (input.left) {
-        this._physics.velocity.x = -this._walkSpeed;
-      } else if (input.right) {
-        this._physics.velocity.x = this._walkSpeed;
-      }
-
-      this.changeState(this._states.neutralJump);
+      this.jumpTransition(input);
       return;
     }
 
@@ -133,7 +137,7 @@ export class CharacterSimulation implements ICharacter {
 
   private walkForwardUpdate(input: IPlayerInput): void {
     if (input.jump) {
-      this.changeState(this._states.neutralJump);
+      this.jumpTransition(input);
       return;
     }
 
@@ -149,7 +153,7 @@ export class CharacterSimulation implements ICharacter {
 
   private walkBackwardUpdate(input: IPlayerInput): void {
     if (input.jump) {
-      this.changeState(this._states.neutralJump);
+      this.jumpTransition(input);
       return;
     }
 
@@ -160,6 +164,22 @@ export class CharacterSimulation implements ICharacter {
 
     if (!input.left) {
       this.changeState(this._states.idle);
+    }
+  }
+
+  private jumpUpdate(_: IPlayerInput): void {
+    if (this._physics.position.y === groundLevel) {
+      this.changeState(this._states.idle);
+    }
+  }
+
+  private jumpTransition(input: IPlayerInput): void {
+    if (input.right) {
+      this.changeState(this._states.jumpForward);
+    } else if (input.left) {
+      this.changeState(this._states.jumpBackward);
+    } else {
+      this.changeState(this._states.neutralJump);
     }
   }
 
