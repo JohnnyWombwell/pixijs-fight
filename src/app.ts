@@ -87,22 +87,22 @@ app.ticker.add((framesDelta) => {
 });
 
 window.addEventListener('keydown', (event) => {
-  switch (event.key) {
-    case 'a':
+  switch (event.code) {
+    case 'KeyA':
       playerInput[0].left = true;
       break;
-    case 'd':
+    case 'KeyD':
       playerInput[0].right = true;
       break;
-    case 'w':
+    case 'KeyW':
       playerInput[0].jump = true;
       break;
-    case ' ':
+    case 'Space':
       playerInput[0].attack[0] = true;
       break;
   }
 
-  switch (event.key) {
+  switch (event.code) {
     case 'ArrowLeft':
       playerInput[1].left = true;
       break;
@@ -119,22 +119,22 @@ window.addEventListener('keydown', (event) => {
 });
 
 window.addEventListener('keyup', (event) => {
-  switch (event.key) {
-    case 'a':
+  switch (event.code) {
+    case 'KeyA':
       playerInput[0].left = false;
       break;
-    case 'd':
+    case 'KeyD':
       playerInput[0].right = false;
       break;
-    case 'w':
+    case 'KeyW':
       playerInput[0].jump = false;
       break;
-    case ' ':
+    case 'Space':
       playerInput[0].attack[0] = false;
       break;
   }
 
-  switch (event.key) {
+  switch (event.code) {
     case 'ArrowLeft':
       playerInput[1].left = false;
       break;
