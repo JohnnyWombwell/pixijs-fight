@@ -189,7 +189,9 @@ export class CharacterSimulation implements ICharacter {
     }
 
     console.log(`State: ${this._currentState?.name} -> ${newState.name}`);
+
     newState.enter();
+
     this._currentState = newState;
   }
 }

@@ -64,8 +64,18 @@ for (let c = 0; c < characterBodies.length; ++c) {
     characterSimulations[c].body.size.y
   );
 
+  characterBodies[c].lineStyle({ width: 1, color: 0x000000, alpha: 0.5 });
+  characterBodies[c].moveTo(15, 25);
+  characterBodies[c].lineTo(
+    characterSimulations[c].body.size.x - 5,
+    characterSimulations[c].body.size.y / 2
+  );
+  characterBodies[c].lineTo(15, characterSimulations[c].body.size.y - 25);
+
   app.stage.addChild(characterBodies[c]);
 }
+
+characterBodies[1].scale.x *= -1;
 
 app.ticker.add((framesDelta) => {
   let frameCount = Math.round(framesDelta);
@@ -83,6 +93,8 @@ app.ticker.add((framesDelta) => {
       characterOrigins[c].position = characterSimulations[c].physics.position;
       characterBodies[c].position = characterSimulations[c].body.position;
     }
+
+    characterBodies[1].position.x -= characterBodies[1].width;
   }
 });
 

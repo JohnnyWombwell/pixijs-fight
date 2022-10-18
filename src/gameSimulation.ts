@@ -1,6 +1,5 @@
 import { ICharacter } from './character.js';
 import { rectangularCollision } from './geometry.js';
-import { IPhysicsComponent } from './physics.js';
 import { IPlayerInput } from './playerInput.js';
 
 export class GameSimulation {
