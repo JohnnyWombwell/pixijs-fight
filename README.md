@@ -14,11 +14,14 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [x] Collision between players
   - [x] Collision box
   - [x] Logic to avoid overlap and implement 'push'
+- [ ] Attack boxes
+      Import sprites and background from SF
+- [ ] FPS counter
 - [ ] Switch player direction (based on relative position)
 - [ ] Hurt and collision boxes per animation frame
 - [ ] Hit boxes per attack animation from
 - [ ] Scrolling playfield
-- [x] Walls to left and right
+- [ ] Walls to left and right
 - [ ] Event emitter for accurate processing of events and state changes
       (e.g. playing sound effects)
 - [ ] Peripherals other than keyboard
