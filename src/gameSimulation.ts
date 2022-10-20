@@ -33,14 +33,14 @@ export class GameSimulation {
 
     // facing direction
     if (
-      this._characters[0].physics.position.x <
-      this._characters[1].physics.position.x
+      this._characters[0].body.position.x + this._characters[0].body.size.x <
+      this._characters[1].body.position.x
     ) {
       this._characters[0].direction = 1;
       this._characters[1].direction = -1;
     } else if (
-      this._characters[0].physics.position.x >
-      this._characters[1].physics.position.x
+      this._characters[0].body.position.x >
+      this._characters[1].body.position.x + this._characters[1].body.size.x
     ) {
       this._characters[0].direction = -1;
       this._characters[1].direction = 1;
