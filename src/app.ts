@@ -1,5 +1,6 @@
 import { CharacterSimulation } from './character.js';
 import { GameSimulation } from './gameSimulation.js';
+import { KeyboardInputSource } from './input/keyboardInputSource.js';
 import * as PIXI from './pixi/pixi.js';
 import { PRECISION, SCALE_MODES } from './pixi/pixi.js';
 import { IPlayerInput } from './playerInput.js';
@@ -16,6 +17,21 @@ const app = new PIXI.Application({
   backgroundColor: 0x000000,
 });
 
+const playerInput: IPlayerInput[] = [
+  {
+    left: false,
+    right: false,
+    jump: false,
+    attack: [false],
+  },
+  {
+    left: false,
+    right: false,
+    jump: false,
+    attack: [false],
+  },
+];
+
 function setViewSizeFromWindow(): void {
   const widthRatio = Math.floor(window.innerWidth / 384);
   const heightRatio = Math.floor(window.innerHeight / 224);
@@ -29,6 +45,11 @@ function setViewSizeFromWindow(): void {
 
 window.addEventListener('load', () => {
   setViewSizeFromWindow();
+  window.addEventListener('resize', (event) => {
+    setViewSizeFromWindow();
+  });
+
+  const _ = new KeyboardInputSource(playerInput);
 
   document.body.appendChild(app.view);
 
@@ -41,21 +62,6 @@ window.addEventListener('load', () => {
   text.style.fill = 'green';
 
   app.stage.addChild(text);
-
-  const playerInput: IPlayerInput[] = [
-    {
-      left: false,
-      right: false,
-      jump: false,
-      attack: [false],
-    },
-    {
-      left: false,
-      right: false,
-      jump: false,
-      attack: [false],
-    },
-  ];
 
   const characterSimulations = [
     new CharacterSimulation({ x: 50, y: 0 }, 1),
@@ -126,73 +132,5 @@ window.addEventListener('load', () => {
         }
       }
     }
-  });
-
-  window.addEventListener('keydown', (event) => {
-    switch (event.code) {
-      case 'KeyA':
-        playerInput[0].left = true;
-        break;
-      case 'KeyD':
-        playerInput[0].right = true;
-        break;
-      case 'KeyW':
-        playerInput[0].jump = true;
-        break;
-      case 'Space':
-        playerInput[0].attack[0] = true;
-        break;
-    }
-
-    switch (event.code) {
-      case 'ArrowLeft':
-        playerInput[1].left = true;
-        break;
-      case 'ArrowRight':
-        playerInput[1].right = true;
-        break;
-      case 'ArrowUp':
-        playerInput[1].jump = true;
-        break;
-      case 'Enter':
-        playerInput[1].attack[0] = true;
-        break;
-    }
-  });
-
-  window.addEventListener('keyup', (event) => {
-    switch (event.code) {
-      case 'KeyA':
-        playerInput[0].left = false;
-        break;
-      case 'KeyD':
-        playerInput[0].right = false;
-        break;
-      case 'KeyW':
-        playerInput[0].jump = false;
-        break;
-      case 'Space':
-        playerInput[0].attack[0] = false;
-        break;
-    }
-
-    switch (event.code) {
-      case 'ArrowLeft':
-        playerInput[1].left = false;
-        break;
-      case 'ArrowRight':
-        playerInput[1].right = false;
-        break;
-      case 'ArrowUp':
-        playerInput[1].jump = false;
-        break;
-      case 'Enter':
-        playerInput[1].attack[0] = false;
-        break;
-    }
-  });
-
-  window.addEventListener('resize', (event) => {
-    setViewSizeFromWindow();
   });
 });
