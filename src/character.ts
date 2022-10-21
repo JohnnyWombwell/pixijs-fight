@@ -19,7 +19,12 @@ interface ICharacterState {
   update: (input: IPlayerInput) => void;
 }
 
-export type Direction = 1 | -1;
+export enum Facing {
+  Right = 1,
+  Left = -1,
+}
+
+export type Direction = Facing.Right | Facing.Left;
 
 export class CharacterSimulation implements ICharacter {
   private readonly _physics: IPhysicsComponent;
@@ -33,21 +38,26 @@ export class CharacterSimulation implements ICharacter {
     y: -this._size.y,
   };
 
-  private _direction: Direction;
+  private _direction: Direction = 1;
 
   private readonly _walkSpeed = 3;
 
   private _currentState?: ICharacterState = undefined;
+  private _opponent?: ICharacter;
 
-  public constructor(initialPosition: IVector2D, initialDirection: Direction) {
+  public constructor(initialPosition: IVector2D) {
     this._physics = {
       position: initialPosition,
       velocity: { x: 0, y: 0 },
     };
 
-    this._direction = initialDirection;
-
     this.changeState(this._states.idle);
+  }
+
+  public initialise(opponent: ICharacter): void {
+    this._opponent = opponent;
+    this._direction =
+      this._physics.position.x <= this._opponent.physics.position.x ? 1 : -1;
   }
 
   public get physics(): IPhysicsComponent {
@@ -159,9 +169,17 @@ export class CharacterSimulation implements ICharacter {
     } else if (input.right) {
       this.changeState(this._states.walkForward);
     }
+
+    if (this.hasDirectionChanged()) {
+      this._direction *= -1;
+    }
   }
 
   private walkForwardUpdate(input: IPlayerInput): void {
+    if (this.hasDirectionChanged()) {
+      this._direction *= -1;
+    }
+
     if (input.jump) {
       this.jumpTransition(input);
       return;
@@ -178,6 +196,10 @@ export class CharacterSimulation implements ICharacter {
   }
 
   private walkBackwardUpdate(input: IPlayerInput): void {
+    if (this.hasDirectionChanged()) {
+      this._direction *= -1;
+    }
+
     if (input.jump) {
       this.jumpTransition(input);
       return;
@@ -219,5 +241,21 @@ export class CharacterSimulation implements ICharacter {
     newState.enter();
 
     this._currentState = newState;
+  }
+
+  private hasDirectionChanged(): boolean {
+    if (
+      this.body.position.x + this.body.size.x <
+      this._opponent!.body.position.x
+    ) {
+      return this._direction !== Facing.Right;
+    } else if (
+      this.body.position.x >
+      this._opponent!.body.position.x + this._opponent!.body.size.x
+    ) {
+      return this._direction !== Facing.Left;
+    }
+
+    return false;
   }
 }

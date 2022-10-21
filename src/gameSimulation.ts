@@ -19,32 +19,21 @@ export class GameSimulation {
     // Action state machine update (what each character is doing)
 
     // Character physics
-    for (let n = 0; n < this._characters.length; ++n) {
-      // TODO: commands will be submitted, not raw input
-      this._characters[n].update(
-        input[n]
-        /* TODO: pass relative position in here
-           and allow the character to update their own direction accordingly */
-      );
-    }
+    // TODO: commands will be submitted, not raw input
+    this._characters[0].update(
+      input[0]
+      /* TODO: pass relative position in here
+          and allow the character to update their own direction accordingly */
+    );
+
+    this._characters[1].update(
+      input[1]
+      /* TODO: pass relative position in here
+          and allow the character to update their own direction accordingly */
+    );
 
     // push collisions
     this.processPushCollisions();
-
-    // facing direction
-    if (
-      this._characters[0].body.position.x + this._characters[0].body.size.x <
-      this._characters[1].body.position.x
-    ) {
-      this._characters[0].direction = 1;
-      this._characters[1].direction = -1;
-    } else if (
-      this._characters[0].body.position.x >
-      this._characters[1].body.position.x + this._characters[1].body.size.x
-    ) {
-      this._characters[0].direction = -1;
-      this._characters[1].direction = 1;
-    }
 
     // playfield bounds collisions
 

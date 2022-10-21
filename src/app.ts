@@ -1,4 +1,4 @@
-import { CharacterSimulation } from './character.js';
+import { CharacterSimulation, Facing } from './character.js';
 import { GameSimulation } from './gameSimulation.js';
 import { KeyboardInputSource } from './input/keyboardInputSource.js';
 import * as PIXI from './pixi/pixi.js';
@@ -64,9 +64,12 @@ window.addEventListener('load', () => {
   app.stage.addChild(text);
 
   const characterSimulations = [
-    new CharacterSimulation({ x: 50, y: 0 }, 1),
-    new CharacterSimulation({ x: 250, y: 0 }, -1),
+    new CharacterSimulation({ x: 50, y: 0 }),
+    new CharacterSimulation({ x: 250, y: 0 }),
   ];
+
+  characterSimulations[0].initialise(characterSimulations[1]);
+  characterSimulations[1].initialise(characterSimulations[0]);
 
   const gameSimulation = new GameSimulation(characterSimulations);
 
@@ -86,20 +89,25 @@ window.addEventListener('load', () => {
   characterBodies[1].beginFill(0x00ff00, 0.3);
 
   for (let c = 0; c < characterBodies.length; ++c) {
+    characterBodies[c].pivot = {
+      x: characterSimulations[c].body.size.x / 2,
+      y: 0,
+    };
+
     characterBodies[c].drawRect(
       0,
       0,
       characterSimulations[c].body.size.x,
-      characterSimulations[c].body.size.y
+      -characterSimulations[c].body.size.y
     );
 
     characterBodies[c].lineStyle({ width: 1, color: 0x000000, alpha: 0.5 });
-    characterBodies[c].moveTo(15, 25);
+    characterBodies[c].moveTo(15, -25);
     characterBodies[c].lineTo(
       characterSimulations[c].body.size.x - 5,
-      characterSimulations[c].body.size.y / 2
+      -characterSimulations[c].body.size.y / 2
     );
-    characterBodies[c].lineTo(15, characterSimulations[c].body.size.y - 25);
+    characterBodies[c].lineTo(15, -(characterSimulations[c].body.size.y - 25));
 
     app.stage.addChild(characterBodies[c]);
   }
@@ -118,18 +126,8 @@ window.addEventListener('load', () => {
       // Rendering
       for (let c = 0; c < characterSimulations.length; ++c) {
         characterOrigins[c].position = characterSimulations[c].physics.position;
-
-        if (characterSimulations[c].direction > 0) {
-          characterBodies[c].scale.x = 1;
-          characterBodies[c].position = characterSimulations[c].body.position;
-        } else {
-          characterBodies[c].scale.x = -1;
-          characterBodies[c].position.y =
-            characterSimulations[c].body.position.y;
-          characterBodies[c].position.x =
-            characterSimulations[c].body.position.x +
-            characterSimulations[c].body.size.x;
-        }
+        characterBodies[c].position = characterSimulations[c].physics.position;
+        characterBodies[c].scale.x = characterSimulations[c].direction;
       }
     }
   });
