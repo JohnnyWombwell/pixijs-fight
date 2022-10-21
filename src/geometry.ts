@@ -3,9 +3,17 @@ export interface IVector2D {
   y: number;
 }
 
+// TODO: probably migrate to the structure below
 export interface IRectangle {
   position: IVector2D;
   size: IVector2D;
+}
+
+export interface IRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 export function rectangularCollision(
