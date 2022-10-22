@@ -231,12 +231,12 @@ export const kenResource: ISpriteResource = {
       {
         source: { x: 8, y: 779, width: 53, height: 83 },
         offset: { x: -27, y: -81 },
-        frameCount: 1,
+        frameCount: 2,
       },
       {
         source: { x: 79, y: 794, width: 57, height: 69 },
         offset: { x: -25, y: -66 },
-        frameCount: 1,
+        frameCount: 2,
       },
       {
         source: { x: 148, y: 802, width: 61, height: 61 },
