@@ -243,6 +243,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
       enter: () => {
         this._physics.velocity.y = 0;
         this._physics.velocity.x = 0;
+        this._direction *= -1;
       },
       update: this.turnUpdate.bind(this),
     },
@@ -251,6 +252,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
       enter: () => {
         this._physics.velocity.y = 0;
         this._physics.velocity.x = 0;
+        this._direction *= -1;
       },
       update: this.transitionToCrouchUpdate.bind(this),
     },
@@ -275,7 +277,6 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
     if (this.hasDirectionChanged()) {
       this.changeState(this._states.turn);
-      this._direction *= -1;
     }
   }
 
@@ -365,7 +366,6 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
 
     if (this.hasDirectionChanged()) {
-      this._direction *= -1;
       this.changeState(this._states.crouchTurn);
     }
   }
