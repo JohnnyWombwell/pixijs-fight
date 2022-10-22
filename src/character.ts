@@ -167,13 +167,15 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
   }
 
+  private resetVelocities() {
+    this._physics.velocity.x = 0;
+    this._physics.velocity.y = 0;
+  }
+
   private readonly _states: Record<string, ICharacterState> = {
     idle: {
       name: 'idle',
-      enter: () => {
-        this._physics.velocity.x = 0;
-        this._physics.velocity.y = 0;
-      },
+      enter: this.resetVelocities.bind(this),
       update: this.idleUpdate.bind(this),
     },
     walkForward: {
@@ -192,18 +194,12 @@ export class CharacterSimulation implements ICharacter, ISprite {
     },
     jumpStart: {
       name: 'jumpStart',
-      enter: () => {
-        this._physics.velocity.x = 0;
-        this._physics.velocity.y = 0;
-      },
+      enter: this.resetVelocities.bind(this),
       update: this.jumpStartUpdate.bind(this),
     },
     jumpRecovery: {
       name: 'jumpRecovery',
-      enter: () => {
-        this._physics.velocity.x = 0;
-        this._physics.velocity.y = 0;
-      },
+      enter: this.resetVelocities.bind(this),
       update: this.jumpRecoveryUpdate.bind(this),
     },
     neutralJump: {
@@ -232,33 +228,23 @@ export class CharacterSimulation implements ICharacter, ISprite {
     },
     crouchDown: {
       name: 'crouchDown',
-      enter: () => {
-        this._physics.velocity.y = 0;
-        this._physics.velocity.x = 0;
-      },
+      enter: this.resetVelocities.bind(this),
       update: this.transitionToCrouchUpdate.bind(this),
     },
     crouched: {
       name: 'crouched',
-      enter: () => {
-        this._physics.velocity.y = 0;
-        this._physics.velocity.x = 0;
-      },
+      enter: this.resetVelocities.bind(this),
       update: this.crouchedUpdate.bind(this),
     },
     crouchUp: {
       name: 'crouchUp',
-      enter: () => {
-        this._physics.velocity.y = 0;
-        this._physics.velocity.x = 0;
-      },
+      enter: this.resetVelocities.bind(this),
       update: this.crouchUpUpdate.bind(this),
     },
     turn: {
       name: 'turn',
       enter: () => {
-        this._physics.velocity.y = 0;
-        this._physics.velocity.x = 0;
+        this.resetVelocities();
         this._direction *= -1;
       },
       update: this.turnUpdate.bind(this),
@@ -266,8 +252,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
     crouchTurn: {
       name: 'crouchTurn',
       enter: () => {
-        this._physics.velocity.y = 0;
-        this._physics.velocity.x = 0;
+        this.resetVelocities();
         this._direction *= -1;
       },
       update: this.transitionToCrouchUpdate.bind(this),
@@ -347,7 +332,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
   }
 
   private jumpStartUpdate(input: IPlayerInput): void {
-    if (this._currentAnimation[this._animationFrame]?.frameCount !== -2) {
+    if (!this.isCurrentAnimationComplete()) {
       return;
     }
 
@@ -375,7 +360,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
       this.idleUpdate(input);
     }
 
-    if (this._currentAnimation[this._animationFrame]?.frameCount === -2) {
+    if (this.isCurrentAnimationComplete()) {
       this.changeState(this._states.idle);
     }
   }
@@ -389,7 +374,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
       return;
     }
 
-    if (this._currentAnimation[this._animationFrame]?.frameCount === -2) {
+    if (this.isCurrentAnimationComplete()) {
       this.changeState(this._states.crouched);
     }
   }
@@ -407,7 +392,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
   private crouchUpUpdate(input: IPlayerInput): void {
     // If all frames done change state to idle
-    if (this._currentAnimation[this._animationFrame]?.frameCount === -2) {
+    if (this.isCurrentAnimationComplete()) {
       this.changeState(this._states.idle);
     }
 
@@ -416,7 +401,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
   private turnUpdate(input: IPlayerInput): void {
     // If all frames done change state to idle
-    if (this._currentAnimation[this._animationFrame]?.frameCount === -2) {
+    if (this.isCurrentAnimationComplete()) {
       this.changeState(this._states.idle);
     }
 
@@ -453,5 +438,9 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
 
     return false;
+  }
+
+  private isCurrentAnimationComplete(): boolean {
+    return this._currentAnimation[this._animationFrame]?.frameCount === -2;
   }
 }
