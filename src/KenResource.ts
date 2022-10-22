@@ -124,5 +124,79 @@ export const kenResource: ISpriteResource = {
         frameCount: -1,
       },
     ],
+    jumpForward: [
+      {
+        source: { x: 1237, y: 1037, width: 55, height: 103 },
+        offset: { x: -25, y: -106 },
+        frameCount: 12,
+      },
+      {
+        source: { x: 1301, y: 990, width: 61, height: 78 },
+        offset: { x: -22, y: -90 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 1363, y: 994, width: 104, height: 42 },
+        offset: { x: -61, y: -76 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 1468, y: 957, width: 53, height: 82 },
+        offset: { x: -28, y: -101 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 1541, y: 988, width: 122, height: 44 },
+        offset: { x: -71, y: -81 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 1664, y: 976, width: 71, height: 87 },
+        offset: { x: -53, y: -98 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 1748, y: 977, width: 55, height: 103 },
+        offset: { x: -32, y: -107 },
+        frameCount: -1,
+      },
+    ],
+    jumpBackward: [
+      {
+        source: { x: 1748, y: 977, width: 55, height: 103 },
+        offset: { x: -32, y: -107 },
+        frameCount: 12,
+      },
+      {
+        source: { x: 1664, y: 976, width: 71, height: 87 },
+        offset: { x: -53, y: -98 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 1541, y: 988, width: 122, height: 44 },
+        offset: { x: -71, y: -81 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 1468, y: 957, width: 53, height: 82 },
+        offset: { x: -28, y: -101 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 1363, y: 994, width: 104, height: 42 },
+        offset: { x: -61, y: -76 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 1301, y: 990, width: 61, height: 78 },
+        offset: { x: -22, y: -90 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 1237, y: 1037, width: 55, height: 103 },
+        offset: { x: -25, y: -106 },
+        frameCount: -1,
+      },
+    ],
   },
 };

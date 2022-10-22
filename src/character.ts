@@ -1,5 +1,5 @@
 import { IRectangle, IVector2D } from './geometry.js';
-import { kenResource } from './KenResource.js';
+import { IFrameResource, kenResource } from './KenResource.js';
 import { IPhysicsComponent } from './physics.js';
 import { Rectangle, Sprite } from './pixi/pixi.js';
 import { IPlayerInput } from './playerInput.js';
@@ -17,8 +17,9 @@ export interface ISprite {
 }
 
 const groundLevel = 200;
-const gravity = 0.3;
-const jumpAcceleration = 7.5;
+const gravity = 0.4;
+const jumpAcceleration = 9.5;
+const walkSpeed = 4;
 
 interface ICharacterState {
   get name(): string;
@@ -46,11 +47,13 @@ export class CharacterSimulation implements ICharacter, ISprite {
   };
 
   private _direction: Direction = 1;
-  private readonly _walkSpeed = 4;
   private _currentState?: ICharacterState = undefined;
   private _opponent?: ICharacter;
   private _sprite: Sprite;
+
   private _framesElapsed = 0;
+  private _currentAnimation: IFrameResource[];
+  private _animationFrame = 0;
 
   public constructor(initialPosition: IVector2D, sprite: Sprite) {
     this._physics = {
@@ -59,10 +62,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
     };
 
     this._sprite = sprite;
-
-    sprite.texture.textureCacheIds.forEach((id) =>
-      console.log(`${initialPosition.x} texture ID: ${id}`)
-    );
+    this._currentAnimation = kenResource.animation.idle;
 
     this.changeState(this._states.idle);
   }
@@ -110,20 +110,21 @@ export class CharacterSimulation implements ICharacter, ISprite {
     this.applyPhysics();
   }
 
-  framesHold = 4;
-
   public render(): void {
+    this._sprite.x = this._physics.position.x;
+    this._sprite.y = this._physics.position.y;
+    this._sprite.scale.x = this._direction;
+
     if (!this._currentState) {
       return;
     }
 
-    const frameIndex = Math.floor(this._framesElapsed / this.framesHold);
-
-    if (!Object.hasOwn(kenResource.animation, this._currentState.name)) {
+    if (!this._currentAnimation) {
+      console.warn('No current animation frame!');
       return;
     }
 
-    const frame = kenResource.animation[this._currentState.name][frameIndex];
+    const frame = this._currentAnimation[this._animationFrame];
 
     this._sprite.texture.frame = new Rectangle(
       frame.source.x,
@@ -132,21 +133,25 @@ export class CharacterSimulation implements ICharacter, ISprite {
       frame.source.height
     );
 
-    this._sprite.x = this._physics.position.x;
-    this._sprite.y = this._physics.position.y;
-    this._sprite.scale.x = this._direction;
+    const currentAnimationFrameCount =
+      this._currentAnimation[this._animationFrame]?.frameCount ?? 4;
+
+    if (currentAnimationFrameCount < 0) {
+      // Sit on this frame until the state changes
+      return;
+    }
 
     this._framesElapsed += 1;
 
-    if (
-      Math.floor(this._framesElapsed / this.framesHold) >=
-      kenResource.animation[this._currentState.name].length
-    ) {
-      if (frame.frameCount && frame.frameCount < 0) {
-        this._framesElapsed = frameIndex * this.framesHold;
-      } else {
-        this._framesElapsed = 0;
-      }
+    if (this._framesElapsed < currentAnimationFrameCount) {
+      return;
+    }
+
+    this._animationFrame += 1;
+    this._framesElapsed = 0;
+
+    if (this._animationFrame >= this._currentAnimation.length) {
+      this._animationFrame = 0;
     }
   }
 
@@ -174,14 +179,14 @@ export class CharacterSimulation implements ICharacter, ISprite {
     walkForward: {
       name: 'walkForward',
       enter: () => {
-        this._physics.velocity.x = this._walkSpeed * this._direction;
+        this._physics.velocity.x = walkSpeed * this._direction;
       },
       update: this.walkForwardUpdate.bind(this),
     },
     walkBackward: {
       name: 'walkBackward',
       enter: () => {
-        this._physics.velocity.x = -this._walkSpeed * this._direction;
+        this._physics.velocity.x = -walkSpeed * this._direction;
       },
       update: this.walkBackwardUpdate.bind(this),
     },
@@ -197,7 +202,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
       name: 'jumpForward',
       enter: () => {
         this._physics.velocity.y = -jumpAcceleration;
-        this._physics.velocity.x = this._walkSpeed * this._direction;
+        this._physics.velocity.x = walkSpeed * this._direction;
       },
       update: this.jumpUpdate.bind(this),
     },
@@ -205,7 +210,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
       name: 'jumpBackward',
       enter: () => {
         this._physics.velocity.y = -jumpAcceleration;
-        this._physics.velocity.x = -this._walkSpeed * this._direction;
+        this._physics.velocity.x = -walkSpeed * this._direction;
       },
       update: this.jumpUpdate.bind(this),
     },
@@ -291,10 +296,13 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
     console.log(`State: ${this._currentState?.name} -> ${newState.name}`);
 
-    this._framesElapsed = 0;
     newState.enter();
 
     this._currentState = newState;
+
+    this._currentAnimation = kenResource.animation[this._currentState.name];
+    this._framesElapsed = 0;
+    this._animationFrame = 0;
   }
 
   private hasDirectionChanged(): boolean {
