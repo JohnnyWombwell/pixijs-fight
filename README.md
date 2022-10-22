@@ -14,14 +14,20 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [x] Collision between players
   - [x] Collision box
   - [x] Logic to avoid overlap and implement 'push'
+- [x] Jumping in 3 directions with animation
 - [ ] Attack boxes
-      Import sprites and background from SF
+- [x] Import sprites
+- [ ] and background from SF
 - [ ] FPS counter
-- [ ] Switch player direction (based on relative position)
+- [x] Switch player direction (based on relative position)
 - [ ] Hurt and collision boxes per animation frame
 - [ ] Hit boxes per attack animation from
 - [ ] Scrolling playfield
 - [ ] Walls to left and right
+- [ ] Blocking
+- [ ] Proximity blocking
+- [ ] Special moves (with input buffer)
+- [ ] Proximity normals
 - [ ] Event emitter for accurate processing of events and state changes
       (e.g. playing sound effects)
 - [ ] Peripherals other than keyboard
@@ -31,8 +37,8 @@ Attempting to improve my Typescript skills with a simple fighting game.
 ## Tasks
 
 - [x] Migrate from js to typescript
-- [x] github repo
-- [ ] Migrate to use a rendering / game framework (this repo - using PixiJS)
+- [ ] github repo
+- [x] Migrate to use a rendering / game framework (this repo - using PixiJS)
 - [ ] Automated tests
 - [ ] Rework render loop as per zinac
 - [ ] Start features above
