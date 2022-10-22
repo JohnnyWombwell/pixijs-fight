@@ -190,6 +190,14 @@ export class CharacterSimulation implements ICharacter, ISprite {
       },
       update: this.walkBackwardUpdate.bind(this),
     },
+    jumpStart: {
+      name: 'jumpStart',
+      enter: () => {
+        this._physics.velocity.x = 0;
+        this._physics.velocity.y = 0;
+      },
+      update: this.jumpStartUpdate.bind(this),
+    },
     neutralJump: {
       name: 'neutralJump',
       enter: () => {
@@ -260,7 +268,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
   private idleUpdate(input: IPlayerInput): void {
     if (input.jump) {
-      this.jumpTransition(input);
+      this.changeState(this._states.jumpStart);
       return;
     }
 
@@ -286,7 +294,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
 
     if (input.jump) {
-      this.jumpTransition(input);
+      this.changeState(this._states.jumpStart);
       return;
     }
 
@@ -311,7 +319,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
 
     if (input.jump) {
-      this.jumpTransition(input);
+      this.changeState(this._states.jumpStart);
       return;
     }
 
@@ -330,19 +338,23 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
   }
 
-  private jumpUpdate(_: IPlayerInput): void {
-    if (this._physics.position.y === groundLevel) {
-      this.changeState(this._states.idle);
+  private jumpStartUpdate(input: IPlayerInput): void {
+    if (this._currentAnimation[this._animationFrame]?.frameCount !== -2) {
+      return;
     }
-  }
 
-  private jumpTransition(input: IPlayerInput): void {
     if (input.right) {
       this.changeState(this._states.jumpForward);
     } else if (input.left) {
       this.changeState(this._states.jumpBackward);
     } else {
       this.changeState(this._states.neutralJump);
+    }
+  }
+
+  private jumpUpdate(_: IPlayerInput): void {
+    if (this._physics.position.y === groundLevel) {
+      this.changeState(this._states.idle);
     }
   }
 
@@ -362,6 +374,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
   private crouchedUpdate(input: IPlayerInput): void {
     if (!input.down) {
+      // Look at other inputs here and transition to walk or jump?
       this.changeState(this._states.crouchUp);
     }
 

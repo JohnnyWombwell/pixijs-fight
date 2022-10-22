@@ -198,6 +198,30 @@ export const kenResource: ISpriteResource = {
         frameCount: -1,
       },
     ],
+    jumpStart: [
+      {
+        source: { x: 660, y: 1060, width: 55, height: 85 },
+        offset: { x: -29, y: -83 },
+        frameCount: 2,
+      },
+      {
+        source: { x: 660, y: 1060, width: 55, height: 85 },
+        offset: { x: -29, y: -83 },
+        frameCount: -2,
+      },
+    ],
+    jumpRecovery: [
+      {
+        source: { x: 660, y: 1060, width: 55, height: 85 },
+        offset: { x: -29, y: -83 },
+        frameCount: 9,
+      },
+      {
+        source: { x: 660, y: 1060, width: 55, height: 85 },
+        offset: { x: -29, y: -83 },
+        frameCount: -2,
+      },
+    ],
     crouchDown: [
       {
         source: { x: 8, y: 779, width: 53, height: 83 },
