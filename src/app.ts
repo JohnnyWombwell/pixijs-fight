@@ -137,8 +137,17 @@ function setup() {
     app.stage.addChild(characterBodies[c]);
   }
 
+  let elapsedFrames = 0;
+
   app.ticker.add((framesDelta) => {
+    elapsedFrames++;
+
     let frameCount = Math.round(framesDelta);
+
+    // if (elapsedFrames % 3 > 0) {
+    //   frameCount = 0;
+    // }
+
     while (frameCount-- > 0) {
       // Input handling
 
