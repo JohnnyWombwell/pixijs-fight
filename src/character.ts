@@ -198,6 +198,14 @@ export class CharacterSimulation implements ICharacter, ISprite {
       },
       update: this.jumpStartUpdate.bind(this),
     },
+    jumpRecovery: {
+      name: 'jumpRecovery',
+      enter: () => {
+        this._physics.velocity.x = 0;
+        this._physics.velocity.y = 0;
+      },
+      update: this.jumpRecoveryUpdate.bind(this),
+    },
     neutralJump: {
       name: 'neutralJump',
       enter: () => {
@@ -354,6 +362,20 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
   private jumpUpdate(_: IPlayerInput): void {
     if (this._physics.position.y === groundLevel) {
+      this.changeState(this._states.jumpRecovery);
+    }
+  }
+
+  private jumpRecoveryUpdate(input: IPlayerInput): void {
+    if (this._animationFrame < 1) {
+      return;
+    }
+
+    if (input.jump || input.down || input.left || input.right) {
+      this.idleUpdate(input);
+    }
+
+    if (this._currentAnimation[this._animationFrame]?.frameCount === -2) {
       this.changeState(this._states.idle);
     }
   }
