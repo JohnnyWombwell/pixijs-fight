@@ -58,31 +58,27 @@ export class GameSimulation {
   }
 
   private processPushCollision(left: ICharacter, right: ICharacter) {
-    if (left.physics.velocity.x >= 0 && right.physics.velocity.x >= 0) {
-      right.physics.position = {
-        ...right.physics.position,
-        x: left.physics.position.x + left.body.size.x,
-      };
-    } else if (left.physics.velocity.x <= 0 && right.physics.velocity.x <= 0) {
-      left.physics.position = {
-        ...left.physics.position,
-        x: right.physics.position.x - left.body.size.x,
-      };
-    } else {
-      // else pushing against each other - split the overlap equally
-      const overlap =
-        left.body.position.x + left.body.size.x - right.body.position.x;
+    let leftRightRatio = 0.5;
 
-      left.physics.position = {
-        ...left.physics.position,
-        x: left.physics.position.x - overlap / 2,
-      };
-
-      right.physics.position = {
-        ...right.physics.position,
-        x: right.physics.position.x + overlap / 2,
-      };
+    if (left.physics.velocity.x > 0 && right.physics.velocity.x === 0) {
+      leftRightRatio = 2 / 3;
+    } else if (left.physics.velocity.x === 0 && right.physics.velocity.x < 0) {
+      leftRightRatio = 1 / 3;
     }
+
+    // Adjust positions based onweighting applied above
+    const overlap =
+      left.body.position.x + left.body.size.x - right.body.position.x;
+
+    left.physics.position = {
+      ...left.physics.position,
+      x: left.physics.position.x - leftRightRatio * overlap,
+    };
+
+    right.physics.position = {
+      ...right.physics.position,
+      x: right.physics.position.x + (1 - leftRightRatio) * overlap,
+    };
 
     // reprocessWallBoundAfterPush(left, right);
   }
