@@ -220,7 +220,15 @@ export class CharacterSimulation implements ICharacter, ISprite {
         this._physics.velocity.y = 0;
         this._physics.velocity.x = 0;
       },
-      update: this.crouchDownUpdate.bind(this),
+      update: this.transitionToCrouchUpdate.bind(this),
+    },
+    crouched: {
+      name: 'crouched',
+      enter: () => {
+        this._physics.velocity.y = 0;
+        this._physics.velocity.x = 0;
+      },
+      update: this.crouchedUpdate.bind(this),
     },
     crouchUp: {
       name: 'crouchUp',
@@ -229,6 +237,22 @@ export class CharacterSimulation implements ICharacter, ISprite {
         this._physics.velocity.x = 0;
       },
       update: this.crouchUpUpdate.bind(this),
+    },
+    turn: {
+      name: 'turn',
+      enter: () => {
+        this._physics.velocity.y = 0;
+        this._physics.velocity.x = 0;
+      },
+      update: this.turnUpdate.bind(this),
+    },
+    crouchTurn: {
+      name: 'crouchTurn',
+      enter: () => {
+        this._physics.velocity.y = 0;
+        this._physics.velocity.x = 0;
+      },
+      update: this.transitionToCrouchUpdate.bind(this),
     },
   };
 
@@ -250,6 +274,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
 
     if (this.hasDirectionChanged()) {
+      this.changeState(this._states.turn);
       this._direction *= -1;
     }
   }
@@ -320,21 +345,41 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
   }
 
-  private crouchDownUpdate(input: IPlayerInput): void {
-    // TODO: direction change
+  private transitionToCrouchUpdate(input: IPlayerInput): void {
+    const stateBeforeCrouchedUpdate = this._currentState;
+
+    this.crouchedUpdate(input);
+
+    if (stateBeforeCrouchedUpdate !== this._currentState) {
+      return;
+    }
+
+    if (this._currentAnimation[this._animationFrame]?.frameCount === -2) {
+      this.changeState(this._states.crouched);
+    }
+  }
+
+  private crouchedUpdate(input: IPlayerInput): void {
     if (!input.down) {
-      // TODO: change to crouch up
       this.changeState(this._states.crouchUp);
     }
 
     if (this.hasDirectionChanged()) {
       this._direction *= -1;
+      this.changeState(this._states.crouchTurn);
     }
   }
 
   private crouchUpUpdate(input: IPlayerInput): void {
-    // TODO: direction change
+    // If all frames done change state to idle
+    if (this._currentAnimation[this._animationFrame]?.frameCount === -2) {
+      this.changeState(this._states.idle);
+    }
 
+    this.idleUpdate(input);
+  }
+
+  private turnUpdate(input: IPlayerInput): void {
     // If all frames done change state to idle
     if (this._currentAnimation[this._animationFrame]?.frameCount === -2) {
       this.changeState(this._states.idle);

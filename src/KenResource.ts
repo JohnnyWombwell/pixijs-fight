@@ -212,6 +212,13 @@ export const kenResource: ISpriteResource = {
       {
         source: { x: 148, y: 802, width: 61, height: 61 },
         offset: { x: -25, y: -58 },
+        frameCount: -2,
+      },
+    ],
+    crouched: [
+      {
+        source: { x: 148, y: 802, width: 61, height: 61 },
+        offset: { x: -25, y: -58 },
         frameCount: -1,
       },
     ],
@@ -229,6 +236,50 @@ export const kenResource: ISpriteResource = {
       {
         source: { x: 8, y: 779, width: 53, height: 83 },
         offset: { x: -27, y: -81 },
+        frameCount: -2,
+      },
+    ],
+    turn: [
+      {
+        source: { x: 560, y: 683, width: 54, height: 94 },
+        offset: { x: -27, y: -90 },
+        frameCount: 2,
+      },
+      {
+        source: { x: 488, y: 678, width: 58, height: 98 },
+        offset: { x: -30, y: -95 },
+        frameCount: 2,
+      },
+      {
+        source: { x: 420, y: 682, width: 54, height: 95 },
+        offset: { x: -29, y: -92 },
+        frameCount: 2,
+      },
+      {
+        source: { x: 420, y: 682, width: 54, height: 95 },
+        offset: { x: -29, y: -92 },
+        frameCount: -2,
+      },
+    ],
+    crouchTurn: [
+      {
+        source: { x: 486, y: 802, width: 53, height: 61 },
+        offset: { x: -29, y: -58 },
+        frameCount: 2,
+      },
+      {
+        source: { x: 424, y: 802, width: 52, height: 61 },
+        offset: { x: -27, y: -58 },
+        frameCount: 2,
+      },
+      {
+        source: { x: 356, y: 802, width: 53, height: 61 },
+        offset: { x: -26, y: -58 },
+        frameCount: 2,
+      },
+      {
+        source: { x: 356, y: 802, width: 53, height: 61 },
+        offset: { x: -26, y: -58 },
         frameCount: -2,
       },
     ],
