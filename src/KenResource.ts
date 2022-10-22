@@ -44,10 +44,12 @@ export const kenResource: ISpriteResource = {
       {
         source: { x: 8, y: 872, width: 53, height: 83 },
         offset: { x: -27, y: -81 },
+        frameCount: 3,
       },
       {
         source: { x: 70, y: 683, width: 60, height: 88 },
         offset: { x: -35, y: -86 },
+        frameCount: 6,
       },
       {
         source: { x: 140, y: 866, width: 64, height: 90 },
@@ -64,16 +66,19 @@ export const kenResource: ISpriteResource = {
       {
         source: { x: 357, y: 867, width: 50, height: 89 },
         offset: { x: -25, y: -86 },
+        frameCount: 6,
       },
     ],
     walkBackward: [
       {
         source: { x: 417, y: 868, width: 61, height: 87 },
         offset: { x: -35, y: -85 },
+        frameCount: 3,
       },
       {
         source: { x: 487, y: 866, width: 59, height: 90 },
         offset: { x: -36, y: -87 },
+        frameCount: 6,
       },
       {
         source: { x: 558, y: 865, width: 57, height: 90 },
@@ -90,33 +95,34 @@ export const kenResource: ISpriteResource = {
       {
         source: { x: 773, y: 866, width: 57, height: 89 },
         offset: { x: -36, y: -87 },
+        frameCount: 6,
       },
     ],
     neutralJump: [
       {
         source: { x: 724, y: 1036, width: 56, height: 104 },
         offset: { x: -32, y: -107 },
-        frameCount: 11,
+        frameCount: 9,
       },
       {
         source: { x: 792, y: 995, width: 50, height: 89 },
         offset: { x: -25, y: -103 },
-        frameCount: 6,
+        frameCount: 8,
       },
       {
         source: { x: 853, y: 967, width: 54, height: 77 },
         offset: { x: -25, y: -103 },
-        frameCount: 6,
+        frameCount: 8,
       },
       {
         source: { x: 911, y: 966, width: 48, height: 70 },
         offset: { x: -28, y: -101 },
-        frameCount: 6,
+        frameCount: 8,
       },
       {
         source: { x: 975, y: 977, width: 48, height: 86 },
         offset: { x: -25, y: -103 },
-        frameCount: 6,
+        frameCount: 8,
       },
       {
         source: { x: 1031, y: 1008, width: 55, height: 103 },
@@ -128,32 +134,32 @@ export const kenResource: ISpriteResource = {
       {
         source: { x: 1237, y: 1037, width: 55, height: 103 },
         offset: { x: -25, y: -106 },
-        frameCount: 12,
+        frameCount: 14,
       },
       {
         source: { x: 1301, y: 990, width: 61, height: 78 },
         offset: { x: -22, y: -90 },
-        frameCount: 4,
+        frameCount: 5,
       },
       {
         source: { x: 1363, y: 994, width: 104, height: 42 },
         offset: { x: -61, y: -76 },
-        frameCount: 4,
+        frameCount: 3,
       },
       {
         source: { x: 1468, y: 957, width: 53, height: 82 },
         offset: { x: -28, y: -101 },
-        frameCount: 4,
+        frameCount: 3,
       },
       {
         source: { x: 1541, y: 988, width: 122, height: 44 },
         offset: { x: -71, y: -81 },
-        frameCount: 4,
+        frameCount: 3,
       },
       {
         source: { x: 1664, y: 976, width: 71, height: 87 },
         offset: { x: -53, y: -98 },
-        frameCount: 4,
+        frameCount: 5,
       },
       {
         source: { x: 1748, y: 977, width: 55, height: 103 },
@@ -163,34 +169,29 @@ export const kenResource: ISpriteResource = {
     ],
     jumpBackward: [
       {
-        source: { x: 1748, y: 977, width: 55, height: 103 },
-        offset: { x: -32, y: -107 },
-        frameCount: 12,
-      },
-      {
         source: { x: 1664, y: 976, width: 71, height: 87 },
         offset: { x: -53, y: -98 },
-        frameCount: 4,
+        frameCount: 15,
       },
       {
         source: { x: 1541, y: 988, width: 122, height: 44 },
         offset: { x: -71, y: -81 },
-        frameCount: 4,
+        frameCount: 3,
       },
       {
         source: { x: 1468, y: 957, width: 53, height: 82 },
         offset: { x: -28, y: -101 },
-        frameCount: 4,
+        frameCount: 3,
       },
       {
         source: { x: 1363, y: 994, width: 104, height: 42 },
         offset: { x: -61, y: -76 },
-        frameCount: 4,
+        frameCount: 3,
       },
       {
         source: { x: 1301, y: 990, width: 61, height: 78 },
         offset: { x: -22, y: -90 },
-        frameCount: 4,
+        frameCount: 3,
       },
       {
         source: { x: 1237, y: 1037, width: 55, height: 103 },
@@ -202,7 +203,7 @@ export const kenResource: ISpriteResource = {
       {
         source: { x: 660, y: 1060, width: 55, height: 85 },
         offset: { x: -29, y: -83 },
-        frameCount: 2,
+        frameCount: 3,
       },
       {
         source: { x: 660, y: 1060, width: 55, height: 85 },
@@ -241,6 +242,11 @@ export const kenResource: ISpriteResource = {
       {
         source: { x: 148, y: 802, width: 61, height: 61 },
         offset: { x: -25, y: -58 },
+        frameCount: 2,
+      },
+      {
+        source: { x: 148, y: 802, width: 61, height: 61 },
+        offset: { x: -25, y: -58 },
         frameCount: -2,
       },
     ],
@@ -255,12 +261,17 @@ export const kenResource: ISpriteResource = {
       {
         source: { x: 148, y: 802, width: 61, height: 61 },
         offset: { x: -25, y: -58 },
-        frameCount: 1,
+        frameCount: 2,
       },
       {
         source: { x: 79, y: 794, width: 57, height: 69 },
         offset: { x: -25, y: -66 },
-        frameCount: 1,
+        frameCount: 2,
+      },
+      {
+        source: { x: 8, y: 779, width: 53, height: 83 },
+        offset: { x: -27, y: -81 },
+        frameCount: 2,
       },
       {
         source: { x: 8, y: 779, width: 53, height: 83 },

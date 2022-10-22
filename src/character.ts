@@ -19,7 +19,10 @@ export interface ISprite {
 const groundLevel = 200;
 const gravity = 0.4;
 const jumpAcceleration = 9.5;
-const walkSpeed = 4;
+const walkForwardSpeed = 3;
+const walkBackwardSpeed = 2;
+const jumpForwardSpeed = 2.8;
+const jumpBackwardSpeed = 3.75;
 
 interface ICharacterState {
   get name(): string;
@@ -181,14 +184,14 @@ export class CharacterSimulation implements ICharacter, ISprite {
     walkForward: {
       name: 'walkForward',
       enter: () => {
-        this._physics.velocity.x = walkSpeed * this._direction;
+        this._physics.velocity.x = walkForwardSpeed * this._direction;
       },
       update: this.walkForwardUpdate.bind(this),
     },
     walkBackward: {
       name: 'walkBackward',
       enter: () => {
-        this._physics.velocity.x = -walkSpeed * this._direction;
+        this._physics.velocity.x = -walkBackwardSpeed * this._direction;
       },
       update: this.walkBackwardUpdate.bind(this),
     },
@@ -214,7 +217,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
       name: 'jumpForward',
       enter: () => {
         this._physics.velocity.y = -jumpAcceleration;
-        this._physics.velocity.x = walkSpeed * this._direction;
+        this._physics.velocity.x = jumpForwardSpeed * this._direction;
       },
       update: this.jumpUpdate.bind(this),
     },
@@ -222,7 +225,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
       name: 'jumpBackward',
       enter: () => {
         this._physics.velocity.y = -jumpAcceleration;
-        this._physics.velocity.x = -walkSpeed * this._direction;
+        this._physics.velocity.x = -jumpBackwardSpeed * this._direction;
       },
       update: this.jumpUpdate.bind(this),
     },
