@@ -214,11 +214,32 @@ export class CharacterSimulation implements ICharacter, ISprite {
       },
       update: this.jumpUpdate.bind(this),
     },
+    crouchDown: {
+      name: 'crouchDown',
+      enter: () => {
+        this._physics.velocity.y = 0;
+        this._physics.velocity.x = 0;
+      },
+      update: this.crouchDownUpdate.bind(this),
+    },
+    crouchUp: {
+      name: 'crouchUp',
+      enter: () => {
+        this._physics.velocity.y = 0;
+        this._physics.velocity.x = 0;
+      },
+      update: this.crouchUpUpdate.bind(this),
+    },
   };
 
   private idleUpdate(input: IPlayerInput): void {
     if (input.jump) {
       this.jumpTransition(input);
+      return;
+    }
+
+    if (input.down) {
+      this.changeState(this._states.crouchDown);
       return;
     }
 
@@ -243,6 +264,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
       return;
     }
 
+    if (input.down) {
+      this.changeState(this._states.crouchDown);
+      return;
+    }
+
     if (input.left) {
       this.changeState(this._states.walkBackward);
       return;
@@ -260,6 +286,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
     if (input.jump) {
       this.jumpTransition(input);
+      return;
+    }
+
+    if (input.down) {
+      this.changeState(this._states.crouchDown);
       return;
     }
 
@@ -287,6 +318,29 @@ export class CharacterSimulation implements ICharacter, ISprite {
     } else {
       this.changeState(this._states.neutralJump);
     }
+  }
+
+  private crouchDownUpdate(input: IPlayerInput): void {
+    // TODO: direction change
+    if (!input.down) {
+      // TODO: change to crouch up
+      this.changeState(this._states.crouchUp);
+    }
+
+    if (this.hasDirectionChanged()) {
+      this._direction *= -1;
+    }
+  }
+
+  private crouchUpUpdate(input: IPlayerInput): void {
+    // TODO: direction change
+
+    // If all frames done change state to idle
+    if (this._currentAnimation[this._animationFrame]?.frameCount === -2) {
+      this.changeState(this._states.idle);
+    }
+
+    this.idleUpdate(input);
   }
 
   private changeState(newState: ICharacterState) {

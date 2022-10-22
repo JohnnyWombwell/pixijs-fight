@@ -3,5 +3,6 @@ export interface IPlayerInput {
   left: boolean;
   right: boolean;
   jump: boolean;
+  down: boolean;
   attack: boolean[];
 }

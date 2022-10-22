@@ -28,12 +28,14 @@ const playerInput: IPlayerInput[] = [
     left: false,
     right: false,
     jump: false,
+    down: false,
     attack: [false],
   },
   {
     left: false,
     right: false,
     jump: false,
+    down: false,
     attack: [false],
   },
 ];
