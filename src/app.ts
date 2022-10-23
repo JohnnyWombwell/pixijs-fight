@@ -66,19 +66,18 @@ function setupStage(): Container {
 
   stageBackground = new Sprite(new Texture(stageSpriteSheet));
   stageBackground.texture.frame = new Rectangle(161, 208, 590, 176);
-  //stageBackground.x = 89;
-  // stageBackground.y = -16;
+  stageBackground.y = 0;
+  // x will be set by parallax effect
   container.addChild(stageBackground);
 
   stageBoat = new Sprite(new Texture(stageSpriteSheet));
   stageBoat.texture.frame = new Rectangle(8, 16, 521, 180);
-  stageBoat.x = 0;
   stageBoat.y = -1;
+  // x will be set by parallax effect
   container.addChild(stageBoat);
 
   const stageForeground = new Sprite(new Texture(stageSpriteSheet));
   stageForeground.texture.frame = new Rectangle(72, 392, 768, 72);
-  stageForeground.x = 0;
   stageForeground.y = 176;
   container.addChild(stageForeground);
 
@@ -141,7 +140,7 @@ function setup() {
   characterSimulations[0].initialise(characterSimulations[1]);
   characterSimulations[1].initialise(characterSimulations[0]);
 
-  const camera = new Camera({ x: 384 - 88, y: 16 }, characterSimulations);
+  const camera = new Camera({ x: 384 - 192, y: 16 }, characterSimulations);
   const gameSimulation = new GameSimulation(characterSimulations, camera);
 
   const characterOrigins = [new PIXI.Graphics(), new PIXI.Graphics()];
@@ -215,9 +214,12 @@ function setup() {
       }
 
       stageContainer.position = {
-        x: stageContainer.position.x + cameraVelocity,
-        y: camera.position.y,
+        x: -camera.position.x,
+        y: -camera.position.y,
       };
+      console.log(
+        `camera position: [${camera.position.x}, ${camera.position.y}]`
+      );
 
       stageBackground.position = {
         x: Math.floor(

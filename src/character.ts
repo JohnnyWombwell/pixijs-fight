@@ -17,12 +17,12 @@ export interface ISprite {
 }
 
 const groundLevel = 216;
-const gravity = 0.4;
-const jumpAcceleration = 9.5;
+const gravity = 0.3;
+const jumpAcceleration = 7.5;
 const walkForwardSpeed = 3;
 const walkBackwardSpeed = 2;
-const jumpForwardSpeed = 2.8;
-const jumpBackwardSpeed = 3.75;
+const jumpForwardSpeed = 3;
+const jumpBackwardSpeed = 4;
 
 interface ICharacterState {
   get name(): string;

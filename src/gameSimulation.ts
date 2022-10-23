@@ -78,12 +78,14 @@ export class GameSimulation {
 
     left.physics.position = {
       ...left.physics.position,
-      x: left.physics.position.x - leftRightRatio * overlap,
+      x: Math.floor(left.physics.position.x - leftRightRatio * overlap + 0.5),
     };
 
     right.physics.position = {
       ...right.physics.position,
-      x: right.physics.position.x + (1 - leftRightRatio) * overlap,
+      x: Math.floor(
+        right.physics.position.x + (1 - leftRightRatio) * overlap + 0.5
+      ),
     };
 
     // reprocessWallBoundAfterPush(left, right);
