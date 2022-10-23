@@ -1,5 +1,5 @@
 import { ICharacter } from './character.js';
-import { IRect, IVector2D } from './geometry.js';
+import { IRectangle, IVector2D } from './geometry.js';
 import { ISize } from './pixi/pixi.js';
 
 const ViewportSize: ISize = {
@@ -16,7 +16,7 @@ const ScrollRegionWidth = 100;
 
 export class Camera {
   private _fighters: ICharacter[];
-  private _viewPort: IRect;
+  private _viewPort: IRectangle;
 
   public constructor(initialPosition: IVector2D, fighters: ICharacter[]) {
     this._viewPort = {
@@ -28,7 +28,7 @@ export class Camera {
     this._fighters = fighters;
   }
 
-  public get viewPort(): IRect {
+  public get viewPort(): IRectangle {
     return this._viewPort;
   }
 

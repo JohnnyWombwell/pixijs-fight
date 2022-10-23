@@ -82,11 +82,10 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
   public get body(): IRectangle {
     return {
-      position: {
-        x: this._physics.position.x + this._offset.x,
-        y: this._physics.position.y + this._offset.y,
-      },
-      size: this._size,
+      x: this._physics.position.x + this._offset.x,
+      y: this._physics.position.y + this._offset.y,
+      width: this._size.x,
+      height: this._size.y,
     };
   }
 
@@ -428,14 +427,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
   }
 
   private hasDirectionChanged(): boolean {
-    if (
-      this.body.position.x + this.body.size.x <=
-      this._opponent!.body.position.x
-    ) {
+    if (this.body.x + this.body.width <= this._opponent!.body.x) {
       return this._direction !== Facing.Right;
     } else if (
-      this.body.position.x >=
-      this._opponent!.body.position.x + this._opponent!.body.size.x
+      this.body.x >=
+      this._opponent!.body.x + this._opponent!.body.width
     ) {
       return this._direction !== Facing.Left;
     }

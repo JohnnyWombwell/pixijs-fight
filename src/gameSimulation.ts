@@ -1,6 +1,6 @@
 import { Camera } from './Camera.js';
 import { ICharacter } from './character.js';
-import { IRect, rectangularCollision } from './geometry.js';
+import { IRectangle, rectangularCollision } from './geometry.js';
 import { IPlayerInput } from './playerInput.js';
 
 export class GameSimulation {
@@ -63,8 +63,7 @@ export class GameSimulation {
     }
 
     // Adjust positions based onweighting applied above
-    const overlap =
-      left.body.position.x + left.body.size.x - right.body.position.x;
+    const overlap = left.body.x + left.body.width - right.body.x;
 
     left.physics.position = {
       ...left.physics.position,
@@ -81,16 +80,11 @@ export class GameSimulation {
 
   private ensureFightersInViewPort(): void {
     for (const fighter of this._characters) {
-      const fighterRect: IRect = {
-        x: fighter.body.position.x,
-        y: fighter.body.position.y,
-        width: fighter.body.size.x,
-        height: fighter.body.size.y,
-      };
+      const fighterRect: IRectangle = fighter.body;
 
       if (this.ensureInBounds(this._camera.viewPort, fighterRect)) {
-        fighter.physics.position.x += fighterRect.x - fighter.body.position.x;
-        fighter.physics.position.y += fighterRect.y - fighter.body.position.y;
+        fighter.physics.position.x += fighterRect.x - fighter.body.x;
+        fighter.physics.position.y += fighterRect.y - fighter.body.y;
       }
     }
   }
@@ -101,7 +95,7 @@ export class GameSimulation {
    * @param body
    * @returns true if body was updated
    */
-  private ensureInBounds(boundsRect: IRect, body: IRect): boolean {
+  private ensureInBounds(boundsRect: IRectangle, body: IRectangle): boolean {
     let updated = false;
 
     if (body.x + body.width > boundsRect.x + boundsRect.width) {

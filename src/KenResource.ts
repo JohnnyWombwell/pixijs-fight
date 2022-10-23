@@ -1,7 +1,7 @@
-import { IRect, IVector2D } from './geometry';
+import { IRectangle, IVector2D } from './geometry';
 
 export interface IFrameResource {
-  source: IRect;
+  source: IRectangle;
   offset: IVector2D;
   frameCount?: number;
 }

@@ -160,24 +160,24 @@ function setup() {
 
   for (let c = 0; c < characterBodies.length; ++c) {
     characterBodies[c].pivot = {
-      x: characterSimulations[c].body.size.x / 2,
+      x: characterSimulations[c].body.width / 2,
       y: 0,
     };
 
     characterBodies[c].drawRect(
       0,
       0,
-      characterSimulations[c].body.size.x,
-      -characterSimulations[c].body.size.y
+      characterSimulations[c].body.width,
+      -characterSimulations[c].body.height
     );
 
     characterBodies[c].lineStyle({ width: 1, color: 0x000000, alpha: 0.5 });
     characterBodies[c].moveTo(15, -25);
     characterBodies[c].lineTo(
-      characterSimulations[c].body.size.x - 5,
-      -characterSimulations[c].body.size.y / 2
+      characterSimulations[c].body.width - 5,
+      -characterSimulations[c].body.height / 2
     );
-    characterBodies[c].lineTo(15, -(characterSimulations[c].body.size.y - 25));
+    characterBodies[c].lineTo(15, -(characterSimulations[c].body.height - 25));
 
     stageContainer.addChild(characterBodies[c]);
   }
