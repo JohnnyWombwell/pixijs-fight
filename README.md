@@ -24,6 +24,7 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [ ] Hit boxes per attack animation from
 - [ ] Scrolling playfield
 - [ ] Walls to left and right
+- [ ] Shadow under the player
 - [ ] Blocking
 - [ ] Proximity blocking
 - [ ] Special moves (with input buffer)

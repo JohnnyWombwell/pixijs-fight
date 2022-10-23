@@ -16,7 +16,7 @@ export interface ISprite {
   render(): void;
 }
 
-const groundLevel = 200;
+const groundLevel = 216;
 const gravity = 0.4;
 const jumpAcceleration = 9.5;
 const walkForwardSpeed = 3;

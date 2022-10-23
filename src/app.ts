@@ -1,10 +1,13 @@
+import { Camera } from './Camera.js';
 import { CharacterSimulation } from './character.js';
 import { GameSimulation } from './gameSimulation.js';
 import { KeyboardInputSource } from './input/keyboardInputSource.js';
 import * as PIXI from './pixi/pixi.js';
 import {
   BaseTexture,
+  Container,
   PRECISION,
+  Rectangle,
   SCALE_MODES,
   Sprite,
   Texture,
@@ -51,9 +54,45 @@ function setViewSizeFromWindow(): void {
   app.renderer.resize(384 * scaleFactor, 224 * scaleFactor);
 }
 
+let stageBackground: Sprite;
+let stageBoat: Sprite;
+
+function setupStage(): Container {
+  const stageSpriteSheet = BaseTexture.from('assets/images/kens-stage.png', {
+    scaleMode: SCALE_MODES.NEAREST,
+  });
+
+  const container = new Container();
+
+  stageBackground = new Sprite(new Texture(stageSpriteSheet));
+  stageBackground.texture.frame = new Rectangle(161, 208, 590, 176);
+  //stageBackground.x = 89;
+  // stageBackground.y = -16;
+  container.addChild(stageBackground);
+
+  stageBoat = new Sprite(new Texture(stageSpriteSheet));
+  stageBoat.texture.frame = new Rectangle(8, 16, 521, 180);
+  stageBoat.x = 0;
+  stageBoat.y = -1;
+  container.addChild(stageBoat);
+
+  const stageForeground = new Sprite(new Texture(stageSpriteSheet));
+  stageForeground.texture.frame = new Rectangle(72, 392, 768, 72);
+  stageForeground.x = 0;
+  stageForeground.y = 176;
+  container.addChild(stageForeground);
+
+  container.position = { x: -(container.width / 2) + 192, y: -16 };
+
+  return container;
+}
+
 window.addEventListener('load', async () => {
   // Load assets
-  PIXI.Loader.shared.add('assets/images/ken-full-alpha.png').load(setup);
+  PIXI.Loader.shared
+    .add('assets/images/kens-stage.png')
+    .add('assets/images/ken-full-alpha.png')
+    .load(setup);
 });
 
 function setup() {
@@ -63,6 +102,10 @@ function setup() {
   });
 
   const _ = new KeyboardInputSource(playerInput);
+
+  const stageContainer = setupStage();
+  app.stage.addChild(stageContainer);
+
   const kenSpriteSheet = BaseTexture.from('assets/images/ken-full-alpha.png', {
     scaleMode: SCALE_MODES.NEAREST,
   });
@@ -74,7 +117,7 @@ function setup() {
     const sprite = Sprite.from(texture);
     sprite.anchor.x = 0.5;
     sprite.anchor.y = 1;
-    app.stage.addChild(sprite);
+    stageContainer.addChild(sprite);
     playerSprites.push(sprite);
   }
 
@@ -91,14 +134,15 @@ function setup() {
   app.stage.addChild(text);
 
   const characterSimulations = [
-    new CharacterSimulation({ x: 50, y: 0 }, playerSprites[0]),
-    new CharacterSimulation({ x: 250, y: 0 }, playerSprites[1]),
+    new CharacterSimulation({ x: 384 - 88, y: 216 }, playerSprites[0]),
+    new CharacterSimulation({ x: 384 + 88, y: 216 }, playerSprites[1]),
   ];
 
   characterSimulations[0].initialise(characterSimulations[1]);
   characterSimulations[1].initialise(characterSimulations[0]);
 
-  const gameSimulation = new GameSimulation(characterSimulations);
+  const camera = new Camera({ x: 384 - 88, y: 16 }, characterSimulations);
+  const gameSimulation = new GameSimulation(characterSimulations, camera);
 
   const characterOrigins = [new PIXI.Graphics(), new PIXI.Graphics()];
   for (const origin of characterOrigins) {
@@ -108,7 +152,7 @@ function setup() {
     origin.moveTo(0, 5);
     origin.lineTo(0, -5);
 
-    app.stage.addChild(origin);
+    stageContainer.addChild(origin);
   }
 
   const characterBodies = [new PIXI.Graphics(), new PIXI.Graphics()];
@@ -136,10 +180,11 @@ function setup() {
     );
     characterBodies[c].lineTo(15, -(characterSimulations[c].body.size.y - 25));
 
-    app.stage.addChild(characterBodies[c]);
+    stageContainer.addChild(characterBodies[c]);
   }
 
   let elapsedFrames = 0;
+  let cameraVelocity = 1;
 
   app.ticker.add((framesDelta) => {
     elapsedFrames++;
@@ -157,7 +202,36 @@ function setup() {
 
       gameSimulation.update(playerInput);
 
+      // Update camera
+
       // Store game state
+
+      if (stageContainer.x >= 0) {
+        cameraVelocity = -1;
+      }
+
+      if (stageContainer.x === 384 - 768) {
+        cameraVelocity = 1;
+      }
+
+      stageContainer.position = {
+        x: stageContainer.position.x + cameraVelocity,
+        y: camera.position.y,
+      };
+
+      stageBackground.position = {
+        x: Math.floor(
+          stageContainer.position.x / 2.157303 - stageContainer.position.x + 0.5
+        ),
+        y: stageBackground.position.y,
+      };
+
+      stageBoat.position = {
+        x: Math.floor(
+          stageContainer.position.x / 1.613445 - stageContainer.position.x + 0.5
+        ),
+        y: stageBoat.position.y,
+      };
 
       //
       // Rendering

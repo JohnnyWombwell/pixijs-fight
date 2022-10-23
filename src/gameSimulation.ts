@@ -1,13 +1,18 @@
+import { Camera } from './Camera.js';
 import { ICharacter } from './character.js';
 import { rectangularCollision } from './geometry.js';
 import { IPlayerInput } from './playerInput.js';
 
+const PlayfieldMidpointX = 384;
+
 export class GameSimulation {
   private readonly _characters: ICharacter[];
+  private _camera: Camera;
 
-  constructor(characters: ICharacter[]) {
+  constructor(characters: ICharacter[], camera: Camera) {
     // TODO: initialise game state.
     this._characters = characters;
+    this._camera = camera;
   }
 
   /**
@@ -38,6 +43,7 @@ export class GameSimulation {
     // playfield bounds collisions
 
     // camera update
+    this._camera.update();
   }
 
   private processPushCollisions(): void {
