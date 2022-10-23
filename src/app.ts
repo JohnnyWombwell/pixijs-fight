@@ -217,6 +217,7 @@ function setup() {
         x: -camera.viewPort.x,
         y: -camera.viewPort.y,
       };
+
       console.log(
         `camera position: [${camera.viewPort.x}, ${camera.viewPort.y}]`
       );
