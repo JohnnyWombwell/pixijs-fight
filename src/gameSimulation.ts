@@ -1,9 +1,7 @@
 import { Camera } from './Camera.js';
 import { ICharacter } from './character.js';
-import { rectangularCollision } from './geometry.js';
+import { IRect, rectangularCollision } from './geometry.js';
 import { IPlayerInput } from './playerInput.js';
-
-const PlayfieldMidpointX = 384;
 
 export class GameSimulation {
   private readonly _characters: ICharacter[];
@@ -25,25 +23,17 @@ export class GameSimulation {
 
     // Character physics
     // TODO: commands will be submitted, not raw input
-    this._characters[0].update(
-      input[0]
-      /* TODO: pass relative position in here
-          and allow the character to update their own direction accordingly */
-    );
+    this._characters[0].update(input[0]);
+    this._characters[1].update(input[1]);
 
-    this._characters[1].update(
-      input[1]
-      /* TODO: pass relative position in here
-          and allow the character to update their own direction accordingly */
-    );
-
-    // push collisions
     this.processPushCollisions();
 
-    // playfield bounds collisions
-
-    // camera update
     this._camera.update();
+
+    this.ensureFightersInViewPort();
+
+    // Reprocess push collisions after camera update
+    this.processPushCollisions();
   }
 
   private processPushCollisions(): void {
@@ -87,7 +77,43 @@ export class GameSimulation {
         right.physics.position.x + (1 - leftRightRatio) * overlap + 0.5
       ),
     };
+  }
 
-    // reprocessWallBoundAfterPush(left, right);
+  private ensureFightersInViewPort(): void {
+    for (const fighter of this._characters) {
+      const fighterRect: IRect = {
+        x: fighter.body.position.x,
+        y: fighter.body.position.y,
+        width: fighter.body.size.x,
+        height: fighter.body.size.y,
+      };
+
+      if (this.ensureInBounds(this._camera.viewPort, fighterRect)) {
+        fighter.physics.position.x += fighterRect.x - fighter.body.position.x;
+        fighter.physics.position.y += fighterRect.y - fighter.body.position.y;
+      }
+    }
+  }
+
+  /**
+   * Ensure the body is withing the bounding rectangle.
+   * @param boundsRect
+   * @param body
+   * @returns true if body was updated
+   */
+  private ensureInBounds(boundsRect: IRect, body: IRect): boolean {
+    let updated = false;
+
+    if (body.x + body.width > boundsRect.x + boundsRect.width) {
+      body.x = boundsRect.x + boundsRect.width - body.width;
+      updated = true;
+    }
+
+    if (body.x < boundsRect.x) {
+      body.x = boundsRect.x;
+      updated = true;
+    }
+
+    return updated;
   }
 }

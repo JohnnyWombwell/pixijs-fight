@@ -214,11 +214,11 @@ function setup() {
       }
 
       stageContainer.position = {
-        x: -camera.position.x,
-        y: -camera.position.y,
+        x: -camera.viewPort.x,
+        y: -camera.viewPort.y,
       };
       console.log(
-        `camera position: [${camera.position.x}, ${camera.position.y}]`
+        `camera position: [${camera.viewPort.x}, ${camera.viewPort.y}]`
       );
 
       stageBackground.position = {

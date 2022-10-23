@@ -7,6 +7,11 @@ const ViewportSize: ISize = {
   height: 224,
 };
 
+const StageSize: ISize = {
+  width: 768,
+  height: 256,
+};
+
 const ScrollRegionWidth = 100;
 
 export class Camera {
@@ -23,13 +28,24 @@ export class Camera {
     this._fighters = fighters;
   }
 
-  public get position(): IVector2D {
-    return { x: this._viewPort.x, y: this._viewPort.y };
+  public get viewPort(): IRect {
+    return this._viewPort;
   }
 
   public update(): void {
     this.updateHorizontal();
     this.updateVertical();
+
+    this._viewPort.x = Math.min(
+      this._viewPort.x,
+      StageSize.width - this._viewPort.width - 1
+    );
+    this._viewPort.x = Math.max(this._viewPort.x, 0);
+    this._viewPort.y = Math.min(
+      this._viewPort.y,
+      StageSize.height - this._viewPort.height - 1
+    );
+    this._viewPort.y = Math.max(this._viewPort.y, 0);
   }
 
   private updateHorizontal(): void {
