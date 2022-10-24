@@ -8,11 +8,18 @@ export interface IFrameResource {
 
 export interface ISpriteResource {
   texturePath: string;
+  image: Record<string, IFrameResource>;
   animation: Record<string, IFrameResource[]>;
 }
 
 export const kenResource: ISpriteResource = {
   texturePath: 'assets/images/ken-masters.png',
+  image: {
+    shadow: {
+      source: { x: 0, y: 4065, width: 68, height: 11 },
+      offset: { x: -30, y: -94 },
+    },
+  },
   animation: {
     idle: [
       {

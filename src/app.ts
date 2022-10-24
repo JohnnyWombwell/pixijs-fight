@@ -110,6 +110,24 @@ function setup() {
     scaleMode: SCALE_MODES.NEAREST,
   });
 
+  const playerShadowSprites: Sprite[] = [];
+
+  for (let p = 0; p < 2; ++p) {
+    const shadowTexture = new Texture(kenSpriteSheet);
+    const shadowSprite = Sprite.from(shadowTexture);
+    shadowSprite.anchor.x = 0.5;
+    shadowSprite.anchor.y = 1;
+    shadowSprite.texture.frame = new Rectangle(
+      kenResource.image.shadow.source.x,
+      kenResource.image.shadow.source.y,
+      kenResource.image.shadow.source.width,
+      kenResource.image.shadow.source.height
+    );
+
+    stageContainer.addChild(shadowSprite);
+    playerShadowSprites.push(shadowSprite);
+  }
+
   const playerSprites: Sprite[] = [];
 
   for (let p = 0; p < 2; ++p) {
@@ -134,8 +152,16 @@ function setup() {
   app.stage.addChild(text);
 
   const characterSimulations = [
-    new CharacterSimulation({ x: 384 - 88, y: 216 }, playerSprites[0]),
-    new CharacterSimulation({ x: 384 + 88, y: 216 }, playerSprites[1]),
+    new CharacterSimulation(
+      { x: 384 - 88, y: 216 },
+      playerSprites[0],
+      playerShadowSprites[0]
+    ),
+    new CharacterSimulation(
+      { x: 384 + 88, y: 216 },
+      playerSprites[1],
+      playerShadowSprites[1]
+    ),
   ];
 
   characterSimulations[0].initialise(characterSimulations[1]);

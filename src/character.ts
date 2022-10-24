@@ -57,14 +57,21 @@ export class CharacterSimulation implements ICharacter, ISprite {
   private _framesElapsed = 0;
   private _currentAnimation: IFrameResource[];
   private _animationFrame = 0;
+  private _shadowSprite: Sprite;
 
-  public constructor(initialPosition: IVector2D, sprite: Sprite) {
+  public constructor(
+    initialPosition: IVector2D,
+    sprite: Sprite,
+    shadowSprite: Sprite
+  ) {
     this._physics = {
       position: initialPosition,
       velocity: { x: 0, y: 0 },
     };
 
     this._sprite = sprite;
+    this._shadowSprite = shadowSprite;
+    this._shadowSprite.y = groundLevel + 2;
     this._currentAnimation = kenResource.animation.idle;
 
     this.changeState(this._states.idle);
@@ -116,6 +123,8 @@ export class CharacterSimulation implements ICharacter, ISprite {
     this._sprite.x = this._physics.position.x;
     this._sprite.y = this._physics.position.y;
     this._sprite.scale.x = this._direction;
+
+    this._shadowSprite.x = this._sprite.x + 3 * this.direction;
 
     if (!this._currentState) {
       return;
