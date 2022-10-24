@@ -274,6 +274,10 @@ export class CharacterSimulation implements ICharacter, ISprite {
   };
 
   private idleUpdate(input: IPlayerInput): void {
+    if (this.hasDirectionChanged()) {
+      this.changeState(this._states.turn);
+    }
+
     if (input.jump) {
       this.changeState(this._states.jumpStart);
       return;
@@ -288,10 +292,6 @@ export class CharacterSimulation implements ICharacter, ISprite {
       this.changeState(this._states.walkBackward);
     } else if (input.right) {
       this.changeState(this._states.walkForward);
-    }
-
-    if (this.hasDirectionChanged()) {
-      this.changeState(this._states.turn);
     }
   }
 
