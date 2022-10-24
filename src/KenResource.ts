@@ -17,7 +17,7 @@ export const kenResource: ISpriteResource = {
   image: {
     shadow: {
       source: { x: 0, y: 4065, width: 68, height: 11 },
-      offset: { x: -30, y: -94 },
+      offset: { x: -34, y: -7 },
     },
   },
   animation: {
@@ -54,7 +54,7 @@ export const kenResource: ISpriteResource = {
         frameCount: 3,
       },
       {
-        source: { x: 70, y: 683, width: 60, height: 88 },
+        source: { x: 70, y: 687, width: 60, height: 88 },
         offset: { x: -35, y: -86 },
         frameCount: 6,
       },
