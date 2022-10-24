@@ -97,7 +97,7 @@ export const kenResource: ISpriteResource = {
       },
       {
         source: { x: 702, y: 865, width: 58, height: 91 },
-        offset: { x: -25, y: -87 },
+        offset: { x: -36, y: -87 },
       },
       {
         source: { x: 773, y: 866, width: 57, height: 89 },

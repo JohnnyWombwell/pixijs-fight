@@ -133,8 +133,9 @@ function setup() {
   for (let p = 0; p < 2; ++p) {
     const texture = new Texture(kenSpriteSheet);
     const sprite = Sprite.from(texture);
-    sprite.anchor.x = 0.5;
-    sprite.anchor.y = 1;
+    sprite.anchor.x = 0; // conventional origin that we manage in software (as the offsets vary from from to frame)
+    sprite.anchor.y = 0;
+    sprite.pivot.x = 0.5; // Make flipping left / right simple
     stageContainer.addChild(sprite);
     playerSprites.push(sprite);
   }

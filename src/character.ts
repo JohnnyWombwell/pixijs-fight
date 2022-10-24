@@ -120,12 +120,6 @@ export class CharacterSimulation implements ICharacter, ISprite {
   }
 
   public render(): void {
-    this._sprite.x = this._physics.position.x;
-    this._sprite.y = this._physics.position.y;
-    this._sprite.scale.x = this._direction;
-
-    this._shadowSprite.x = this._sprite.x + 3 * this.direction;
-
     if (!this._currentState) {
       return;
     }
@@ -136,6 +130,15 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
 
     const frame = this._currentAnimation[this._animationFrame];
+
+    this._sprite.x = this._physics.position.x + frame.offset.x * this.direction;
+    this._sprite.y = this._physics.position.y + frame.offset.y;
+    this._sprite.scale.x = this._direction;
+
+    const shadowScale =
+      1 - (groundLevel - this._physics.position.y) / (groundLevel + 50);
+    this._shadowSprite.scale.x = shadowScale;
+    this._shadowSprite.x = this._physics.position.x;
 
     this._sprite.texture.frame = new Rectangle(
       frame.source.x,
