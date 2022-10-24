@@ -1,7 +1,8 @@
-import { Camera } from './Camera.js';
+import { Camera } from './camera.js';
 import { CharacterSimulation } from './character.js';
 import { GameSimulation } from './gameSimulation.js';
 import { KeyboardInputSource } from './input/keyboardInputSource.js';
+import { kenResource } from './KenResource.js';
 import * as PIXI from './pixi/pixi.js';
 import {
   BaseTexture,
@@ -90,7 +91,7 @@ window.addEventListener('load', async () => {
   // Load assets
   PIXI.Loader.shared
     .add('assets/images/kens-stage.png')
-    .add('assets/images/ken-full-alpha.png')
+    .add(kenResource.texturePath)
     .load(setup);
 });
 
@@ -105,7 +106,7 @@ function setup() {
   const stageContainer = setupStage();
   app.stage.addChild(stageContainer);
 
-  const kenSpriteSheet = BaseTexture.from('assets/images/ken-full-alpha.png', {
+  const kenSpriteSheet = BaseTexture.from(kenResource.texturePath, {
     scaleMode: SCALE_MODES.NEAREST,
   });
 

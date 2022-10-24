@@ -12,7 +12,7 @@ export interface ISpriteResource {
 }
 
 export const kenResource: ISpriteResource = {
-  texturePath: 'assets/images/ken-full-alpha.png',
+  texturePath: 'assets/images/ken-masters.png',
   animation: {
     idle: [
       {

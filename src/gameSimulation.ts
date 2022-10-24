@@ -1,4 +1,4 @@
-import { Camera } from './Camera.js';
+import { Camera } from './camera.js';
 import { ICharacter } from './character.js';
 import { IRectangle, rectangularCollision } from './geometry.js';
 import { IPlayerInput } from './playerInput.js';
