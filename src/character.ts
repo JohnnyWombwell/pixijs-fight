@@ -300,7 +300,16 @@ export class CharacterSimulation implements ICharacter, ISprite {
         lightAttackSound.currentTime = 0;
         lightAttackSound.play();
       },
-      update: this.crouchingLightPunchUpdate.bind(this),
+      update: this.crouchingAttackUpdate.bind(this),
+    },
+    crouchingHeavyKick: {
+      name: 'crouchingHeavyKick',
+      enter: () => {
+        this.resetVelocities();
+        heavyAttackSound.currentTime = 0;
+        heavyAttackSound.play();
+      },
+      update: this.crouchingAttackUpdate.bind(this),
     },
     jumpingLightPunch: {
       name: 'jumpingLightPunch',
@@ -473,6 +482,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
       return;
     }
 
+    if (input.heavyKick) {
+      this.changeState(this._states.crouchingHeavyKick);
+      return;
+    }
+
     if (!input.down) {
       // Look at other inputs here and transition to walk or jump?
       this.changeState(this._states.crouchUp);
@@ -509,7 +523,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
     this.changeState(this._states.idle);
   }
 
-  private crouchingLightPunchUpdate(input: IPlayerInput): void {
+  private crouchingAttackUpdate(input: IPlayerInput): void {
     if (!this.isCurrentAnimationComplete()) {
       return;
     }

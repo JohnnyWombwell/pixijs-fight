@@ -355,22 +355,22 @@ export const kenResource: ISpriteResource = {
     standingLightPunch: [
       {
         source: { x: 3, y: 1152, width: 64, height: 91 },
-        offset: { x: -30, y: -91 },
+        offset: { x: -32, y: -88 },
         frameCount: 3,
       },
       {
         source: { x: 72, y: 1152, width: 92, height: 91 },
-        offset: { x: -30, y: -91 },
+        offset: { x: -32, y: -88 },
         frameCount: 4,
       },
       {
         source: { x: 167, y: 1152, width: 64, height: 91 },
-        offset: { x: -30, y: -91 },
+        offset: { x: -32, y: -88 },
         frameCount: 4,
       },
       {
         source: { x: 167, y: 1152, width: 64, height: 91 },
-        offset: { x: -30, y: -91 },
+        offset: { x: -32, y: -88 },
         frameCount: -2,
       },
     ],
@@ -403,28 +403,60 @@ export const kenResource: ISpriteResource = {
         frameCount: 3,
       },
       {
-        source: { x: 683, y: 1571, width: 61, height: 90 },
-        offset: { x: -37, y: -87 },
+        source: { x: 763, y: 1567, width: 95, height: 94 },
+        offset: { x: -44, y: -91 },
         frameCount: 5,
       },
       {
-        source: { x: 683, y: 1571, width: 61, height: 90 },
-        offset: { x: -37, y: -87 },
+        source: { x: 870, y: 1567, width: 120, height: 94 },
+        offset: { x: -41, y: -91 },
         frameCount: 9,
       },
       {
-        source: { x: 683, y: 1571, width: 61, height: 90 },
-        offset: { x: -37, y: -87 },
+        source: { x: 1005, y: 1584, width: 101, height: 77 },
+        offset: { x: -38, y: -74 },
         frameCount: 11,
       },
       {
-        source: { x: 683, y: 1571, width: 61, height: 90 },
-        offset: { x: -37, y: -87 },
+        source: { x: 1147, y: 1580, width: 64, height: 81 },
+        offset: { x: -33, y: -78 },
         frameCount: 7,
       },
       {
-        source: { x: 683, y: 1571, width: 61, height: 90 },
-        offset: { x: -37, y: -87 },
+        source: { x: 1147, y: 1580, width: 64, height: 81 },
+        offset: { x: -33, y: -78 },
+        frameCount: -2,
+      },
+    ],
+    crouchingHeavyKick: [
+      {
+        source: { x: 785, y: 2018, width: 52, height: 60 },
+        offset: { x: -13, y: -57 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 848, y: 2020, width: 121, height: 58 },
+        offset: { x: -33, y: -55 },
+        frameCount: 7,
+      },
+      {
+        source: { x: 978, y: 2019, width: 62, height: 59 },
+        offset: { x: -17, y: -56 },
+        frameCount: 7,
+      },
+      {
+        source: { x: 1049, y: 2019, width: 62, height: 59 },
+        offset: { x: -37, y: -56 },
+        frameCount: 9,
+      },
+      {
+        source: { x: 1123, y: 2017, width: 53, height: 61 },
+        offset: { x: -26, y: -58 },
+        frameCount: 12,
+      },
+      {
+        source: { x: 1123, y: 2017, width: 53, height: 61 },
+        offset: { x: -26, y: -58 },
         frameCount: -2,
       },
     ],
