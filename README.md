@@ -24,17 +24,17 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [x] Switch player direction (based on relative position)
 - [ ] Hurt and collision boxes per animation frame
 - [ ] Hit boxes per attack animation from
-- [ ] Audio
+- [ ] Audio - in progress...
 - [x] Scrolling playfield
 - [x] Walls to left and right
 - [x] Shadow under the player
 - [ ] Blocking
 - [ ] Proximity blocking
+- [x] Peripherals other than keyboard
 - [ ] Special moves (with input buffer)
 - [ ] Proximity normals
 - [ ] Event emitter for accurate processing of events and state changes
       (e.g. playing sound effects)
-- [ ] Peripherals other than keyboard
 - [ ] Distributed multiplayer game
 - [ ] Assets
 

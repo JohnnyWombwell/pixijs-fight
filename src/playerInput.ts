@@ -4,7 +4,6 @@ export interface IPlayerInput {
   right: boolean;
   jump: boolean;
   down: boolean;
-  attack: boolean[];
   lightPunch?: boolean;
   lightKick?: boolean;
   heavyPunch?: boolean;

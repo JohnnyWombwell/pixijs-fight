@@ -570,7 +570,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
 
     // todo: check for up input - prob need a method to check inputs and change state
-    this.changeState(this._states.crouched);
+    if (input.down) {
+      this.changeState(this._states.crouched);
+    } else {
+      this.changeState(this._states.crouchUp);
+    }
   }
 
   private changeState(newState: ICharacterState) {

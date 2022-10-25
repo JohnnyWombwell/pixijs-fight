@@ -1,6 +1,7 @@
 import { Camera } from './camera.js';
 import { CharacterSimulation } from './character.js';
 import { GameSimulation } from './gameSimulation.js';
+import { GameControllerInputSource } from './input/gameControllerInputSource.js';
 import { KeyboardInputSource } from './input/keyboardInputSource.js';
 import { kenResource } from './KenResource.js';
 import * as PIXI from './pixi/pixi.js';
@@ -33,7 +34,6 @@ const playerInput: IPlayerInput[] = [
     right: false,
     jump: false,
     down: false,
-    attack: [false],
     lightPunch: false,
   },
   {
@@ -41,7 +41,6 @@ const playerInput: IPlayerInput[] = [
     right: false,
     jump: false,
     down: false,
-    attack: [false],
     lightPunch: false,
   },
 ];
@@ -215,6 +214,8 @@ function setup() {
   let elapsedFrames = 0;
   let cameraVelocity = 1;
 
+  const playerTwoGameController = new GameControllerInputSource();
+
   app.ticker.add((framesDelta) => {
     elapsedFrames++;
 
@@ -228,6 +229,11 @@ function setup() {
       // Input handling
 
       // Network update
+
+      const playerTwoInput = playerTwoGameController.poll();
+      if (playerTwoInput) {
+        playerInput[1] = playerTwoInput;
+      }
 
       gameSimulation.update(playerInput);
 
