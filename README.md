@@ -24,6 +24,7 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [x] Switch player direction (based on relative position)
 - [ ] Hurt and collision boxes per animation frame
 - [ ] Hit boxes per attack animation from
+- [ ] Audio
 - [x] Scrolling playfield
 - [x] Walls to left and right
 - [x] Shadow under the player
@@ -42,7 +43,10 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [x] Migrate from js to typescript
 - [x] github repo
 - [x] Migrate to use a rendering / game framework (this repo - using PixiJS)
+- [ ] Better dev build - e.g. copy-and-watch
+- [ ] Avoid duplication in animation assets (define frames then animations contain keys for each frame)
 - [ ] Refactor char / app into renderers - e.g. char simulation + renderer that wraps it
+      Simple items may just have a renderer (e.g. the stage, char shadows)
 - [ ] Automated tests
 - [ ] Rework render loop as per zinac
 - [ ] Start features above

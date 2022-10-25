@@ -23,8 +23,8 @@ export class KeyboardInputSource {
       case 'KeyS':
         this._playerInputs[0].down = true;
         break;
-      case 'Space':
-        this._playerInputs[0].attack[0] = true;
+      case 'KeyF':
+        this._playerInputs[0].lightPunch = true;
         break;
     }
 
@@ -41,8 +41,8 @@ export class KeyboardInputSource {
       case 'ArrowDown':
         this._playerInputs[1].down = true;
         break;
-      case 'Enter':
-        this._playerInputs[1].attack[0] = true;
+      case 'KeyK':
+        this._playerInputs[1].lightPunch = true;
         break;
     }
   }
@@ -61,8 +61,8 @@ export class KeyboardInputSource {
       case 'KeyS':
         this._playerInputs[0].down = false;
         break;
-      case 'Space':
-        this._playerInputs[0].attack[0] = false;
+      case 'KeyF':
+        this._playerInputs[0].lightPunch = false;
         break;
     }
 
@@ -79,8 +79,8 @@ export class KeyboardInputSource {
       case 'ArrowDown':
         this._playerInputs[1].down = false;
         break;
-      case 'Enter':
-        this._playerInputs[1].attack[0] = false;
+      case 'KeyK':
+        this._playerInputs[1].lightPunch = false;
         break;
     }
   }

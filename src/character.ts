@@ -24,6 +24,8 @@ const walkBackwardSpeed = 2;
 const jumpForwardSpeed = 3;
 const jumpBackwardSpeed = 4;
 
+const lightAttackSound = new Audio('assets/audio/light-attack.wav');
+
 interface ICharacterState {
   get name(): string;
   enter: () => void;
@@ -271,11 +273,42 @@ export class CharacterSimulation implements ICharacter, ISprite {
       },
       update: this.transitionToCrouchUpdate.bind(this),
     },
+    standingLightPunch: {
+      name: 'standingLightPunch',
+      enter: () => {
+        this.resetVelocities();
+        lightAttackSound.currentTime = 0;
+        lightAttackSound.play();
+      },
+      update: this.standingLightPunchUpdate.bind(this),
+    },
+    crouchingLightPunch: {
+      name: 'crouchingLightPunch',
+      enter: () => {
+        this.resetVelocities();
+        lightAttackSound.currentTime = 0;
+        lightAttackSound.play();
+      },
+      update: this.crouchingLightPunchUpdate.bind(this),
+    },
+    jumpingLightPunch: {
+      name: 'jumpingLightPunch',
+      enter: () => {
+        lightAttackSound.currentTime = 0;
+        lightAttackSound.play();
+      },
+      update: this.jumpingLightPunchUpdate.bind(this),
+    },
   };
 
   private idleUpdate(input: IPlayerInput): void {
     if (this.hasDirectionChanged()) {
       this.changeState(this._states.turn);
+    }
+
+    if (input.lightPunch) {
+      this.changeState(this._states.standingLightPunch);
+      return;
     }
 
     if (input.jump) {
@@ -298,6 +331,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
   private walkForwardUpdate(input: IPlayerInput): void {
     if (this.hasDirectionChanged()) {
       this._direction *= -1;
+    }
+
+    if (input.lightPunch) {
+      this.changeState(this._states.standingLightPunch);
+      return;
     }
 
     if (input.jump) {
@@ -323,6 +361,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
   private walkBackwardUpdate(input: IPlayerInput): void {
     if (this.hasDirectionChanged()) {
       this._direction *= -1;
+    }
+
+    if (input.lightPunch) {
+      this.changeState(this._states.standingLightPunch);
+      return;
     }
 
     if (input.jump) {
@@ -359,9 +402,14 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
   }
 
-  private jumpUpdate(_: IPlayerInput): void {
+  private jumpUpdate(input: IPlayerInput): void {
     if (this._physics.position.y === groundLevel) {
       this.changeState(this._states.jumpRecovery);
+      return;
+    }
+
+    if (input.lightPunch) {
+      this.changeState(this._states.jumpingLightPunch);
     }
   }
 
@@ -394,6 +442,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
   }
 
   private crouchedUpdate(input: IPlayerInput): void {
+    if (input.lightPunch) {
+      this.changeState(this._states.crouchingLightPunch);
+      return;
+    }
+
     if (!input.down) {
       // Look at other inputs here and transition to walk or jump?
       this.changeState(this._states.crouchUp);
@@ -420,6 +473,27 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
 
     this.idleUpdate(input);
+  }
+
+  private standingLightPunchUpdate(input: IPlayerInput): void {
+    if (!this.isCurrentAnimationComplete()) {
+      return;
+    }
+
+    this.changeState(this._states.idle);
+  }
+
+  private crouchingLightPunchUpdate(input: IPlayerInput): void {
+    if (!this.isCurrentAnimationComplete()) {
+      return;
+    }
+
+    // todo: check for up input - prob need a method to check inputs and change state
+    this.changeState(this._states.crouched);
+  }
+
+  private jumpingLightPunchUpdate(input: IPlayerInput): void {
+    this.jumpUpdate(input);
   }
 
   private changeState(newState: ICharacterState) {

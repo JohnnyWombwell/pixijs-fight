@@ -264,6 +264,28 @@ export const kenResource: ISpriteResource = {
         frameCount: -1,
       },
     ],
+    crouchingLightPunch: [
+      {
+        source: { x: 10, y: 1425, width: 69, height: 61 },
+        offset: { x: -25, y: -58 },
+        frameCount: 3,
+      },
+      {
+        source: { x: 89, y: 1425, width: 95, height: 61 },
+        offset: { x: -25, y: -58 },
+        frameCount: 3,
+      },
+      {
+        source: { x: 10, y: 1425, width: 69, height: 61 },
+        offset: { x: -25, y: -58 },
+        frameCount: 3,
+      },
+      {
+        source: { x: 10, y: 1425, width: 69, height: 61 },
+        offset: { x: -25, y: -58 },
+        frameCount: -2,
+      },
+    ],
     crouchUp: [
       {
         source: { x: 148, y: 802, width: 61, height: 61 },
@@ -328,6 +350,50 @@ export const kenResource: ISpriteResource = {
         source: { x: 356, y: 802, width: 53, height: 61 },
         offset: { x: -26, y: -58 },
         frameCount: -2,
+      },
+    ],
+    standingLightPunch: [
+      {
+        source: { x: 3, y: 1152, width: 64, height: 91 },
+        offset: { x: -30, y: -91 },
+        frameCount: 3,
+      },
+      {
+        source: { x: 72, y: 1152, width: 92, height: 91 },
+        offset: { x: -30, y: -91 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 167, y: 1152, width: 64, height: 91 },
+        offset: { x: -30, y: -91 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 167, y: 1152, width: 64, height: 91 },
+        offset: { x: -30, y: -91 },
+        frameCount: -2,
+      },
+    ],
+    jumpingLightPunch: [
+      {
+        source: { x: 1, y: 1487, width: 52, height: 68 },
+        offset: { x: -25, y: -100 },
+        frameCount: 2,
+      },
+      {
+        source: { x: 54, y: 1487, width: 81, height: 71 },
+        offset: { x: -25, y: -100 },
+        frameCount: -1,
+      },
+      {
+        source: { x: 1, y: 1487, width: 52, height: 68 },
+        offset: { x: -25, y: -100 },
+        frameCount: 2,
+      },
+      {
+        source: { x: 1, y: 1487, width: 52, height: 68 },
+        offset: { x: -25, y: -100 },
+        frameCount: -1,
       },
     ],
   },

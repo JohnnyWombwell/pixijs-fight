@@ -34,6 +34,7 @@ const playerInput: IPlayerInput[] = [
     jump: false,
     down: false,
     attack: [false],
+    lightPunch: false,
   },
   {
     left: false,
@@ -41,6 +42,7 @@ const playerInput: IPlayerInput[] = [
     jump: false,
     down: false,
     attack: [false],
+    lightPunch: false,
   },
 ];
 

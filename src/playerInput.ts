@@ -5,4 +5,5 @@ export interface IPlayerInput {
   jump: boolean;
   down: boolean;
   attack: boolean[];
+  lightPunch: boolean;
 }
