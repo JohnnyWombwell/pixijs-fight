@@ -18,7 +18,7 @@ export interface ISprite {
 
 const groundLevel = 216;
 const gravity = 0.3;
-const jumpAcceleration = 7.5;
+const jumpAcceleration = 7;
 const walkForwardSpeed = 3;
 const walkBackwardSpeed = 2;
 const jumpForwardSpeed = 3;
@@ -317,7 +317,15 @@ export class CharacterSimulation implements ICharacter, ISprite {
         lightAttackSound.currentTime = 0;
         lightAttackSound.play();
       },
-      update: this.jumpingLightPunchUpdate.bind(this),
+      update: this.jumpingAttackUpdate.bind(this),
+    },
+    jumpingHeavyKick: {
+      name: 'jumpingHeavyKick',
+      enter: () => {
+        heavyAttackSound.currentTime = 0;
+        heavyAttackSound.play();
+      },
+      update: this.jumpingAttackUpdate.bind(this),
     },
   };
 
@@ -446,6 +454,10 @@ export class CharacterSimulation implements ICharacter, ISprite {
     if (input.lightPunch) {
       this.changeState(this._states.jumpingLightPunch);
     }
+
+    if (input.heavyKick) {
+      this.changeState(this._states.jumpingHeavyKick);
+    }
   }
 
   private jumpRecoveryUpdate(input: IPlayerInput): void {
@@ -532,8 +544,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
     this.changeState(this._states.crouched);
   }
 
-  private jumpingLightPunchUpdate(input: IPlayerInput): void {
-    this.jumpUpdate(input);
+  private jumpingAttackUpdate(input: IPlayerInput): void {
+    if (this._physics.position.y === groundLevel) {
+      this.changeState(this._states.jumpRecovery);
+      return;
+    }
   }
 
   private changeState(newState: ICharacterState) {
