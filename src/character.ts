@@ -25,6 +25,7 @@ const jumpForwardSpeed = 3;
 const jumpBackwardSpeed = 4;
 
 const lightAttackSound = new Audio('assets/audio/light-attack.wav');
+const heavyAttackSound = new Audio('assets/audio/heavy-attack.wav');
 
 interface ICharacterState {
   get name(): string;
@@ -73,7 +74,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
     this._sprite = sprite;
     this._shadowSprite = shadowSprite;
-    this._shadowSprite.y = groundLevel + 2;
+    this._shadowSprite.y = groundLevel + kenResource.image.shadow.offset.y;
     this._currentAnimation = kenResource.animation.idle;
 
     this.changeState(this._states.idle);
@@ -140,7 +141,8 @@ export class CharacterSimulation implements ICharacter, ISprite {
     const shadowScale =
       1 - (groundLevel - this._physics.position.y) / (groundLevel + 50);
     this._shadowSprite.scale.x = shadowScale;
-    this._shadowSprite.x = this._physics.position.x;
+    this._shadowSprite.x =
+      this._physics.position.x + kenResource.image.shadow.offset.x;
 
     this._sprite.texture.frame = new Rectangle(
       frame.source.x,
@@ -280,7 +282,16 @@ export class CharacterSimulation implements ICharacter, ISprite {
         lightAttackSound.currentTime = 0;
         lightAttackSound.play();
       },
-      update: this.standingLightPunchUpdate.bind(this),
+      update: this.standingAttackUpdate.bind(this),
+    },
+    standingHeavyKick: {
+      name: 'standingHeavyKick',
+      enter: () => {
+        this.resetVelocities();
+        heavyAttackSound.currentTime = 0;
+        heavyAttackSound.play();
+      },
+      update: this.standingAttackUpdate.bind(this),
     },
     crouchingLightPunch: {
       name: 'crouchingLightPunch',
@@ -311,6 +322,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
       return;
     }
 
+    if (input.heavyKick) {
+      this.changeState(this._states.standingHeavyKick);
+      return;
+    }
+
     if (input.jump) {
       this.changeState(this._states.jumpStart);
       return;
@@ -335,6 +351,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
     if (input.lightPunch) {
       this.changeState(this._states.standingLightPunch);
+      return;
+    }
+
+    if (input.heavyKick) {
+      this.changeState(this._states.standingHeavyKick);
       return;
     }
 
@@ -365,6 +386,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
     if (input.lightPunch) {
       this.changeState(this._states.standingLightPunch);
+      return;
+    }
+
+    if (input.heavyKick) {
+      this.changeState(this._states.standingHeavyKick);
       return;
     }
 
@@ -475,7 +501,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
     this.idleUpdate(input);
   }
 
-  private standingLightPunchUpdate(input: IPlayerInput): void {
+  private standingAttackUpdate(input: IPlayerInput): void {
     if (!this.isCurrentAnimationComplete()) {
       return;
     }

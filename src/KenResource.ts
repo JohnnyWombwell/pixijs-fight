@@ -17,34 +17,34 @@ export const kenResource: ISpriteResource = {
   image: {
     shadow: {
       source: { x: 0, y: 4065, width: 68, height: 11 },
-      offset: { x: -34, y: -7 },
+      offset: { x: 0, y: -7 },
     },
   },
   animation: {
     idle: [
       {
-        source: { x: 1, y: 683, width: 60, height: 94 },
-        offset: { x: -30, y: -94 },
+        source: { x: 346, y: 688, width: 60, height: 89 },
+        offset: { x: -34, y: -86 },
       },
       {
-        source: { x: 70, y: 683, width: 60, height: 94 },
-        offset: { x: -30, y: -94 },
+        source: { x: 2, y: 687, width: 59, height: 90 },
+        offset: { x: -33, y: -87 },
       },
       {
-        source: { x: 139, y: 683, width: 60, height: 94 },
-        offset: { x: -30, y: -94 },
+        source: { x: 72, y: 685, width: 58, height: 92 },
+        offset: { x: -32, y: -89 },
       },
       {
-        source: { x: 208, y: 683, width: 60, height: 94 },
-        offset: { x: -30, y: -94 },
+        source: { x: 142, y: 684, width: 55, height: 93 },
+        offset: { x: -31, y: -90 },
       },
       {
-        source: { x: 277, y: 683, width: 60, height: 94 },
-        offset: { x: -30, y: -94 },
+        source: { x: 72, y: 685, width: 58, height: 92 },
+        offset: { x: -32, y: -89 },
       },
       {
-        source: { x: 346, y: 683, width: 60, height: 94 },
-        offset: { x: -30, y: -94 },
+        source: { x: 2, y: 687, width: 59, height: 90 },
+        offset: { x: -33, y: -87 },
       },
     ],
     walkForward: [
@@ -394,6 +394,38 @@ export const kenResource: ISpriteResource = {
         source: { x: 1, y: 1487, width: 52, height: 68 },
         offset: { x: -25, y: -100 },
         frameCount: -1,
+      },
+    ],
+    standingHeavyKick: [
+      {
+        source: { x: 683, y: 1571, width: 61, height: 90 },
+        offset: { x: -37, y: -87 },
+        frameCount: 3,
+      },
+      {
+        source: { x: 683, y: 1571, width: 61, height: 90 },
+        offset: { x: -37, y: -87 },
+        frameCount: 5,
+      },
+      {
+        source: { x: 683, y: 1571, width: 61, height: 90 },
+        offset: { x: -37, y: -87 },
+        frameCount: 9,
+      },
+      {
+        source: { x: 683, y: 1571, width: 61, height: 90 },
+        offset: { x: -37, y: -87 },
+        frameCount: 11,
+      },
+      {
+        source: { x: 683, y: 1571, width: 61, height: 90 },
+        offset: { x: -37, y: -87 },
+        frameCount: 7,
+      },
+      {
+        source: { x: 683, y: 1571, width: 61, height: 90 },
+        offset: { x: -37, y: -87 },
+        frameCount: -2,
       },
     ],
   },

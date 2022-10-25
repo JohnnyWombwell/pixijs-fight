@@ -26,6 +26,9 @@ export class KeyboardInputSource {
       case 'KeyF':
         this._playerInputs[0].lightPunch = true;
         break;
+      case 'KeyN':
+        this._playerInputs[0].heavyKick = true;
+        break;
     }
 
     switch (event.code) {
@@ -43,6 +46,9 @@ export class KeyboardInputSource {
         break;
       case 'KeyK':
         this._playerInputs[1].lightPunch = true;
+        break;
+      case 'Slash':
+        this._playerInputs[1].heavyKick = true;
         break;
     }
   }
@@ -64,6 +70,9 @@ export class KeyboardInputSource {
       case 'KeyF':
         this._playerInputs[0].lightPunch = false;
         break;
+      case 'KeyN':
+        this._playerInputs[0].heavyKick = false;
+        break;
     }
 
     switch (event.code) {
@@ -81,6 +90,9 @@ export class KeyboardInputSource {
         break;
       case 'KeyK':
         this._playerInputs[1].lightPunch = false;
+        break;
+      case 'Slash':
+        this._playerInputs[1].heavyKick = false;
         break;
     }
   }

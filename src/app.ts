@@ -118,7 +118,7 @@ function setup() {
     const shadowTexture = new Texture(kenSpriteSheet);
     const shadowSprite = Sprite.from(shadowTexture);
     shadowSprite.anchor.x = 0.5;
-    shadowSprite.anchor.y = 1;
+    shadowSprite.anchor.y = 0;
     shadowSprite.texture.frame = new Rectangle(
       kenResource.image.shadow.source.x,
       kenResource.image.shadow.source.y,
