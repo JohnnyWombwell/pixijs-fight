@@ -226,7 +226,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
         this._physics.velocity.y = -jumpAcceleration;
         this._physics.velocity.x = 0;
       },
-      update: this.jumpUpdate.bind(this),
+      update: this.neutralJumpUpdate.bind(this),
     },
     jumpForward: {
       name: 'jumpForward',
@@ -321,6 +321,14 @@ export class CharacterSimulation implements ICharacter, ISprite {
     },
     jumpingHeavyKick: {
       name: 'jumpingHeavyKick',
+      enter: () => {
+        heavyAttackSound.currentTime = 0;
+        heavyAttackSound.play();
+      },
+      update: this.jumpingAttackUpdate.bind(this),
+    },
+    neutralJumpHeavyKick: {
+      name: 'neutralJumpHeavyKick',
       enter: () => {
         heavyAttackSound.currentTime = 0;
         heavyAttackSound.play();
@@ -460,6 +468,21 @@ export class CharacterSimulation implements ICharacter, ISprite {
     }
   }
 
+  private neutralJumpUpdate(input: IPlayerInput): void {
+    if (this._physics.position.y === groundLevel) {
+      this.changeState(this._states.jumpRecovery);
+      return;
+    }
+
+    if (input.lightPunch) {
+      this.changeState(this._states.jumpingLightPunch);
+    }
+
+    if (input.heavyKick) {
+      this.changeState(this._states.neutralJumpHeavyKick);
+    }
+  }
+
   private jumpRecoveryUpdate(input: IPlayerInput): void {
     if (this._animationFrame < 1) {
       return;
@@ -471,6 +494,12 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
     if (this.isCurrentAnimationComplete()) {
       this.changeState(this._states.idle);
+    }
+  }
+
+  private jumpingAttackUpdate(input: IPlayerInput): void {
+    if (this._physics.position.y === groundLevel) {
+      this.changeState(this._states.jumpRecovery);
     }
   }
 
@@ -542,13 +571,6 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
     // todo: check for up input - prob need a method to check inputs and change state
     this.changeState(this._states.crouched);
-  }
-
-  private jumpingAttackUpdate(input: IPlayerInput): void {
-    if (this._physics.position.y === groundLevel) {
-      this.changeState(this._states.jumpRecovery);
-      return;
-    }
   }
 
   private changeState(newState: ICharacterState) {

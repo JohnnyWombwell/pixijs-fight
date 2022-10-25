@@ -497,5 +497,42 @@ export const kenResource: ISpriteResource = {
         frameCount: -1,
       },
     ],
+    neutralJumpHeavyKick: [
+      {
+        source: { x: 129, y: 2092, width: 69, height: 104 },
+        offset: { x: -30, y: -105 },
+        frameCount: 2,
+      },
+      {
+        source: { x: 199, y: 2080, width: 53, height: 94 },
+        offset: { x: -21, y: -115 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 253, y: 2084, width: 94, height: 103 },
+        offset: { x: -21, y: -111 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 348, y: 2089, width: 58, height: 95 },
+        offset: { x: -21, y: -105 },
+        frameCount: 4,
+      },
+      {
+        source: { x: 407, y: 2087, width: 58, height: 89 },
+        offset: { x: -29, y: -106 },
+        frameCount: 3,
+      },
+      {
+        source: { x: 975, y: 977, width: 48, height: 86 },
+        offset: { x: -25, y: -103 },
+        frameCount: 3,
+      },
+      {
+        source: { x: 1031, y: 1008, width: 55, height: 103 },
+        offset: { x: -32, y: -107 },
+        frameCount: -1,
+      },
+    ],
   },
 };
