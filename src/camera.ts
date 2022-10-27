@@ -111,13 +111,13 @@ export class Camera {
   }
 
   private updateVertical(): void {
-    this._viewPort.y =
-      6 +
-      Math.floor(
-        Math.min(
-          this._fighters[0].physics.position.y,
-          this._fighters[1].physics.position.y
-        ) / 20
-      );
+    const minHeight = Math.min(
+      this._fighters[0].physics.position.y,
+      this._fighters[1].physics.position.y
+    );
+
+    const heightAdjust = Math.floor((216 - minHeight) / 6);
+
+    this._viewPort.y = (StageSize.height - ViewportSize.height) / 2 - heightAdjust;
   }
 }
