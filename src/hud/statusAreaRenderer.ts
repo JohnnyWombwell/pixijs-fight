@@ -8,6 +8,7 @@ export class StatusAreaRenderer {
   private readonly _healthBarSprites: Sprite[] = [];
   private _koSprite?: Sprite;
   private _timerSprites: Sprite[] = [];
+  private _fighterNameSprites: Sprite[] = [];
 
   public constructor(
     battle: IBattle,
@@ -18,9 +19,7 @@ export class StatusAreaRenderer {
     this.setupHealthBars(baseTexture, container);
     this.setupKoSprite(baseTexture, container);
     this.setupTimer(baseTexture, container);
-
-    // Fighter name tags
-    // this._container.addChild()
+    this.setupFighterLabels(baseTexture, container);
   }
 
   public render(): void {
@@ -78,6 +77,24 @@ export class StatusAreaRenderer {
     container.addChild(timerSprite);
     this._timerSprites.push(timerSprite);
   }
+
+  private setupFighterLabels(baseTexture: BaseTexture, container: Container): void {
+    for (const fighterInfo of this._battle.fighters) {
+      const sprite = new Sprite(new Texture(baseTexture));
+      container.addChild(sprite);
+      this._fighterNameSprites.push(sprite);
+
+      const tagFrame = fighterNameTagFrames.get(fighterInfo.name.toLowerCase());
+      if (tagFrame) {
+        sprite.texture.frame = pixiRectFromRect(tagFrame)
+      }
+    }
+
+    this._fighterNameSprites[0].x = 32;
+    this._fighterNameSprites[0].y = 33;
+    this._fighterNameSprites[1].x = 322;
+    this._fighterNameSprites[1].y = 33;
+  }
 }
 
 const koFrames: IFrameResource[] = [{
@@ -96,6 +113,11 @@ const numberFrames: Map<string, IRectangle> = new Map([
   ['time-2', { x: 48, y: 32, width: 14, height: 16 }],
   ['time-1', { x: 32, y: 32, width: 14, height: 16 }],
   ['time-0', { x: 16, y: 32, width: 14, height: 16 }],
+]);
+
+const fighterNameTagFrames: Map<string, IRectangle> = new Map([
+  ['ryu', { x: 16, y: 56, width: 28, height: 9 }],
+  ['ken', { x: 128, y: 56, width: 30, height: 9 }],
 ]);
 
 export function pixiRectFromRect(rect: IRectangle): Rectangle {

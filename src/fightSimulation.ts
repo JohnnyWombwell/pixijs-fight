@@ -28,11 +28,11 @@ export class FightSimulation {
   public get fighterInfo(): IFighterInfo[] {
     return [
       {
-        name: 'Player 1',
+        name: 'RYU',
         health: 1000
       },
       {
-        name: 'Player 2',
+        name: 'KEN',
         health: 1000
       }
     ];
