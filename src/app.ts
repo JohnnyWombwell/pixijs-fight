@@ -89,7 +89,6 @@ function setupStage(): Container {
 }
 
 window.addEventListener('load', async () => {
-  // Load assets
   PIXI.Loader.shared
     .add('assets/images/kens-stage.png')
     .add(kenResource.texturePath)
@@ -145,16 +144,6 @@ function setup() {
 
   window.document.body.appendChild(app.view);
 
-  const text = new PIXI.Text('pixijs Fighter', {
-    fontFamily: 'Press Start 2P',
-    fontSize: 12,
-  });
-  text.x = 20;
-  text.y = 10;
-  text.style.fill = 'green';
-
-  app.stage.addChild(text);
-
   const characterSimulations = [
     new CharacterSimulation(
       { x: 384 - 88, y: 216 },
@@ -187,34 +176,20 @@ function setup() {
     origin.lineTo(5, 0);
     origin.moveTo(0, 5);
     origin.lineTo(0, -5);
-
     stageContainer.addChild(origin);
   }
 
   const characterBodies = [new PIXI.Graphics(), new PIXI.Graphics()];
-  characterBodies[0].beginFill(0xff0000, 0.3);
-  characterBodies[1].beginFill(0x00ff00, 0.3);
 
   for (let c = 0; c < characterBodies.length; ++c) {
-    characterBodies[c].pivot = {
-      x: characterSimulations[c].body.width / 2,
-      y: 0,
-    };
 
+    characterBodies[c].lineStyle({ width: 1, color: 0x00ff00, alpha: 0.7 });
     characterBodies[c].drawRect(
       0,
       0,
       characterSimulations[c].body.width,
-      -characterSimulations[c].body.height
+      characterSimulations[c].body.height
     );
-
-    characterBodies[c].lineStyle({ width: 1, color: 0x000000, alpha: 0.5 });
-    characterBodies[c].moveTo(15, -25);
-    characterBodies[c].lineTo(
-      characterSimulations[c].body.width - 5,
-      -characterSimulations[c].body.height / 2
-    );
-    characterBodies[c].lineTo(15, -(characterSimulations[c].body.height - 25));
 
     stageContainer.addChild(characterBodies[c]);
   }
@@ -291,8 +266,18 @@ function setup() {
       // Physics rendering
       for (let c = 0; c < characterSimulations.length; ++c) {
         characterOrigins[c].position = characterSimulations[c].physics.position;
-        characterBodies[c].position = characterSimulations[c].physics.position;
-        characterBodies[c].scale.x = characterSimulations[c].direction;
+        characterBodies[c].position = { x: characterSimulations[c].body.x, y: characterSimulations[c].body.y };
+
+        const body = characterSimulations[c].body;
+        characterBodies[c].clear();
+        characterBodies[c].lineStyle({ width: 1, color: 0x00ff00, alpha: 0.7 });
+
+        characterBodies[c].drawRect(
+          0,
+          0,
+          characterSimulations[c].body.width,
+          characterSimulations[c].body.height
+        );
       }
 
       // HUD rendering

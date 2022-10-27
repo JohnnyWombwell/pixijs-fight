@@ -25,11 +25,11 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [ ] Attack boxes
 - [x] Import sprites
 - [x] and background from SF
-- [ ] HUD: Health bars etc
+- [X] HUD: Health bars etc
 - [ ] Animated stage (+ skewed foreground)
 - [ ] FPS counter
 - [x] Switch player direction (based on relative position)
-- [ ] Hurt and collision boxes per animation frame
+- [ ] Hurt and collision boxes per animation frame / state
 - [ ] Hit boxes per attack animation from
 - [ ] Audio - in progress...
 - [x] Scrolling playfield

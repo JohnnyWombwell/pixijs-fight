@@ -44,8 +44,8 @@ export type Direction = Facing.Right | Facing.Left;
 export class CharacterSimulation implements ICharacter, ISprite {
   private readonly _physics: IPhysicsComponent;
   private _size: IVector2D = {
-    x: 36,
-    y: 80,
+    x: 34,
+    y: 74,
   };
 
   private _offset: IVector2D = {
@@ -92,11 +92,14 @@ export class CharacterSimulation implements ICharacter, ISprite {
   }
 
   public get body(): IRectangle {
+    // Quick hack for jump state
+    // TODO: need enter stand, jump and crouch to set frames
+    const offset = this._physics.position.y < groundLevel ? -20 : 0;
     return {
       x: this._physics.position.x + this._offset.x,
-      y: this._physics.position.y + this._offset.y,
+      y: this._physics.position.y + this._offset.y + offset,
       width: this._size.x,
-      height: this._size.y,
+      height: this._size.y + offset,
     };
   }
 
