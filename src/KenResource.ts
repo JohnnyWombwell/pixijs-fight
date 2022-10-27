@@ -1,18 +1,6 @@
-import { IRectangle, IVector2D } from './geometry';
+import { ISpriteSheetResource } from "./animation/spriteSheetResource.js";
 
-export interface IFrameResource {
-  source: IRectangle;
-  offset: IVector2D;
-  frameCount?: number;
-}
-
-export interface ISpriteResource {
-  texturePath: string;
-  image: Record<string, IFrameResource>;
-  animation: Record<string, IFrameResource[]>;
-}
-
-export const kenResource: ISpriteResource = {
+export const kenResource: ISpriteSheetResource = {
   texturePath: 'assets/images/ken-masters.png',
   image: {
     shadow: {

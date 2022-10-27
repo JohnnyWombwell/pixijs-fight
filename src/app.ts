@@ -1,6 +1,8 @@
+import { Battle } from './battle.js';
 import { Camera } from './camera.js';
 import { CharacterSimulation } from './character.js';
-import { GameSimulation } from './gameSimulation.js';
+import { FightSimulation } from './fightSimulation.js';
+import { StatusAreaRenderer } from './hud/statusAreaRenderer.js';
 import { GameControllerInputSource } from './input/gameControllerInputSource.js';
 import { KeyboardInputSource } from './input/keyboardInputSource.js';
 import { kenResource } from './KenResource.js';
@@ -25,7 +27,7 @@ PIXI.settings.PRECISION_FRAGMENT = PRECISION.HIGH;
 const app = new PIXI.Application({
   width: 384,
   height: 224,
-  backgroundColor: 0x000000,
+  backgroundColor: 0x000000
 });
 
 const playerInput: IPlayerInput[] = [
@@ -60,9 +62,7 @@ let stageBackground: Sprite;
 let stageBoat: Sprite;
 
 function setupStage(): Container {
-  const stageSpriteSheet = BaseTexture.from('assets/images/kens-stage.png', {
-    scaleMode: SCALE_MODES.NEAREST,
-  });
+  const stageSpriteSheet = BaseTexture.from('assets/images/kens-stage.png');
 
   const container = new Container();
 
@@ -93,6 +93,7 @@ window.addEventListener('load', async () => {
   PIXI.Loader.shared
     .add('assets/images/kens-stage.png')
     .add(kenResource.texturePath)
+    .add('assets/images/misc.png')
     .load(setup);
 });
 
@@ -103,6 +104,7 @@ function setup() {
   });
 
   const _ = new KeyboardInputSource(playerInput);
+
 
   const stageContainer = setupStage();
   app.stage.addChild(stageContainer);
@@ -170,7 +172,13 @@ function setup() {
   characterSimulations[1].initialise(characterSimulations[0]);
 
   const camera = new Camera({ x: 384 - 192, y: 16 }, characterSimulations);
-  const gameSimulation = new GameSimulation(characterSimulations, camera);
+  const gameSimulation = new FightSimulation(characterSimulations, camera);
+
+  const battleManager = new Battle(gameSimulation);
+  const statusAreaRenderer = new StatusAreaRenderer(
+    battleManager,
+    BaseTexture.from('assets/images/misc.png'),
+    app.stage);
 
   const characterOrigins = [new PIXI.Graphics(), new PIXI.Graphics()];
   for (const origin of characterOrigins) {
@@ -227,14 +235,14 @@ function setup() {
 
     while (frameCount-- > 0) {
       // Input handling
-
-      // Network update
-
       const playerTwoInput = playerTwoGameController.poll();
       if (playerTwoInput) {
         playerInput[1] = playerTwoInput;
       }
 
+      // Network update
+
+      // Fight simulation update
       gameSimulation.update(playerInput);
 
       // Update camera
@@ -286,6 +294,9 @@ function setup() {
         characterBodies[c].position = characterSimulations[c].physics.position;
         characterBodies[c].scale.x = characterSimulations[c].direction;
       }
+
+      // HUD rendering
+      statusAreaRenderer.render();
     }
   });
 }

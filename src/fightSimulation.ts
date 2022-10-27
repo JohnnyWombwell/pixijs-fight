@@ -1,16 +1,47 @@
 import { Camera } from './camera.js';
 import { ICharacter } from './character.js';
+import { IFighterInfo } from './game/fighterInfo.js';
 import { IRectangle, rectangularCollision } from './geometry.js';
 import { IPlayerInput } from './playerInput.js';
 
-export class GameSimulation {
+
+const FramesPerBattleSecond = 40;
+
+export class FightSimulation {
   private readonly _characters: ICharacter[];
   private _camera: Camera;
+  private _battleTime: number;
+  private _framesElapsed: number;
 
   constructor(characters: ICharacter[], camera: Camera) {
     // TODO: initialise game state.
     this._characters = characters;
     this._camera = camera;
+    this._battleTime = 100;
+    this._framesElapsed = 0;
+  }
+
+  public get battleTime(): number {
+    return this._battleTime;
+  }
+
+  public get fighterInfo(): IFighterInfo[] {
+    return [
+      {
+        name: 'Player 1',
+        health: 1000
+      },
+      {
+        name: 'Player 2',
+        health: 1000
+      }
+    ];
+  }
+
+  public resetRound(): void {
+    // Reset fighters health and to initial state and position
+    // Reset battle time.
+    this._battleTime = 100;
   }
 
   /**
@@ -34,6 +65,12 @@ export class GameSimulation {
 
     // Reprocess push collisions after camera update
     this.processPushCollisions();
+
+    if (this._battleTime > 0 && !(this._framesElapsed % FramesPerBattleSecond)) {
+      this._battleTime -= 1;
+    }
+
+    this._framesElapsed += 1;
   }
 
   private processPushCollisions(): void {

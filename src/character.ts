@@ -1,5 +1,6 @@
+import { IFrameResource } from './animation/frameResource.js';
 import { IRectangle, IVector2D } from './geometry.js';
-import { IFrameResource, kenResource } from './KenResource.js';
+import { kenResource } from './KenResource.js';
 import { IPhysicsComponent } from './physics.js';
 import { Rectangle, Sprite } from './pixi/pixi.js';
 import { IPlayerInput } from './playerInput.js';

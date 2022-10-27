@@ -4,6 +4,13 @@ Attempting to improve my Typescript skills with a simple fighting game.
 
 ## Features
 
+### Up Next
+
+1. [ ] HUD: Health bars etc
+2. [ ] Animated stage
+3. [ ] FPS counter
+4. [ ] The task list?
+
 **Proposed features that may or may not see the light of day**
 
 - [ ] Game state:
@@ -19,7 +26,7 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [x] Import sprites
 - [x] and background from SF
 - [ ] HUD: Health bars etc
-- [ ] Animated stage
+- [ ] Animated stage (+ skewed foreground)
 - [ ] FPS counter
 - [x] Switch player direction (based on relative position)
 - [ ] Hurt and collision boxes per animation frame
@@ -45,9 +52,12 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [x] Migrate to use a rendering / game framework (this repo - using PixiJS)
 - [ ] Better dev build - e.g. copy-and-watch
 - [ ] Avoid duplication in animation assets (define frames then animations contain keys for each frame)
+- [ ] Load POJOs into pixi specific resources at run time - e.g. `Rectange` etc
 - [ ] Refactor char / app into renderers - e.g. char simulation + renderer that wraps it
       Simple items may just have a renderer (e.g. the stage, char shadows)
 - [ ] Automated tests
+- [ ] Refactor state machine to be less verbose / easier to maintain
+      States should be composable?
 - [ ] Rework render loop as per zinac
 - [ ] Start features above
 - [ ] Automated build
