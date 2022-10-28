@@ -204,7 +204,7 @@ function setup() {
 
     let frameCount = Math.round(framesDelta);
 
-    // if (elapsedFrames % 10 > 0) {
+    // if (elapsedFrames % 20 > 0) {
     //   frameCount = 0;
     // }
 

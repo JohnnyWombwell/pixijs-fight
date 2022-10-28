@@ -6,9 +6,10 @@ Attempting to improve my Typescript skills with a simple fighting game.
 
 ### Up Next
 
-1. [ ] HUD: Health bars etc
+1. [x] HUD: Health bars etc
 2. [ ] Animated stage
 3. [ ] FPS counter
+3. [ ] Check sprite alignment (esp. jumps)
 4. [ ] The task list?
 
 **Proposed features that may or may not see the light of day**

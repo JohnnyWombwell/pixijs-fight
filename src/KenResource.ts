@@ -96,7 +96,7 @@ export const kenResource: ISpriteSheetResource = {
     neutralJump: [
       {
         source: { x: 724, y: 1036, width: 56, height: 104 },
-        offset: { x: -32, y: -107 },
+        offset: { x: -31, y: -107 },
         frameCount: 9,
       },
       {
@@ -121,7 +121,7 @@ export const kenResource: ISpriteSheetResource = {
       },
       {
         source: { x: 1031, y: 1008, width: 55, height: 103 },
-        offset: { x: -32, y: -107 },
+        offset: { x: -32, y: -103 },
         frameCount: -1,
       },
     ],
@@ -365,22 +365,22 @@ export const kenResource: ISpriteSheetResource = {
     jumpingLightPunch: [
       {
         source: { x: 1, y: 1487, width: 52, height: 68 },
-        offset: { x: -25, y: -100 },
+        offset: { x: -30, y: -100 },
         frameCount: 2,
       },
       {
         source: { x: 54, y: 1487, width: 81, height: 71 },
-        offset: { x: -25, y: -100 },
+        offset: { x: -30, y: -100 },
         frameCount: -1,
       },
       {
         source: { x: 1, y: 1487, width: 52, height: 68 },
-        offset: { x: -25, y: -100 },
+        offset: { x: -30, y: -100 },
         frameCount: 2,
       },
       {
         source: { x: 1, y: 1487, width: 52, height: 68 },
-        offset: { x: -25, y: -100 },
+        offset: { x: -30, y: -100 },
         frameCount: -1,
       },
     ],
@@ -488,17 +488,17 @@ export const kenResource: ISpriteSheetResource = {
     neutralJumpHeavyKick: [
       {
         source: { x: 129, y: 2092, width: 69, height: 104 },
-        offset: { x: -30, y: -105 },
+        offset: { x: -35, y: -105 },
         frameCount: 2,
       },
       {
         source: { x: 199, y: 2080, width: 53, height: 94 },
-        offset: { x: -21, y: -115 },
+        offset: { x: -18, y: -115 },
         frameCount: 4,
       },
       {
         source: { x: 253, y: 2084, width: 94, height: 103 },
-        offset: { x: -21, y: -111 },
+        offset: { x: -20, y: -111 },
         frameCount: 4,
       },
       {
