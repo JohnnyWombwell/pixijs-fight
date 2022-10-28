@@ -43,15 +43,8 @@ export type Direction = Facing.Right | Facing.Left;
 
 export class CharacterSimulation implements ICharacter, ISprite {
   private readonly _physics: IPhysicsComponent;
-  private _size: IVector2D = {
-    x: 34,
-    y: 74,
-  };
 
-  private _offset: IVector2D = {
-    x: this._size.x / -2,
-    y: -this._size.y,
-  };
+  private _bodyRect: IRectangle = { x: 0, y: 0, width: 0, height: 0 };
 
   private _direction: Direction = 1;
   private _currentState?: ICharacterState = undefined;
@@ -77,6 +70,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
     this._shadowSprite = shadowSprite;
     this._shadowSprite.y = groundLevel + kenResource.image.shadow.offset.y;
     this._currentAnimation = kenResource.animation.idle;
+    this.setStandingCollisionBoxes();
 
     this.changeState(this._states.idle);
   }
@@ -92,14 +86,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
   }
 
   public get body(): IRectangle {
-    // Quick hack for jump state
-    // TODO: need enter stand, jump and crouch to set frames
-    const offset = this._physics.position.y < groundLevel ? -20 : 0;
     return {
-      x: this._physics.position.x + this._offset.x,
-      y: this._physics.position.y + this._offset.y + offset,
-      width: this._size.x,
-      height: this._size.y + offset,
+      x: this._physics.position.x + this._bodyRect.x,
+      y: this._physics.position.y + this._bodyRect.y,
+      width: this._bodyRect.width,
+      height: this._bodyRect.height,
     };
   }
 
@@ -216,12 +207,18 @@ export class CharacterSimulation implements ICharacter, ISprite {
     },
     jumpStart: {
       name: 'jumpStart',
-      enter: this.resetVelocities.bind(this),
+      enter: () => {
+        this.resetVelocities();
+        this.setJumpingCollisionBoxes();
+      },
       update: this.jumpStartUpdate.bind(this),
     },
     jumpRecovery: {
       name: 'jumpRecovery',
-      enter: this.resetVelocities.bind(this),
+      enter: () => {
+        this.resetVelocities();
+        this.setStandingCollisionBoxes();
+      },
       update: this.jumpRecoveryUpdate.bind(this),
     },
     neutralJump: {
@@ -255,12 +252,18 @@ export class CharacterSimulation implements ICharacter, ISprite {
     },
     crouched: {
       name: 'crouched',
-      enter: this.resetVelocities.bind(this),
+      enter: () => {
+        this.resetVelocities();
+        this.setCrouchedCollisionBoxes();
+      },
       update: this.crouchedUpdate.bind(this),
     },
     crouchUp: {
       name: 'crouchUp',
-      enter: this.resetVelocities.bind(this),
+      enter: () => {
+        this.resetVelocities();
+        this.setStandingCollisionBoxes();
+      },
       update: this.crouchUpUpdate.bind(this),
     },
     turn: {
@@ -612,5 +615,32 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
   private isCurrentAnimationComplete(): boolean {
     return this._currentAnimation[this._animationFrame]?.frameCount === -2;
+  }
+
+  private setStandingCollisionBoxes(): void {
+    this._bodyRect = {
+      x: 32 / -2,
+      y: -80,
+      width: 32,
+      height: 80
+    };
+  }
+
+  private setJumpingCollisionBoxes(): void {
+    this._bodyRect = {
+      x: 32 / -2,
+      y: -90,
+      width: 32,
+      height: 64
+    };
+  }
+
+  private setCrouchedCollisionBoxes(): void {
+    this._bodyRect = {
+      x: 32 / -2,
+      y: -50,
+      width: 32,
+      height: 50
+    };
   }
 }

@@ -237,10 +237,6 @@ function setup() {
         y: -camera.viewPort.y,
       };
 
-      console.log(
-        `camera position: [${camera.viewPort.x}, ${camera.viewPort.y}]`
-      );
-
       stageBackground.position = {
         x: Math.floor(
           stageContainer.position.x / 2.157303 - stageContainer.position.x + 0.5
