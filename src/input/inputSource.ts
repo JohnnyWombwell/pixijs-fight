@@ -1,4 +1,4 @@
-import { IPlayerInput } from '../playerInput';
+import { IPlayerInput } from '../input';
 
 export interface IInputSource {
   /**

@@ -16,7 +16,7 @@ import {
   Sprite,
   Texture,
 } from './pixi/pixi.js';
-import { IPlayerInput } from './playerInput.js';
+import { IPlayerInput, ISystemInput } from './input.js';
 
 PIXI.settings.ROUND_PIXELS = true;
 PIXI.settings.RENDER_OPTIONS.antialias = false;
@@ -46,6 +46,19 @@ const playerInput: IPlayerInput[] = [
     lightPunch: false,
   },
 ];
+
+const systemInput: ISystemInput = {
+  pause: {
+    held: false,
+    downEvent: false,
+    upEvent: false
+  },
+  advanceFrame: {
+    held: false,
+    downEvent: false,
+    upEvent: false
+  }
+};
 
 function setViewSizeFromWindow(): void {
   const widthRatio = Math.floor(window.innerWidth / 384);
@@ -102,7 +115,7 @@ function setup() {
     setViewSizeFromWindow();
   });
 
-  const _ = new KeyboardInputSource(playerInput);
+  const _ = new KeyboardInputSource(playerInput, systemInput);
 
 
   const stageContainer = setupStage();
@@ -199,7 +212,23 @@ function setup() {
 
   const playerTwoGameController = new GameControllerInputSource();
 
+  let paused = false;
+
   app.ticker.add((framesDelta) => {
+
+    if (systemInput.pause.downEvent) {
+      systemInput.pause.downEvent = false;
+      paused = !paused;
+    }
+
+    if (paused && !systemInput.advanceFrame.downEvent) {
+      return;
+    }
+
+    if (systemInput.advanceFrame.downEvent) {
+      systemInput.advanceFrame.downEvent = false;
+    }
+
     elapsedFrames++;
 
     let frameCount = Math.round(framesDelta);

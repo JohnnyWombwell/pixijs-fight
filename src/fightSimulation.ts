@@ -2,7 +2,7 @@ import { Camera } from './camera.js';
 import { ICharacter } from './character.js';
 import { IFighterInfo } from './game/fighterInfo.js';
 import { IRectangle, rectangularCollision } from './geometry.js';
-import { IPlayerInput } from './playerInput.js';
+import { IPlayerInput } from './input.js';
 
 
 const FramesPerBattleSecond = 40;

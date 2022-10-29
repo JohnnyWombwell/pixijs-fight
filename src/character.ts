@@ -3,7 +3,7 @@ import { IRectangle, IVector2D } from './geometry.js';
 import { kenResource } from './KenResource.js';
 import { IPhysicsComponent } from './physics.js';
 import { Rectangle, Sprite } from './pixi/pixi.js';
-import { IPlayerInput } from './playerInput.js';
+import { IPlayerInput } from './input.js';
 
 export interface ICharacter {
   get body(): IRectangle;

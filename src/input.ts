@@ -9,3 +9,14 @@ export interface IPlayerInput {
   heavyPunch?: boolean;
   heavyKick?: boolean;
 }
+
+export interface ISystemInput {
+  pause: IButtonState;
+  advanceFrame: IButtonState;
+}
+
+export interface IButtonState {
+  held: boolean,
+  downEvent: boolean,
+  upEvent: boolean
+}

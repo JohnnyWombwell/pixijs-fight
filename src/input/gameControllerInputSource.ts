@@ -1,4 +1,4 @@
-import { IPlayerInput } from "../playerInput.js";
+import { IPlayerInput } from "../input.js";
 import { IInputSource } from "./inputSource.js";
 
 export class GameControllerInputSource implements IInputSource {

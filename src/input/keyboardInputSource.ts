@@ -1,10 +1,12 @@
-import { IPlayerInput } from '../playerInput';
+import { IPlayerInput, ISystemInput } from '../input';
 
 export class KeyboardInputSource {
   private _playerInputs: IPlayerInput[] = [];
+  private _systemInput: ISystemInput;
 
-  constructor(playerInputs: IPlayerInput[]) {
+  constructor(playerInputs: IPlayerInput[], systemInput: ISystemInput) {
     this._playerInputs = playerInputs;
+    this._systemInput = systemInput;
     window.addEventListener('keydown', this.keydownHandler.bind(this));
     window.addEventListener('keyup', this.keyupHandler.bind(this));
   }
@@ -51,6 +53,17 @@ export class KeyboardInputSource {
         this._playerInputs[1].heavyKick = true;
         break;
     }
+
+    switch (event.code) {
+      case 'KeyP':
+        this._systemInput.pause.held = true;
+        this._systemInput.pause.downEvent = true;
+        break;
+      case 'BracketRight':
+        this._systemInput.advanceFrame.held = true;
+        this._systemInput.advanceFrame.downEvent = true;
+        break;
+    }
   }
 
   private keyupHandler(event: KeyboardEvent) {
@@ -93,6 +106,17 @@ export class KeyboardInputSource {
         break;
       case 'Slash':
         this._playerInputs[1].heavyKick = false;
+        break;
+    }
+
+    switch (event.code) {
+      case 'KeyP':
+        this._systemInput.pause.held = false;
+        this._systemInput.pause.upEvent = true;
+        break;
+      case 'BracketRight':
+        this._systemInput.advanceFrame.held = false;
+        this._systemInput.advanceFrame.upEvent = true;
         break;
     }
   }
