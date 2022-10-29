@@ -17,6 +17,7 @@ import {
   Texture,
 } from './pixi/pixi.js';
 import { IPlayerInput, ISystemInput } from './input.js';
+import { StageRenderer } from './stage/stage.js';
 
 PIXI.settings.ROUND_PIXELS = true;
 PIXI.settings.RENDER_OPTIONS.antialias = false;
@@ -71,35 +72,7 @@ function setViewSizeFromWindow(): void {
   app.renderer.resize(384 * scaleFactor, 224 * scaleFactor);
 }
 
-let stageBackground: Sprite;
-let stageBoat: Sprite;
-
-function setupStage(): Container {
-  const stageSpriteSheet = BaseTexture.from('assets/images/kens-stage.png');
-
-  const container = new Container();
-
-  stageBackground = new Sprite(new Texture(stageSpriteSheet));
-  stageBackground.texture.frame = new Rectangle(161, 208, 590, 176);
-  stageBackground.y = 0;
-  // x will be set by parallax effect
-  container.addChild(stageBackground);
-
-  stageBoat = new Sprite(new Texture(stageSpriteSheet));
-  stageBoat.texture.frame = new Rectangle(8, 16, 521, 180);
-  stageBoat.y = -1;
-  // x will be set by parallax effect
-  container.addChild(stageBoat);
-
-  const stageForeground = new Sprite(new Texture(stageSpriteSheet));
-  stageForeground.texture.frame = new Rectangle(72, 392, 768, 72);
-  stageForeground.y = 176;
-  container.addChild(stageForeground);
-
-  container.position = { x: -(container.width / 2) + 192, y: -16 };
-
-  return container;
-}
+let stageRenderer: StageRenderer;
 
 window.addEventListener('load', async () => {
   PIXI.Loader.shared
@@ -115,11 +88,9 @@ function setup() {
     setViewSizeFromWindow();
   });
 
+  window.document.body.appendChild(app.view);
+
   const _ = new KeyboardInputSource(playerInput, systemInput);
-
-
-  const stageContainer = setupStage();
-  app.stage.addChild(stageContainer);
 
   const kenSpriteSheet = BaseTexture.from(kenResource.texturePath, {
     scaleMode: SCALE_MODES.NEAREST,
@@ -139,7 +110,6 @@ function setup() {
       kenResource.image.shadow.source.height
     );
 
-    stageContainer.addChild(shadowSprite);
     playerShadowSprites.push(shadowSprite);
   }
 
@@ -151,11 +121,8 @@ function setup() {
     sprite.anchor.x = 0; // conventional origin that we manage in software (as the offsets vary from from to frame)
     sprite.anchor.y = 0;
     sprite.pivot.x = 0.5; // Make flipping left / right simple
-    stageContainer.addChild(sprite);
     playerSprites.push(sprite);
   }
-
-  window.document.body.appendChild(app.view);
 
   const characterSimulations = [
     new CharacterSimulation(
@@ -175,8 +142,18 @@ function setup() {
 
   const camera = new Camera({ x: 384 - 192, y: 16 }, characterSimulations);
   const gameSimulation = new FightSimulation(characterSimulations, camera);
-
   const battleManager = new Battle(gameSimulation);
+
+  const stageContainer = new Container();
+  stageRenderer = new StageRenderer(stageContainer, camera);
+  app.stage.addChild(stageContainer);
+
+  // Add sprites to the stage container in render order
+  stageContainer.addChild(playerShadowSprites[0]);
+  stageContainer.addChild(playerShadowSprites[1]);
+  stageContainer.addChild(playerSprites[0]);
+  stageContainer.addChild(playerSprites[1]);
+
   const statusAreaRenderer = new StatusAreaRenderer(
     battleManager,
     BaseTexture.from('assets/images/misc.png'),
@@ -208,7 +185,6 @@ function setup() {
   }
 
   let elapsedFrames = 0;
-  let cameraVelocity = 1;
 
   const playerTwoGameController = new GameControllerInputSource();
 
@@ -249,41 +225,14 @@ function setup() {
       // Fight simulation update
       gameSimulation.update(playerInput);
 
-      // Update camera
-
       // Store game state
-
-      if (stageContainer.x >= 0) {
-        cameraVelocity = -1;
-      }
-
-      if (stageContainer.x === 384 - 768) {
-        cameraVelocity = 1;
-      }
-
-      stageContainer.position = {
-        x: -camera.viewPort.x,
-        y: -camera.viewPort.y,
-      };
-
-      stageBackground.position = {
-        x: Math.floor(
-          stageContainer.position.x / 2.157303 - stageContainer.position.x + 0.5
-        ),
-        y: stageBackground.position.y,
-      };
-
-      stageBoat.position = {
-        x: Math.floor(
-          stageContainer.position.x / 1.613445 - stageContainer.position.x + 0.5
-        ),
-        y: stageBoat.position.y,
-      };
 
       //
       // Rendering
       //
       // Game rendering
+      stageRenderer.render();
+
       for (let c = 0; c < characterSimulations.length; ++c) {
         characterSimulations[c].render();
       }
