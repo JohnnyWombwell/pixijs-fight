@@ -100,17 +100,18 @@ export class FightSimulation {
     }
 
     // Adjust positions based onweighting applied above
-    const overlap = left.body.x + left.body.width - right.body.x;
+    const overlap = left.body.x + left.body.width + 1 - right.body.x;
+    const leftShift = Math.floor(leftRightRatio * overlap);
 
     left.physics.position = {
       ...left.physics.position,
-      x: Math.floor(left.physics.position.x - leftRightRatio * overlap + 0.5),
+      x: left.physics.position.x - leftShift,
     };
 
     right.physics.position = {
       ...right.physics.position,
       x: Math.floor(
-        right.physics.position.x + (1 - leftRightRatio) * overlap + 0.5
+        right.physics.position.x + overlap - leftShift
       ),
     };
   }
