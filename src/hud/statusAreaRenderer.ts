@@ -1,7 +1,7 @@
 import { IFrameResource } from '../animation/frameResource.js';
 import { IBattle } from '../game/battle.js';
 import { BaseTexture, Container, Rectangle, Sprite, Texture } from '../pixi/pixi.js';
-import { IRectangle } from '../geometry.js';
+import { IRectangle, pixiRectFromRect } from '../geometry.js';
 
 export class StatusAreaRenderer {
   private readonly _battle: IBattle;
@@ -119,7 +119,3 @@ const fighterNameTagFrames: Map<string, IRectangle> = new Map([
   ['ryu', { x: 16, y: 56, width: 28, height: 9 }],
   ['ken', { x: 128, y: 56, width: 30, height: 9 }],
 ]);
-
-export function pixiRectFromRect(rect: IRectangle): Rectangle {
-  return new Rectangle(rect.x, rect.y, rect.width, rect.height);
-}

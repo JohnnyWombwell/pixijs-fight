@@ -601,11 +601,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
   }
 
   private hasDirectionChanged(): boolean {
-    if (this.body.x + this.body.width <= this._opponent!.body.x) {
+    if (this.body.x + this.body.width - 4 <= this._opponent!.body.x) {
       return this._direction !== Facing.Right;
     } else if (
       this.body.x >=
-      this._opponent!.body.x + this._opponent!.body.width
+      this._opponent!.body.x + this._opponent!.body.width - 4
     ) {
       return this._direction !== Facing.Left;
     }

@@ -17,7 +17,7 @@ import {
   Texture,
 } from './pixi/pixi.js';
 import { IPlayerInput, ISystemInput } from './input.js';
-import { StageRenderer } from './stage/stage.js';
+import { StageRenderer } from './stage/stageRenderer.js';
 
 PIXI.settings.ROUND_PIXELS = true;
 PIXI.settings.RENDER_OPTIONS.antialias = false;
