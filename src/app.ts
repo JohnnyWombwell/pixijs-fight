@@ -28,7 +28,7 @@ PIXI.settings.PRECISION_FRAGMENT = PRECISION.HIGH;
 const app = new PIXI.Application({
   width: 384,
   height: 224,
-  backgroundColor: 0x000000
+  backgroundColor: 0x000000,
 });
 
 const playerInput: IPlayerInput[] = [
@@ -52,13 +52,13 @@ const systemInput: ISystemInput = {
   pause: {
     held: false,
     downEvent: false,
-    upEvent: false
+    upEvent: false,
   },
   advanceFrame: {
     held: false,
     downEvent: false,
-    upEvent: false
-  }
+    upEvent: false,
+  },
 };
 
 function setViewSizeFromWindow(): void {
@@ -157,7 +157,8 @@ function setup() {
   const statusAreaRenderer = new StatusAreaRenderer(
     battleManager,
     BaseTexture.from('assets/images/misc.png'),
-    app.stage);
+    app.stage
+  );
 
   const characterOrigins = [new PIXI.Graphics(), new PIXI.Graphics()];
   for (const origin of characterOrigins) {
@@ -172,7 +173,6 @@ function setup() {
   const characterBodies = [new PIXI.Graphics(), new PIXI.Graphics()];
 
   for (let c = 0; c < characterBodies.length; ++c) {
-
     characterBodies[c].lineStyle({ width: 1, color: 0x00ff00, alpha: 0.7 });
     characterBodies[c].drawRect(
       0,
@@ -191,7 +191,6 @@ function setup() {
   let paused = false;
 
   app.ticker.add((framesDelta) => {
-
     if (systemInput.pause.downEvent) {
       systemInput.pause.downEvent = false;
       paused = !paused;
@@ -240,7 +239,10 @@ function setup() {
       // Physics rendering
       for (let c = 0; c < characterSimulations.length; ++c) {
         characterOrigins[c].position = characterSimulations[c].physics.position;
-        characterBodies[c].position = { x: characterSimulations[c].body.x, y: characterSimulations[c].body.y };
+        characterBodies[c].position = {
+          x: characterSimulations[c].body.x,
+          y: characterSimulations[c].body.y,
+        };
 
         const body = characterSimulations[c].body;
         characterBodies[c].clear();

@@ -7,10 +7,11 @@ Attempting to improve my Typescript skills with a simple fighting game.
 ### Up Next
 
 1. [x] HUD: Health bars etc
-2. [ ] Animated stage
-3. [ ] FPS counter
-3. [ ] Check sprite alignment (esp. jumps) - do this after refactoring resources
-4. [ ] The task list?
+2. [x] Payse and frame advance
+3. [ ] Animated stage... in progress
+4. [ ] FPS counter
+5. [ ] Check sprite alignment (esp. jumps - follow neutral jump heavy kick) - do this after refactoring resources
+6. [ ] The task list?
 
 **Proposed features that may or may not see the light of day**
 
@@ -26,7 +27,7 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [ ] Attack boxes
 - [x] Import sprites
 - [x] and background from SF
-- [X] HUD: Health bars etc
+- [x] HUD: Health bars etc
 - [ ] Animated stage (+ skewed foreground)
 - [ ] FPS counter
 - [x] Switch player direction (based on relative position)

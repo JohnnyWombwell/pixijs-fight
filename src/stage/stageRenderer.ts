@@ -1,4 +1,4 @@
-import { ISpriteSheet } from '../animation/animation.js';
+import { IAnimation, ISpriteSheet } from '../animation/animation.js';
 import {
   IRunningAnimation,
   refreshAnimation,
@@ -7,22 +7,29 @@ import {
 import { Camera } from '../camera.js';
 import { pixiRectFromRect } from '../geometry.js';
 import { BaseTexture, Container, Sprite, Texture } from '../pixi/pixi.js';
-import { kenStageResource } from './kenStageResource.js';
+import {
+  kenStageAnimationPositions,
+  kenStageSpriteSheet,
+} from './kenStageResource.js';
 
 export class StageRenderer {
   private readonly _camera: Camera;
   private _container: Container;
   private _backgroundLayer!: Sprite;
   private _midLayer!: Sprite;
-  private _flagAnimation!: IRunningAnimation;
+  private _animations: IRunningAnimation[] = [];
 
   public constructor(container: Container, camera: Camera) {
     this._container = container;
     this._camera = camera;
 
-    const loadedSpriteSheet = BaseTexture.from(kenStageResource.texturePath);
-    this.setupStage(kenStageResource, loadedSpriteSheet);
+    const loadedSpriteSheet = BaseTexture.from(kenStageSpriteSheet.texturePath);
+    this.setupStage(kenStageSpriteSheet, loadedSpriteSheet);
     this.setupKenStage(loadedSpriteSheet);
+
+    for (const animation of this._animations) {
+      startAnimation(animation);
+    }
   }
 
   public render(): void {
@@ -45,7 +52,9 @@ export class StageRenderer {
       y: this._midLayer.position.y,
     };
 
-    refreshAnimation(this._flagAnimation);
+    for (const animation of this._animations) {
+      refreshAnimation(animation);
+    }
   }
 
   private setupStage(
@@ -77,17 +86,38 @@ export class StageRenderer {
   }
 
   private setupKenStage(loadedSpriteSheet: BaseTexture): void {
-    this._flagAnimation = {
-      definition: kenStageResource.animations.get('flag')!,
-      spriteSheetFrames: kenStageResource.frames,
+    const flagAnimation: IRunningAnimation = {
+      definition: kenStageSpriteSheet.animations.get('flag')!,
+      spriteSheetFrames: kenStageSpriteSheet.frames,
       spriteSheet: new Sprite(new Texture(loadedSpriteSheet)),
       currentSequenceIndex: 0,
       frameRefreshes: 0,
     };
 
-    this._backgroundLayer.addChild(this._flagAnimation.spriteSheet);
-    this._flagAnimation.spriteSheet.position = { x: 471, y: 16 };
+    this._backgroundLayer.addChild(flagAnimation.spriteSheet);
+    flagAnimation.spriteSheet.position =
+      kenStageAnimationPositions.get('flag')!;
 
-    startAnimation(this._flagAnimation);
+    this._animations.push(flagAnimation);
+
+    const crowdAnimations = [...kenStageSpriteSheet.animations].filter(
+      ([k, v]) => k.startsWith('crowd')
+    );
+
+    for (const [name, animation] of crowdAnimations) {
+      const runningAnimation: IRunningAnimation = {
+        definition: animation,
+        spriteSheetFrames: kenStageSpriteSheet.frames,
+        spriteSheet: new Sprite(new Texture(loadedSpriteSheet)),
+        currentSequenceIndex: 0,
+        frameRefreshes: 0,
+      };
+
+      runningAnimation.spriteSheet.position =
+        kenStageAnimationPositions.get(name)!;
+
+      this._animations.push(runningAnimation);
+      this._midLayer.addChild(runningAnimation.spriteSheet);
+    }
   }
 }
