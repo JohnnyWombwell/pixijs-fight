@@ -1,4 +1,4 @@
-import { Forever, ISpriteSheet } from '../animation/spriteSheetResource.js';
+import { Forever, ISpriteSheet } from '../animation/animation.js';
 
 export const kenStageResource: ISpriteSheet = {
   texturePath: 'assets/images/kens-stage.png',

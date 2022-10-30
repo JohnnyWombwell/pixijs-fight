@@ -14,3 +14,11 @@ export interface IAnimation {
   frameSequence: IAnimationFrame[];
   repeat: number;
 }
+
+export interface ISpriteSheet {
+  texturePath: string;
+  frames: Map<string, ISpriteFrame>;
+  animations: Map<string, IAnimation>;
+}
+
+export const Forever = -1;
