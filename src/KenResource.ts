@@ -1,4 +1,4 @@
-import { ISpriteSheetResource } from "./animation/spriteSheetResource.js";
+import { ISpriteSheetResource } from './animation/spriteSheetResource.js';
 
 export const kenResource: ISpriteSheetResource = {
   texturePath: 'assets/images/ken-masters.png',
@@ -450,28 +450,28 @@ export const kenResource: ISpriteSheetResource = {
     ],
     jumpingHeavyKick: [
       {
-        source: { x: 785, y: 2092, width: 60, height: 76 },
-        offset: { x: -25, y: -103 },
+        source: { x: 662, y: 2092, width: 61, height: 76 },
+        offset: { x: -32, y: -103 },
         frameCount: 2,
       },
       {
         source: { x: 724, y: 2092, width: 63, height: 72 },
-        offset: { x: -25, y: -103 },
+        offset: { x: -32, y: -103 },
         frameCount: 3,
       },
       {
         source: { x: 788, y: 2092, width: 110, height: 58 },
-        offset: { x: -20, y: -103 },
+        offset: { x: -36, y: -103 },
         frameCount: 7,
       },
       {
         source: { x: 724, y: 2092, width: 63, height: 72 },
-        offset: { x: -25, y: -103 },
+        offset: { x: -32, y: -103 },
         frameCount: 3,
       },
       {
         source: { x: 1, y: 1487, width: 52, height: 68 },
-        offset: { x: -25, y: -103 },
+        offset: { x: -30, y: -101 },
         frameCount: 3,
       },
       {

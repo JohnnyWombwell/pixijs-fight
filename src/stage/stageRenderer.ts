@@ -1,8 +1,5 @@
-import {
-  IAnimation,
-  ISpriteFrame,
-  ISpriteSheet,
-} from '../animation/spriteSheetResource.js';
+import { IAnimation, ISpriteFrame } from '../animation/animation.js';
+import { ISpriteSheet } from '../animation/spriteSheetResource.js';
 import { Camera } from '../camera.js';
 import { pixiRectFromRect } from '../geometry.js';
 import {
@@ -112,11 +109,15 @@ function renderCurrentAnimationFrame(animation: IRunningAnimation) {
   const spriteFrame = animation.spriteSheetFrames.get(frameName)!;
 
   animation.spriteSheet.texture.frame = new Rectangle(
-    spriteFrame.frame.x /* + offset */,
+    spriteFrame.frame.x,
     spriteFrame.frame.y,
     spriteFrame.frame.width,
     spriteFrame.frame.height
   );
+
+  // TODO: offsets on the sprite would be applied to the sprite
+  // position here - implies the object has a current position
+  // independent of the pixi sprite position
 }
 
 function startAnimation(animation: IRunningAnimation): void {
