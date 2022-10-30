@@ -1,5 +1,5 @@
-import { IRectangle, IVector2D } from "../geometry.js";
-import { IFrameResource } from "./frameResource.js";
+import { IRectangle, IVector2D } from '../geometry.js';
+import { IFrameResource } from './frameResource.js';
 
 export interface ISpriteSheetResource {
   texturePath: string;
@@ -17,8 +17,15 @@ export interface IAnimationFrame {
   period: number;
 }
 
+export interface IAnimation {
+  frameSequence: IAnimationFrame[];
+  repeat: number;
+}
+
 export interface ISpriteSheet {
   texturePath: string;
   frames: Map<string, ISpriteFrame>;
-  animations: Map<string, IAnimationFrame[]>;
+  animations: Map<string, IAnimation>;
 }
+
+export const Forever = -1;
