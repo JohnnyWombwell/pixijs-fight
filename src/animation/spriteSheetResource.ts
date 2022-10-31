@@ -1,4 +1,3 @@
-import { IAnimation, ISpriteFrame } from './animation.js';
 import { IFrameResource } from './frameResource.js';
 
 export interface ISpriteSheetResource {
