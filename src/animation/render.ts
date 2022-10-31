@@ -4,27 +4,46 @@ import { IAnimation, ISpriteFrame } from './animation.js';
 export interface IRunningAnimation {
   definition: IAnimation;
   spriteSheetFrames: Map<string, ISpriteFrame>;
-  spriteSheet: Sprite;
+  sprite: Sprite;
   currentSequenceIndex: number;
   frameRefreshes: number;
 }
 
-export function startAnimation(animation: IRunningAnimation): void {
-  animation.currentSequenceIndex = 0;
-  animation.frameRefreshes = 1;
-  renderCurrentAnimationFrame(animation);
+export function newAnimation(
+  definition: IAnimation,
+  spriteSheetFrames: Map<string, ISpriteFrame>,
+  spriteSheet: Sprite
+): IRunningAnimation {
+  return {
+    definition,
+    spriteSheetFrames,
+    sprite: spriteSheet,
+    currentSequenceIndex: -1,
+    frameRefreshes: 0,
+  };
+}
+
+export function switchAnimation(
+  animation: IRunningAnimation,
+  newAnimation: IAnimation
+) {
+  animation.definition = newAnimation;
+  animation.currentSequenceIndex = -1;
+  animation.frameRefreshes = 0;
 }
 
 export function refreshAnimation(animation: IRunningAnimation): void {
-  const currentFrame =
-    animation.definition.frameSequence[animation.currentSequenceIndex];
+  if (animation.currentSequenceIndex >= 0) {
+    const currentFrame =
+      animation.definition.frameSequence[animation.currentSequenceIndex];
 
-  const frameRefreshes = animation.frameRefreshes;
-  animation.frameRefreshes += 1;
+    const frameRefreshes = animation.frameRefreshes;
+    animation.frameRefreshes += 1;
 
-  if (frameRefreshes < currentFrame.period) {
-    // Nothing to do - remain on this frame
-    return;
+    if (frameRefreshes !== 0 && frameRefreshes < currentFrame.period) {
+      // Nothing to do - remain on this frame
+      return;
+    }
   }
 
   const nextFrameIndex = animation.currentSequenceIndex + 1;
@@ -41,7 +60,7 @@ export function refreshAnimation(animation: IRunningAnimation): void {
     animation.currentSequenceIndex = 0;
   }
 
-  animation.frameRefreshes = 0;
+  animation.frameRefreshes = 1;
   renderCurrentAnimationFrame(animation);
 }
 
@@ -49,9 +68,10 @@ function renderCurrentAnimationFrame(animation: IRunningAnimation) {
   const frameName =
     animation.definition.frameSequence[animation.currentSequenceIndex]
       .frameName;
+
   const spriteFrame = animation.spriteSheetFrames.get(frameName)!;
 
-  animation.spriteSheet.texture.frame = new Rectangle(
+  animation.sprite.texture.frame = new Rectangle(
     spriteFrame.frame.x,
     spriteFrame.frame.y,
     spriteFrame.frame.width,

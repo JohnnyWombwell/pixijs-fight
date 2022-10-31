@@ -1,8 +1,8 @@
-import { IAnimation, ISpriteSheet } from '../animation/animation.js';
+import { ISpriteSheet } from '../animation/animation.js';
 import {
   IRunningAnimation,
   refreshAnimation,
-  startAnimation,
+  switchAnimation,
 } from '../animation/render.js';
 import { Camera } from '../camera.js';
 import { pixiRectFromRect } from '../geometry.js';
@@ -36,10 +36,6 @@ export class StageRenderer {
     );
     this.setupStage(kenStageSpriteSheet, loadedSpriteSheet);
     this.setupKenStage(loadedSpriteSheet);
-
-    for (const animation of this._animations) {
-      startAnimation(animation);
-    }
   }
 
   public render(): void {
@@ -119,14 +115,13 @@ export class StageRenderer {
     const flagAnimation: IRunningAnimation = {
       definition: kenStageSpriteSheet.animations.get('flag')!,
       spriteSheetFrames: kenStageSpriteSheet.frames,
-      spriteSheet: new Sprite(new Texture(loadedSpriteSheet)),
+      sprite: new Sprite(new Texture(loadedSpriteSheet)),
       currentSequenceIndex: 0,
       frameRefreshes: 0,
     };
 
-    this._backgroundLayer.addChild(flagAnimation.spriteSheet);
-    flagAnimation.spriteSheet.position =
-      kenStageAnimationPositions.get('flag')!;
+    this._backgroundLayer.addChild(flagAnimation.sprite);
+    flagAnimation.sprite.position = kenStageAnimationPositions.get('flag')!;
 
     this._animations.push(flagAnimation);
 
@@ -138,16 +133,15 @@ export class StageRenderer {
       const runningAnimation: IRunningAnimation = {
         definition: animation,
         spriteSheetFrames: kenStageSpriteSheet.frames,
-        spriteSheet: new Sprite(new Texture(loadedSpriteSheet)),
+        sprite: new Sprite(new Texture(loadedSpriteSheet)),
         currentSequenceIndex: 0,
         frameRefreshes: 0,
       };
 
-      runningAnimation.spriteSheet.position =
-        kenStageAnimationPositions.get(name)!;
+      runningAnimation.sprite.position = kenStageAnimationPositions.get(name)!;
 
       this._animations.push(runningAnimation);
-      this._midLayer.addChild(runningAnimation.spriteSheet);
+      this._midLayer.addChild(runningAnimation.sprite);
     }
   }
 }

@@ -4,6 +4,13 @@ import { kenResource } from './KenResource.js';
 import { IPhysicsComponent } from './physics.js';
 import { Rectangle, Sprite } from './pixi/pixi.js';
 import { IPlayerInput } from './input.js';
+import { kenResource2 } from './fighters/kenResource.js';
+import { IAnimation } from './animation/animation.js';
+import {
+  IRunningAnimation,
+  newAnimation,
+  refreshAnimation,
+} from './animation/render.js';
 
 export interface ICharacter {
   get body(): IRectangle;
@@ -55,6 +62,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
   private _currentAnimation: IFrameResource[];
   private _animationFrame = 0;
   private _shadowSprite: Sprite;
+  private _runningAnimation: IRunningAnimation | undefined;
 
   public constructor(
     initialPosition: IVector2D,
@@ -68,7 +76,8 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
     this._sprite = sprite;
     this._shadowSprite = shadowSprite;
-    this._shadowSprite.y = groundLevel + kenResource.image.shadow.offset.y;
+    this._shadowSprite.y =
+      groundLevel + kenResource2.frames.get('shadow')!.offset!.y;
     this._currentAnimation = kenResource.animation.idle;
     this.setStandingCollisionBoxes();
 
@@ -122,6 +131,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
       return;
     }
 
+    if (this._runningAnimation) {
+      this.render2(this._runningAnimation);
+      return;
+    }
+
     if (!this._currentAnimation) {
       console.warn('No current animation frame!');
       return;
@@ -166,6 +180,29 @@ export class CharacterSimulation implements ICharacter, ISprite {
     if (this._animationFrame >= this._currentAnimation.length) {
       this._animationFrame = 0;
     }
+  }
+
+  private render2(runningAnimation: IRunningAnimation): void {
+    refreshAnimation(runningAnimation);
+
+    const frameName =
+      runningAnimation.definition.frameSequence[
+        runningAnimation.currentSequenceIndex
+      ].frameName;
+
+    const frame = runningAnimation.spriteSheetFrames.get(frameName)!;
+
+    // todo: set position and direction via a function
+    this._sprite.x =
+      this._physics.position.x + frame.offset!.x * this.direction;
+    this._sprite.y = this._physics.position.y + frame.offset!.y;
+    this._sprite.scale.x = this._direction;
+
+    const shadowScale =
+      1 - (groundLevel - this._physics.position.y) / (groundLevel + 50);
+    this._shadowSprite.scale.x = shadowScale;
+    this._shadowSprite.x =
+      this._physics.position.x + kenResource2.frames.get('shadow')!.offset!.x;
   }
 
   private applyPhysics(): void {
@@ -598,6 +635,17 @@ export class CharacterSimulation implements ICharacter, ISprite {
     this._currentAnimation = kenResource.animation[this._currentState.name];
     this._framesElapsed = 0;
     this._animationFrame = 0;
+
+    const animation = kenResource2.animations.get(this._currentState.name);
+    if (animation) {
+      this._runningAnimation = newAnimation(
+        animation,
+        kenResource2.frames,
+        this._sprite
+      );
+    } else {
+      this._runningAnimation = undefined;
+    }
   }
 
   private hasDirectionChanged(): boolean {
@@ -622,7 +670,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
       x: 32 / -2,
       y: -80,
       width: 32,
-      height: 80
+      height: 80,
     };
   }
 
@@ -631,7 +679,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
       x: 32 / -2,
       y: -90,
       width: 32,
-      height: 64
+      height: 64,
     };
   }
 
@@ -640,7 +688,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
       x: 32 / -2,
       y: -50,
       width: 32,
-      height: 50
+      height: 50,
     };
   }
 }
