@@ -18,6 +18,7 @@ import {
 } from './pixi/pixi.js';
 import { IPlayerInput, ISystemInput } from './input.js';
 import { StageRenderer } from './stage/stageRenderer.js';
+import { FpsRenderer } from './fpsRender.js';
 
 PIXI.settings.ROUND_PIXELS = true;
 PIXI.settings.RENDER_OPTIONS.antialias = false;
@@ -184,13 +185,15 @@ function setup() {
     stageContainer.addChild(characterBodies[c]);
   }
 
-  let elapsedFrames = 0;
+  const fpsCounter = new FpsRenderer(app.stage);
 
   const playerTwoGameController = new GameControllerInputSource();
 
   let paused = false;
 
   app.ticker.add((framesDelta) => {
+    fpsCounter.update(app.ticker.FPS);
+
     if (systemInput.pause.downEvent) {
       systemInput.pause.downEvent = false;
       paused = !paused;
@@ -204,13 +207,7 @@ function setup() {
       systemInput.advanceFrame.downEvent = false;
     }
 
-    elapsedFrames++;
-
     let frameCount = Math.round(framesDelta);
-
-    // if (elapsedFrames % 20 > 0) {
-    //   frameCount = 0;
-    // }
 
     while (frameCount-- > 0) {
       // Input handling
