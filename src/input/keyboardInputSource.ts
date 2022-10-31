@@ -36,14 +36,18 @@ export class KeyboardInputSource {
     switch (event.code) {
       case 'ArrowLeft':
         this._playerInputs[1].left = true;
+        event.preventDefault();
         break;
       case 'ArrowRight':
+        event.preventDefault();
         this._playerInputs[1].right = true;
         break;
       case 'ArrowUp':
+        event.preventDefault();
         this._playerInputs[1].jump = true;
         break;
       case 'ArrowDown':
+        event.preventDefault();
         this._playerInputs[1].down = true;
         break;
       case 'KeyK':

@@ -28,7 +28,8 @@ export const kenStageSpriteSheet: ISpriteSheet = {
     ['crowd_7-2', { frame: { x: 808, y: 72, width: 48, height: 32 } }],
     ['crowd_7-3', { frame: { x: 808, y: 120, width: 48, height: 32 } }],
 
-    ['platform', { frame: { x: 72, y: 392, width: 768, height: 72 } }],
+    ['platform', { frame: { x: 8, y: 392, width: 896, height: 72 } }],
+    // TODO: from edge of platform as separate sprite (it shouldn't be skewed)
   ]),
   animations: new Map([
     [

@@ -4,7 +4,6 @@ import { IFighterInfo } from './game/fighterInfo.js';
 import { IRectangle, rectangularCollision } from './geometry.js';
 import { IPlayerInput } from './input.js';
 
-
 const FramesPerBattleSecond = 40;
 
 export class FightSimulation {
@@ -29,12 +28,12 @@ export class FightSimulation {
     return [
       {
         name: 'RYU',
-        health: 1000
+        health: 1000,
       },
       {
         name: 'KEN',
-        health: 1000
-      }
+        health: 1000,
+      },
     ];
   }
 
@@ -66,7 +65,10 @@ export class FightSimulation {
     // Reprocess push collisions after camera update
     this.processPushCollisions();
 
-    if (this._battleTime > 0 && !(this._framesElapsed % FramesPerBattleSecond)) {
+    if (
+      this._battleTime > 0 &&
+      !(this._framesElapsed % FramesPerBattleSecond)
+    ) {
       this._battleTime -= 1;
     }
 
@@ -101,7 +103,7 @@ export class FightSimulation {
 
     // Adjust positions based onweighting applied above
     const overlap = left.body.x + left.body.width + 1 - right.body.x;
-    const leftShift = Math.floor(leftRightRatio * overlap);
+    const leftShift = Math.floor(leftRightRatio * overlap + 0.5);
 
     left.physics.position = {
       ...left.physics.position,
@@ -110,9 +112,7 @@ export class FightSimulation {
 
     right.physics.position = {
       ...right.physics.position,
-      x: Math.floor(
-        right.physics.position.x + overlap - leftShift
-      ),
+      x: right.physics.position.x + overlap - leftShift,
     };
   }
 

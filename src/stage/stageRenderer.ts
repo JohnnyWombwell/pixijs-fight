@@ -6,7 +6,13 @@ import {
 } from '../animation/render.js';
 import { Camera } from '../camera.js';
 import { pixiRectFromRect } from '../geometry.js';
-import { BaseTexture, Container, Sprite, Texture } from '../pixi/pixi.js';
+import {
+  BaseTexture,
+  Container,
+  SCALE_MODES,
+  Sprite,
+  Texture,
+} from '../pixi/pixi.js';
 import {
   kenStageAnimationPositions,
   kenStageSpriteSheet,
@@ -17,13 +23,17 @@ export class StageRenderer {
   private _container: Container;
   private _backgroundLayer!: Sprite;
   private _midLayer!: Sprite;
+  private _stagePlatform!: Sprite;
   private _animations: IRunningAnimation[] = [];
 
   public constructor(container: Container, camera: Camera) {
     this._container = container;
     this._camera = camera;
 
-    const loadedSpriteSheet = BaseTexture.from(kenStageSpriteSheet.texturePath);
+    const loadedSpriteSheet = BaseTexture.from(
+      kenStageSpriteSheet.texturePath,
+      { scaleMode: SCALE_MODES.NEAREST }
+    );
     this.setupStage(kenStageSpriteSheet, loadedSpriteSheet);
     this.setupKenStage(loadedSpriteSheet);
 
@@ -52,6 +62,24 @@ export class StageRenderer {
       y: this._midLayer.position.y,
     };
 
+    this._stagePlatform.position = {
+      x: Math.floor(
+        this._container.position.x / 1.613445 -
+          this._container.position.x -
+          137 + // magic number for parallax - geometry needs working out
+          0.5
+      ),
+      y: this._stagePlatform.position.y,
+    };
+
+    const offset =
+      this._camera.viewPort.x - 192 - this._stagePlatform.position.x - 63;
+
+    const skewAngle = Math.atan(offset / (72 - 18)); // platform height - front edge
+
+    this._stagePlatform.skew = { x: -skewAngle, y: 0 };
+    this._stagePlatform.scale = { x: 1, y: 1 / Math.cos(skewAngle) };
+
     for (const animation of this._animations) {
       refreshAnimation(animation);
     }
@@ -77,12 +105,14 @@ export class StageRenderer {
     // x will be set by parallax effect
     this._container.addChild(this._midLayer);
 
-    const stagePlatform = new Sprite(new Texture(loadedSpriteSheet));
-    stagePlatform.texture.frame = pixiRectFromRect(
+    this._stagePlatform = new Sprite(new Texture(loadedSpriteSheet));
+    this._stagePlatform.texture.frame = pixiRectFromRect(
       spriteSheet.frames.get('platform')!.frame
     );
-    stagePlatform.y = 176;
-    this._container.addChild(stagePlatform);
+
+    this._stagePlatform.position = { x: -137, y: 176 };
+
+    this._container.addChild(this._stagePlatform);
   }
 
   private setupKenStage(loadedSpriteSheet: BaseTexture): void {

@@ -118,6 +118,7 @@ export class Camera {
 
     const heightAdjust = Math.floor((216 - minHeight) / 6);
 
-    this._viewPort.y = (StageSize.height - ViewportSize.height) / 2 - heightAdjust;
+    this._viewPort.y =
+      (StageSize.height - ViewportSize.height) / 2 - heightAdjust;
   }
 }
