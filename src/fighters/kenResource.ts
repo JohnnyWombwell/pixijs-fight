@@ -314,5 +314,15 @@ export const kenResource2: ISpriteSheet = {
         repeat: 0,
       },
     ],
+    [
+      'jumpRecovery',
+      {
+        frameSequence: [
+          { frameName: 'jumpStart-1', period: 2 },
+          { frameName: 'jumpStart-1', period: 7 },
+        ],
+        repeat: 0,
+      },
+    ],
   ]),
 };

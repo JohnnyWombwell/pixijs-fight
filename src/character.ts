@@ -514,7 +514,12 @@ export class CharacterSimulation implements ICharacter, ISprite {
   }
 
   private jumpRecoveryUpdate(input: IPlayerInput): void {
-    if (this._animationFrame < 1) {
+    if (this._runningAnimation) {
+      if (this._runningAnimation.currentSequenceIndex < 1) {
+        return;
+      }
+    } else if (this._animationFrame < 1) {
+      // TODO: remove when animation migrated
       return;
     }
 
