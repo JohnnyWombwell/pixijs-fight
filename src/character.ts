@@ -1,10 +1,8 @@
-import { IFrameResource } from './animation/frameResource.js';
 import { IRectangle, IVector2D } from './geometry.js';
-import { kenResource } from './KenResource.js';
 import { IPhysicsComponent } from './physics.js';
-import { Rectangle, Sprite } from './pixi/pixi.js';
+import { Sprite } from './pixi/pixi.js';
 import { IPlayerInput } from './input.js';
-import { kenResource2 } from './fighters/kenResource.js';
+import { kenResource } from './fighters/kenResource.js';
 import {
   animationEnded,
   Direction,
@@ -53,11 +51,8 @@ export class CharacterSimulation implements ICharacter, ISprite {
   private _opponent?: ICharacter;
   private _sprite: Sprite;
 
-  private _framesElapsed = 0;
-  private _currentAnimation: IFrameResource[];
-  private _animationFrame = 0;
   private _shadowSprite: Sprite;
-  private _runningAnimation: IRunningAnimation | undefined;
+  private _runningAnimation: IRunningAnimation;
 
   public constructor(
     initialPosition: IVector2D,
@@ -72,9 +67,15 @@ export class CharacterSimulation implements ICharacter, ISprite {
     this._sprite = sprite;
     this._shadowSprite = shadowSprite;
     this._shadowSprite.y =
-      groundLevel + kenResource2.frames.get('shadow')!.offset!.y;
-    this._currentAnimation = kenResource.animation.idle;
+      groundLevel + kenResource.frames.get('shadow')!.offset!.y;
+
     this.setStandingCollisionBoxes();
+
+    this._runningAnimation = newAnimation(
+      kenResource.animations.get('idle')!,
+      kenResource.frames,
+      this._sprite
+    );
 
     this.changeState(this._states.idle);
   }
@@ -122,69 +123,13 @@ export class CharacterSimulation implements ICharacter, ISprite {
   }
 
   public render(): void {
-    if (!this._currentState) {
-      return;
-    }
-
-    if (this._runningAnimation) {
-      this.render2(this._runningAnimation);
-      return;
-    }
-
-    if (!this._currentAnimation) {
-      console.warn('No current animation frame!');
-      return;
-    }
-
-    const frame = this._currentAnimation[this._animationFrame];
-
-    this._sprite.x = this._physics.position.x + frame.offset.x * this.direction;
-    this._sprite.y = this._physics.position.y + frame.offset.y;
-    this._sprite.scale.x = this._direction;
+    refreshAnimation(this._runningAnimation);
 
     const shadowScale =
       1 - (groundLevel - this._physics.position.y) / (groundLevel + 50);
     this._shadowSprite.scale.x = shadowScale;
     this._shadowSprite.x =
-      this._physics.position.x + kenResource2.frames.get('shadow')!.offset!.x;
-
-    this._sprite.texture.frame = new Rectangle(
-      frame.source.x,
-      frame.source.y,
-      frame.source.width,
-      frame.source.height
-    );
-
-    const currentAnimationFrameCount =
-      this._currentAnimation[this._animationFrame]?.frameCount ?? 4;
-
-    if (currentAnimationFrameCount < 0) {
-      // Sit on this frame until the state changes
-      return;
-    }
-
-    this._framesElapsed += 1;
-
-    if (this._framesElapsed < currentAnimationFrameCount) {
-      return;
-    }
-
-    this._animationFrame += 1;
-    this._framesElapsed = 0;
-
-    if (this._animationFrame >= this._currentAnimation.length) {
-      this._animationFrame = 0;
-    }
-  }
-
-  private render2(runningAnimation: IRunningAnimation): void {
-    refreshAnimation(runningAnimation);
-
-    const shadowScale =
-      1 - (groundLevel - this._physics.position.y) / (groundLevel + 50);
-    this._shadowSprite.scale.x = shadowScale;
-    this._shadowSprite.x =
-      this._physics.position.x + kenResource2.frames.get('shadow')!.offset!.x;
+      this._physics.position.x + kenResource.frames.get('shadow')!.offset!.x;
   }
 
   private applyPhysics(): void {
@@ -515,12 +460,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
   }
 
   private jumpRecoveryUpdate(input: IPlayerInput): void {
-    if (this._runningAnimation) {
-      if (this._runningAnimation.currentSequenceIndex < 1) {
-        return;
-      }
-    } else if (this._animationFrame < 1) {
-      // TODO: remove when animation migrated
+    if (this._runningAnimation.currentSequenceIndex < 1) {
       return;
     }
 
@@ -624,23 +564,8 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
     this._currentState = newState;
 
-    this._currentAnimation = kenResource.animation[this._currentState.name];
-    this._framesElapsed = 0;
-    this._animationFrame = 0;
-
-    const animation = kenResource2.animations.get(this._currentState.name);
-    if (animation && this._runningAnimation) {
-      switchAnimation(this._runningAnimation, animation);
-    } else if (animation) {
-      this._runningAnimation = newAnimation(
-        animation,
-        kenResource2.frames,
-        this._sprite
-      );
-    } else {
-      console.warn(`No animation resource for ${this._currentState.name}`);
-      this._runningAnimation = undefined;
-    }
+    const animation = kenResource.animations.get(this._currentState.name)!;
+    switchAnimation(this._runningAnimation, animation);
   }
 
   private hasDirectionChanged(): boolean {
@@ -657,10 +582,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
   }
 
   private isCurrentAnimationComplete(): boolean {
-    if (this._runningAnimation) {
-      return animationEnded(this._runningAnimation);
-    }
-    return this._currentAnimation[this._animationFrame]?.frameCount === -2;
+    return animationEnded(this._runningAnimation);
   }
 
   private setStandingCollisionBoxes(): void {

@@ -1,6 +1,6 @@
 import { Forever, ISpriteSheet } from '../animation/animation.js';
 
-export const kenResource2: ISpriteSheet = {
+export const kenResource: ISpriteSheet = {
   texturePath: 'assets/images/ken-masters.png',
   frames: new Map([
     [

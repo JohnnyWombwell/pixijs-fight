@@ -5,7 +5,6 @@ import { FightSimulation } from './fightSimulation.js';
 import { StatusAreaRenderer } from './hud/statusAreaRenderer.js';
 import { GameControllerInputSource } from './input/gameControllerInputSource.js';
 import { KeyboardInputSource } from './input/keyboardInputSource.js';
-import { kenResource } from './KenResource.js';
 import * as PIXI from './pixi/pixi.js';
 import {
   BaseTexture,
@@ -19,7 +18,7 @@ import {
 import { IPlayerInput, ISystemInput } from './input.js';
 import { StageRenderer } from './stage/stageRenderer.js';
 import { FpsRenderer } from './fpsRender.js';
-import { kenResource2 } from './fighters/kenResource.js';
+import { kenResource } from './fighters/kenResource.js';
 
 PIXI.settings.ROUND_PIXELS = true;
 PIXI.settings.RENDER_OPTIONS.antialias = false;
@@ -99,7 +98,7 @@ function setup() {
   });
 
   const playerShadowSprites: Sprite[] = [];
-  const shadowResource = kenResource2.frames.get('shadow')!;
+  const shadowResource = kenResource.frames.get('shadow')!;
 
   for (let p = 0; p < 2; ++p) {
     const shadowTexture = new Texture(kenSpriteSheet);

@@ -3,7 +3,6 @@ import {
   IRunningAnimation,
   newAnimation,
   refreshAnimation,
-  switchAnimation,
 } from '../animation/render.js';
 import { Camera } from '../camera.js';
 import { pixiRectFromRect } from '../geometry.js';
