@@ -241,6 +241,216 @@ export const kenResource2: ISpriteSheet = {
         offset: { x: -25, y: -58 },
       },
     ],
+    [
+      'turn-1',
+      {
+        frame: { x: 560, y: 683, width: 54, height: 94 },
+        offset: { x: -27, y: -90 },
+      },
+    ],
+    [
+      'turn-2',
+      {
+        frame: { x: 488, y: 678, width: 58, height: 98 },
+        offset: { x: -30, y: -95 },
+      },
+    ],
+    [
+      'turn-3',
+      {
+        frame: { x: 420, y: 682, width: 54, height: 95 },
+        offset: { x: -29, y: -92 },
+      },
+    ],
+    [
+      'crouchTurn-1',
+      {
+        frame: { x: 486, y: 802, width: 53, height: 61 },
+        offset: { x: -29, y: -58 },
+      },
+    ],
+    [
+      'crouchTurn-2',
+      {
+        frame: { x: 424, y: 802, width: 52, height: 61 },
+        offset: { x: -27, y: -58 },
+      },
+    ],
+    [
+      'crouchTurn-3',
+      {
+        frame: { x: 356, y: 802, width: 53, height: 61 },
+        offset: { x: -26, y: -58 },
+      },
+    ],
+    [
+      'crouchingLightPunch-1',
+      {
+        frame: { x: 10, y: 1425, width: 69, height: 61 },
+        offset: { x: -25, y: -58 },
+      },
+    ],
+    [
+      'crouchingLightPunch-2',
+      {
+        frame: { x: 89, y: 1425, width: 95, height: 61 },
+        offset: { x: -25, y: -58 },
+      },
+    ],
+    [
+      'standingLightPunch-1',
+      {
+        frame: { x: 3, y: 1152, width: 64, height: 91 },
+        offset: { x: -32, y: -88 },
+      },
+    ],
+    [
+      'standingLightPunch-2',
+      {
+        frame: { x: 72, y: 1152, width: 92, height: 91 },
+        offset: { x: -32, y: -88 },
+      },
+    ],
+    [
+      'jumpingLightPunch-1',
+      {
+        frame: { x: 1, y: 1487, width: 52, height: 68 },
+        offset: { x: -30, y: -100 },
+      },
+    ],
+    [
+      'jumpingLightPunch-2',
+      {
+        frame: { x: 54, y: 1487, width: 81, height: 71 },
+        offset: { x: -30, y: -100 },
+      },
+    ],
+    [
+      'standingHeavyKick-1',
+      {
+        frame: { x: 683, y: 1571, width: 61, height: 90 },
+        offset: { x: -37, y: -87 },
+      },
+    ],
+    [
+      'standingHeavyKick-2',
+      {
+        frame: { x: 763, y: 1567, width: 95, height: 94 },
+        offset: { x: -44, y: -91 },
+      },
+    ],
+    [
+      'standingHeavyKick-3',
+      {
+        frame: { x: 870, y: 1567, width: 120, height: 94 },
+        offset: { x: -41, y: -91 },
+      },
+    ],
+    [
+      'standingHeavyKick-4',
+      {
+        frame: { x: 1005, y: 1584, width: 101, height: 77 },
+        offset: { x: -38, y: -74 },
+      },
+    ],
+    [
+      'standingHeavyKick-5',
+      {
+        frame: { x: 1147, y: 1580, width: 64, height: 81 },
+        offset: { x: -33, y: -78 },
+      },
+    ],
+    [
+      'crouchingHeavyKick-1',
+      {
+        frame: { x: 785, y: 2018, width: 52, height: 60 },
+        offset: { x: -13, y: -57 },
+      },
+    ],
+    [
+      'crouchingHeavyKick-2',
+      {
+        frame: { x: 848, y: 2020, width: 121, height: 58 },
+        offset: { x: -33, y: -55 },
+      },
+    ],
+    [
+      'crouchingHeavyKick-3',
+      {
+        frame: { x: 978, y: 2019, width: 62, height: 59 },
+        offset: { x: -17, y: -56 },
+      },
+    ],
+    [
+      'crouchingHeavyKick-4',
+      {
+        frame: { x: 1049, y: 2019, width: 62, height: 59 },
+        offset: { x: -37, y: -56 },
+      },
+    ],
+    [
+      'crouchingHeavyKick-5',
+      {
+        frame: { x: 1123, y: 2017, width: 53, height: 61 },
+        offset: { x: -26, y: -58 },
+      },
+    ],
+    [
+      'jumpingHeavyKick-1',
+      {
+        frame: { x: 662, y: 2092, width: 61, height: 76 },
+        offset: { x: -32, y: -103 },
+      },
+    ],
+    [
+      'jumpingHeavyKick-2',
+      {
+        frame: { x: 724, y: 2092, width: 63, height: 72 },
+        offset: { x: -32, y: -103 },
+      },
+    ],
+    [
+      'jumpingHeavyKick-3',
+      {
+        frame: { x: 788, y: 2092, width: 110, height: 58 },
+        offset: { x: -36, y: -103 },
+      },
+    ],
+    [
+      'neutralJumpHeavyKick-1',
+      {
+        frame: { x: 129, y: 2092, width: 69, height: 104 },
+        offset: { x: -35, y: -105 },
+      },
+    ],
+    [
+      'neutralJumpHeavyKick-2',
+      {
+        frame: { x: 199, y: 2080, width: 53, height: 94 },
+        offset: { x: -18, y: -115 },
+      },
+    ],
+    [
+      'neutralJumpHeavyKick-3',
+      {
+        frame: { x: 253, y: 2084, width: 94, height: 103 },
+        offset: { x: -20, y: -111 },
+      },
+    ],
+    [
+      'neutralJumpHeavyKick-4',
+      {
+        frame: { x: 348, y: 2089, width: 58, height: 95 },
+        offset: { x: -21, y: -105 },
+      },
+    ],
+    [
+      'neutralJumpHeavyKick-5',
+      {
+        frame: { x: 407, y: 2087, width: 58, height: 89 },
+        offset: { x: -29, y: -106 },
+      },
+    ],
   ]),
   animations: new Map([
     [
@@ -370,6 +580,118 @@ export const kenResource2: ISpriteSheet = {
           { frameName: 'crouched-1', period: 2 },
           { frameName: 'crouchDown-2', period: 2 },
           { frameName: 'crouchDown-1', period: 2 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'turn',
+      {
+        frameSequence: [
+          { frameName: 'turn-1', period: 2 },
+          { frameName: 'turn-2', period: 2 },
+          { frameName: 'turn-3', period: 2 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'crouchTurn',
+      {
+        frameSequence: [
+          { frameName: 'crouchTurn-1', period: 2 },
+          { frameName: 'crouchTurn-2', period: 2 },
+          { frameName: 'crouchTurn-3', period: 2 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'crouchingLightPunch',
+      {
+        frameSequence: [
+          { frameName: 'crouchingLightPunch-1', period: 3 },
+          { frameName: 'crouchingLightPunch-2', period: 4 },
+          { frameName: 'crouchingLightPunch-1', period: 4 },
+          { frameName: 'crouched-1', period: 1 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'standingLightPunch',
+      {
+        frameSequence: [
+          { frameName: 'standingLightPunch-1', period: 3 },
+          { frameName: 'standingLightPunch-2', period: 4 },
+          { frameName: 'standingLightPunch-1', period: 4 },
+          { frameName: 'idle-1', period: 1 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'jumpingLightPunch',
+      {
+        frameSequence: [
+          { frameName: 'jumpingLightPunch-1', period: 2 },
+          { frameName: 'jumpingLightPunch-2', period: 1 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'standingHeavyKick',
+      {
+        frameSequence: [
+          { frameName: 'standingHeavyKick-1', period: 3 },
+          { frameName: 'standingHeavyKick-2', period: 4 },
+          { frameName: 'standingHeavyKick-3', period: 8 },
+          { frameName: 'standingHeavyKick-4', period: 10 },
+          { frameName: 'standingHeavyKick-5', period: 7 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'crouchingHeavyKick',
+      {
+        frameSequence: [
+          { frameName: 'crouchingHeavyKick-1', period: 4 },
+          { frameName: 'crouchingHeavyKick-2', period: 6 },
+          { frameName: 'crouchingHeavyKick-3', period: 6 },
+          { frameName: 'crouchingHeavyKick-4', period: 8 },
+          { frameName: 'crouchingHeavyKick-5', period: 11 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'jumpingHeavyKick',
+      {
+        frameSequence: [
+          { frameName: 'jumpingHeavyKick-1', period: 2 },
+          { frameName: 'jumpingHeavyKick-2', period: 3 },
+          { frameName: 'jumpingHeavyKick-3', period: 7 },
+          { frameName: 'jumpingHeavyKick-2', period: 3 },
+          { frameName: 'jumpingLightPunch-1', period: 3 },
+          { frameName: 'neutralJump-5', period: 3 },
+          { frameName: 'neutralJump-6', period: 1 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'neutralJumpHeavyKick',
+      {
+        frameSequence: [
+          { frameName: 'neutralJumpHeavyKick-1', period: 2 },
+          { frameName: 'neutralJumpHeavyKick-2', period: 4 },
+          { frameName: 'neutralJumpHeavyKick-3', period: 4 },
+          { frameName: 'neutralJumpHeavyKick-4', period: 4 },
+          { frameName: 'neutralJumpHeavyKick-5', period: 3 },
+          { frameName: 'neutralJump-5', period: 3 },
+          { frameName: 'neutralJump-6', period: 1 },
         ],
         repeat: 0,
       },
