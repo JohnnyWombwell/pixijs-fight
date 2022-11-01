@@ -1,7 +1,13 @@
-import { IFrameResource } from '../animation/frameResource.js';
 import { IBattle } from '../game/battle.js';
-import { BaseTexture, Container, Rectangle, Sprite, Texture } from '../pixi/pixi.js';
+import {
+  BaseTexture,
+  Container,
+  Rectangle,
+  Sprite,
+  Texture,
+} from '../pixi/pixi.js';
 import { IRectangle, pixiRectFromRect } from '../geometry.js';
+import { ISpriteFrame } from '../animation/animation.js';
 
 export class StatusAreaRenderer {
   private readonly _battle: IBattle;
@@ -13,7 +19,8 @@ export class StatusAreaRenderer {
   public constructor(
     battle: IBattle,
     baseTexture: BaseTexture,
-    container: Container) {
+    container: Container
+  ) {
     this._battle = battle;
 
     this.setupHealthBars(baseTexture, container);
@@ -24,11 +31,18 @@ export class StatusAreaRenderer {
 
   public render(): void {
     const timeString = String(this._battle.roundTime).padStart(2, '00');
-    this._timerSprites[0].texture.frame = pixiRectFromRect(numberFrames.get(`time-${timeString[0]}`)!);
-    this._timerSprites[1].texture.frame = pixiRectFromRect(numberFrames.get(`time-${timeString[1]}`)!);
+    this._timerSprites[0].texture.frame = pixiRectFromRect(
+      numberFrames.get(`time-${timeString[0]}`)!
+    );
+    this._timerSprites[1].texture.frame = pixiRectFromRect(
+      numberFrames.get(`time-${timeString[1]}`)!
+    );
   }
 
-  private setupHealthBars(baseTexture: BaseTexture, container: Container): void {
+  private setupHealthBars(
+    baseTexture: BaseTexture,
+    container: Container
+  ): void {
     let healthBarSprite = new Sprite(new Texture(baseTexture));
     healthBarSprite.texture.frame = new Rectangle(16, 18, 145, 11);
     healthBarSprite.x = 31;
@@ -50,8 +64,13 @@ export class StatusAreaRenderer {
 
   private setupKoSprite(baseTexture: BaseTexture, container: Container): void {
     this._koSprite = new Sprite(new Texture(baseTexture));
-    const source = koFrames[0].source;
-    this._koSprite.texture.frame = new Rectangle(source.x, source.y, source.width, source.height);
+    const source = koFrames[0].frame;
+    this._koSprite.texture.frame = new Rectangle(
+      source.x,
+      source.y,
+      source.width,
+      source.height
+    );
     this._koSprite.x = 176;
     this._koSprite.y = 18;
     container.addChild(this._koSprite);
@@ -78,7 +97,10 @@ export class StatusAreaRenderer {
     this._timerSprites.push(timerSprite);
   }
 
-  private setupFighterLabels(baseTexture: BaseTexture, container: Container): void {
+  private setupFighterLabels(
+    baseTexture: BaseTexture,
+    container: Container
+  ): void {
     for (const fighterInfo of this._battle.fighters) {
       const sprite = new Sprite(new Texture(baseTexture));
       container.addChild(sprite);
@@ -86,7 +108,7 @@ export class StatusAreaRenderer {
 
       const tagFrame = fighterNameTagFrames.get(fighterInfo.name.toLowerCase());
       if (tagFrame) {
-        sprite.texture.frame = pixiRectFromRect(tagFrame)
+        sprite.texture.frame = pixiRectFromRect(tagFrame);
       }
     }
 
@@ -97,10 +119,11 @@ export class StatusAreaRenderer {
   }
 }
 
-const koFrames: IFrameResource[] = [{
-  source: { x: 161, y: 16, width: 32, height: 14 },
-  offset: { x: 0, y: 0 },
-}];
+const koFrames: ISpriteFrame[] = [
+  {
+    frame: { x: 161, y: 16, width: 32, height: 14 },
+  },
+];
 
 const numberFrames: Map<string, IRectangle> = new Map([
   ['time-9', { x: 160, y: 32, width: 14, height: 16 }],
