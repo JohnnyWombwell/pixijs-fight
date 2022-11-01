@@ -6,6 +6,7 @@ import { Rectangle, Sprite } from './pixi/pixi.js';
 import { IPlayerInput } from './input.js';
 import { kenResource2 } from './fighters/kenResource.js';
 import {
+  animationEnded,
   Direction,
   IRunningAnimation,
   newAnimation,
@@ -144,7 +145,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
       1 - (groundLevel - this._physics.position.y) / (groundLevel + 50);
     this._shadowSprite.scale.x = shadowScale;
     this._shadowSprite.x =
-      this._physics.position.x + kenResource.image.shadow.offset.x;
+      this._physics.position.x + kenResource2.frames.get('shadow')!.offset!.x;
 
     this._sprite.texture.frame = new Rectangle(
       frame.source.x,
@@ -629,6 +630,7 @@ export class CharacterSimulation implements ICharacter, ISprite {
         this._sprite
       );
     } else {
+      console.warn(`No animation resource for ${this._currentState.name}`);
       this._runningAnimation = undefined;
     }
   }
@@ -647,6 +649,9 @@ export class CharacterSimulation implements ICharacter, ISprite {
   }
 
   private isCurrentAnimationComplete(): boolean {
+    if (this._runningAnimation) {
+      return animationEnded(this._runningAnimation);
+    }
     return this._currentAnimation[this._animationFrame]?.frameCount === -2;
   }
 

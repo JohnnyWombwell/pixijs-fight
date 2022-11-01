@@ -13,6 +13,7 @@ export interface IRunningAnimation {
   sprite: Sprite;
   currentSequenceIndex: number;
   frameRefreshes: number;
+  ended: boolean;
   position: IVector2D;
   directionX: Direction;
 }
@@ -28,6 +29,7 @@ export function newAnimation(
     sprite: spriteSheet,
     currentSequenceIndex: -1,
     frameRefreshes: 0,
+    ended: false,
     position: { x: 0, y: 0 },
     directionX: Direction.Right,
   };
@@ -40,9 +42,18 @@ export function switchAnimation(
   animation.definition = newAnimation;
   animation.currentSequenceIndex = -1;
   animation.frameRefreshes = 0;
+  animation.ended = false;
 }
 
 export function refreshAnimation(animation: IRunningAnimation): void {
+  if (updateFrame(animation)) {
+    renderCurrentAnimationFrame(animation);
+  }
+
+  updateSpritePosition(animation);
+}
+
+function updateFrame(animation: IRunningAnimation): boolean {
   if (animation.currentSequenceIndex >= 0) {
     const currentFrame =
       animation.definition.frameSequence[animation.currentSequenceIndex];
@@ -52,7 +63,7 @@ export function refreshAnimation(animation: IRunningAnimation): void {
 
     if (frameRefreshes !== 0 && frameRefreshes < currentFrame.period) {
       // Nothing to do - remain on this frame
-      return;
+      return false;
     }
   }
 
@@ -63,7 +74,8 @@ export function refreshAnimation(animation: IRunningAnimation): void {
   } else {
     if (animation.definition.repeat === 0) {
       // Remain on the last frame
-      return;
+      animation.ended = true;
+      return false;
     }
 
     // ...else repeat the animation
@@ -71,10 +83,15 @@ export function refreshAnimation(animation: IRunningAnimation): void {
   }
 
   animation.frameRefreshes = 1;
-  renderCurrentAnimationFrame(animation);
+  return true;
+}
+
+export function animationEnded(animation: IRunningAnimation) {
+  return animation.ended;
 }
 
 function renderCurrentAnimationFrame(animation: IRunningAnimation) {
+  /// TODO: cache current frame on this object - update in this method
   const frameName =
     animation.definition.frameSequence[animation.currentSequenceIndex]
       .frameName;
@@ -87,6 +104,14 @@ function renderCurrentAnimationFrame(animation: IRunningAnimation) {
     spriteFrame.frame.width,
     spriteFrame.frame.height
   );
+}
+
+function updateSpritePosition(animation: IRunningAnimation) {
+  const frameName =
+    animation.definition.frameSequence[animation.currentSequenceIndex]
+      .frameName;
+
+  const spriteFrame = animation.spriteSheetFrames.get(frameName)!;
 
   animation.sprite.x =
     animation.position.x +

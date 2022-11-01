@@ -2,12 +2,7 @@ import { ISpriteSheetResource } from './animation/spriteSheetResource.js';
 
 export const kenResource: ISpriteSheetResource = {
   texturePath: 'assets/images/ken-masters.png',
-  image: {
-    shadow: {
-      source: { x: 0, y: 4065, width: 68, height: 11 },
-      offset: { x: 0, y: -7 },
-    },
-  },
+  image: {},
   animation: {
     idle: [
       {
