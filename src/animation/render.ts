@@ -54,14 +54,26 @@ export function refreshAnimation(animation: IRunningAnimation): void {
 }
 
 function updateFrame(animation: IRunningAnimation): boolean {
+  if (animation.ended) {
+    return false;
+  }
+
   if (animation.currentSequenceIndex >= 0) {
     const currentFrame =
       animation.definition.frameSequence[animation.currentSequenceIndex];
 
-    const frameRefreshes = animation.frameRefreshes;
     animation.frameRefreshes += 1;
 
-    if (frameRefreshes !== 0 && frameRefreshes < currentFrame.period) {
+    if (animation.frameRefreshes <= currentFrame.period) {
+      if (
+        animation.definition.repeat === 0 &&
+        animation.frameRefreshes === currentFrame.period &&
+        animation.currentSequenceIndex + 1 ===
+          animation.definition.frameSequence.length
+      ) {
+        animation.ended = true;
+      }
+
       // Nothing to do - remain on this frame
       return false;
     }
@@ -72,13 +84,6 @@ function updateFrame(animation: IRunningAnimation): boolean {
   if (nextFrameIndex < animation.definition.frameSequence.length) {
     animation.currentSequenceIndex = nextFrameIndex;
   } else {
-    if (animation.definition.repeat === 0) {
-      // Remain on the last frame
-      animation.ended = true;
-      return false;
-    }
-
-    // ...else repeat the animation
     animation.currentSequenceIndex = 0;
   }
 

@@ -122,6 +122,104 @@ export const kenResource2: ISpriteSheet = {
         offset: { x: -36, y: -87 },
       },
     ],
+    [
+      'neutralJump-1',
+      {
+        frame: { x: 724, y: 1036, width: 56, height: 104 },
+        offset: { x: -31, y: -107 },
+      },
+    ],
+    [
+      'neutralJump-2',
+      {
+        frame: { x: 792, y: 995, width: 50, height: 89 },
+        offset: { x: -25, y: -103 },
+      },
+    ],
+    [
+      'neutralJump-3',
+      {
+        frame: { x: 853, y: 967, width: 54, height: 77 },
+        offset: { x: -25, y: -103 },
+      },
+    ],
+    [
+      'neutralJump-4',
+      {
+        frame: { x: 911, y: 966, width: 48, height: 70 },
+        offset: { x: -28, y: -101 },
+      },
+    ],
+    [
+      'neutralJump-5',
+      {
+        frame: { x: 975, y: 977, width: 48, height: 86 },
+        offset: { x: -25, y: -103 },
+      },
+    ],
+    [
+      'neutralJump-6',
+      {
+        frame: { x: 1031, y: 1008, width: 55, height: 103 },
+        offset: { x: -32, y: -103 },
+      },
+    ],
+    [
+      'diagonalJump-1',
+      {
+        frame: { x: 1237, y: 1037, width: 55, height: 103 },
+        offset: { x: -25, y: -106 },
+      },
+    ],
+    [
+      'diagonalJump-2',
+      {
+        frame: { x: 1301, y: 990, width: 61, height: 78 },
+        offset: { x: -22, y: -90 },
+      },
+    ],
+    [
+      'diagonalJump-3',
+      {
+        frame: { x: 1363, y: 994, width: 104, height: 42 },
+        offset: { x: -61, y: -76 },
+      },
+    ],
+    [
+      'diagonalJump-4',
+      {
+        frame: { x: 1468, y: 957, width: 53, height: 82 },
+        offset: { x: -28, y: -101 },
+      },
+    ],
+    [
+      'diagonalJump-5',
+      {
+        frame: { x: 1541, y: 988, width: 122, height: 44 },
+        offset: { x: -71, y: -81 },
+      },
+    ],
+    [
+      'diagonalJump-6',
+      {
+        frame: { x: 1664, y: 976, width: 71, height: 87 },
+        offset: { x: -53, y: -98 },
+      },
+    ],
+    [
+      'diagonalJump-7',
+      {
+        frame: { x: 1748, y: 977, width: 55, height: 103 },
+        offset: { x: -32, y: -107 },
+      },
+    ],
+    [
+      'jumpStart-1',
+      {
+        frame: { x: 660, y: 1060, width: 55, height: 85 },
+        offset: { x: -29, y: -83 },
+      },
+    ],
   ]),
   animations: new Map([
     [
@@ -164,6 +262,56 @@ export const kenResource2: ISpriteSheet = {
           { frameName: 'walkBackward-6', period: 6 },
         ],
         repeat: Forever,
+      },
+    ],
+    [
+      'neutralJump',
+      {
+        frameSequence: [
+          { frameName: 'neutralJump-1', period: 9 },
+          { frameName: 'neutralJump-2', period: 8 },
+          { frameName: 'neutralJump-3', period: 8 },
+          { frameName: 'neutralJump-4', period: 8 },
+          { frameName: 'neutralJump-5', period: 8 },
+          { frameName: 'neutralJump-6', period: 1 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'jumpForward',
+      {
+        frameSequence: [
+          { frameName: 'diagonalJump-1', period: 13 },
+          { frameName: 'diagonalJump-2', period: 5 },
+          { frameName: 'diagonalJump-3', period: 3 },
+          { frameName: 'diagonalJump-4', period: 3 },
+          { frameName: 'diagonalJump-5', period: 3 },
+          { frameName: 'diagonalJump-6', period: 5 },
+          { frameName: 'diagonalJump-7', period: 1 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'jumpBackward',
+      {
+        frameSequence: [
+          { frameName: 'diagonalJump-6', period: 15 },
+          { frameName: 'diagonalJump-5', period: 3 },
+          { frameName: 'diagonalJump-4', period: 3 },
+          { frameName: 'diagonalJump-3', period: 3 },
+          { frameName: 'diagonalJump-2', period: 3 },
+          { frameName: 'diagonalJump-1', period: 1 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'jumpStart',
+      {
+        frameSequence: [{ frameName: 'jumpStart-1', period: 3 }],
+        repeat: 0,
       },
     ],
   ]),
