@@ -11,6 +11,7 @@ import {
   IRunningAnimation,
   newAnimation,
   refreshAnimation,
+  switchAnimation,
 } from './animation/render.js';
 
 export interface ICharacter {
@@ -628,7 +629,9 @@ export class CharacterSimulation implements ICharacter, ISprite {
     this._animationFrame = 0;
 
     const animation = kenResource2.animations.get(this._currentState.name);
-    if (animation) {
+    if (animation && this._runningAnimation) {
+      switchAnimation(this._runningAnimation, animation);
+    } else if (animation) {
       this._runningAnimation = newAnimation(
         animation,
         kenResource2.frames,

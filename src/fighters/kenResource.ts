@@ -220,6 +220,27 @@ export const kenResource2: ISpriteSheet = {
         offset: { x: -29, y: -83 },
       },
     ],
+    [
+      'crouchDown-1',
+      {
+        frame: { x: 8, y: 779, width: 53, height: 83 },
+        offset: { x: -27, y: -81 },
+      },
+    ],
+    [
+      'crouchDown-2',
+      {
+        frame: { x: 79, y: 794, width: 57, height: 69 },
+        offset: { x: -25, y: -66 },
+      },
+    ],
+    [
+      'crouched-1',
+      {
+        frame: { x: 148, y: 802, width: 61, height: 61 },
+        offset: { x: -25, y: -58 },
+      },
+    ],
   ]),
   animations: new Map([
     [
@@ -320,6 +341,35 @@ export const kenResource2: ISpriteSheet = {
         frameSequence: [
           { frameName: 'jumpStart-1', period: 2 },
           { frameName: 'jumpStart-1', period: 7 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'crouchDown',
+      {
+        frameSequence: [
+          { frameName: 'crouchDown-1', period: 2 },
+          { frameName: 'crouchDown-2', period: 2 },
+          { frameName: 'crouched-1', period: 2 },
+        ],
+        repeat: 0,
+      },
+    ],
+    [
+      'crouched',
+      {
+        frameSequence: [{ frameName: 'crouched-1', period: 1 }],
+        repeat: 0,
+      },
+    ],
+    [
+      'crouchUp',
+      {
+        frameSequence: [
+          { frameName: 'crouched-1', period: 2 },
+          { frameName: 'crouchDown-2', period: 2 },
+          { frameName: 'crouchDown-1', period: 2 },
         ],
         repeat: 0,
       },

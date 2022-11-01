@@ -1,6 +1,6 @@
 import { IVector2D } from '../geometry.js';
 import { Rectangle, Sprite } from '../pixi/pixi.js';
-import { IAnimation, ISpriteFrame } from './animation.js';
+import { Forever, IAnimation, ISpriteFrame } from './animation.js';
 
 export enum Direction {
   Right = 1,
@@ -83,11 +83,21 @@ function updateFrame(animation: IRunningAnimation): boolean {
 
   if (nextFrameIndex < animation.definition.frameSequence.length) {
     animation.currentSequenceIndex = nextFrameIndex;
-  } else {
+  } else if (animation.definition.repeat === Forever) {
     animation.currentSequenceIndex = 0;
   }
 
   animation.frameRefreshes = 1;
+  if (
+    animation.definition.repeat === 0 &&
+    animation.definition.frameSequence[animation.currentSequenceIndex]
+      .period === 1 &&
+    animation.currentSequenceIndex + 1 ===
+      animation.definition.frameSequence.length
+  ) {
+    animation.ended = true;
+  }
+
   return true;
 }
 
