@@ -1,6 +1,7 @@
 import { ISpriteSheet } from '../animation/animation.js';
 import {
   IRunningAnimation,
+  newAnimation,
   refreshAnimation,
   switchAnimation,
 } from '../animation/render.js';
@@ -112,16 +113,14 @@ export class StageRenderer {
   }
 
   private setupKenStage(loadedSpriteSheet: BaseTexture): void {
-    const flagAnimation: IRunningAnimation = {
-      definition: kenStageSpriteSheet.animations.get('flag')!,
-      spriteSheetFrames: kenStageSpriteSheet.frames,
-      sprite: new Sprite(new Texture(loadedSpriteSheet)),
-      currentSequenceIndex: 0,
-      frameRefreshes: 0,
-    };
+    const flagAnimation = newAnimation(
+      kenStageSpriteSheet.animations.get('flag')!,
+      kenStageSpriteSheet.frames,
+      new Sprite(new Texture(loadedSpriteSheet))
+    );
 
     this._backgroundLayer.addChild(flagAnimation.sprite);
-    flagAnimation.sprite.position = kenStageAnimationPositions.get('flag')!;
+    flagAnimation.position = kenStageAnimationPositions.get('flag')!;
 
     this._animations.push(flagAnimation);
 
@@ -130,15 +129,13 @@ export class StageRenderer {
     );
 
     for (const [name, animation] of crowdAnimations) {
-      const runningAnimation: IRunningAnimation = {
-        definition: animation,
-        spriteSheetFrames: kenStageSpriteSheet.frames,
-        sprite: new Sprite(new Texture(loadedSpriteSheet)),
-        currentSequenceIndex: 0,
-        frameRefreshes: 0,
-      };
+      const runningAnimation = newAnimation(
+        animation,
+        kenStageSpriteSheet.frames,
+        new Sprite(new Texture(loadedSpriteSheet))
+      );
 
-      runningAnimation.sprite.position = kenStageAnimationPositions.get(name)!;
+      runningAnimation.position = kenStageAnimationPositions.get(name)!;
 
       this._animations.push(runningAnimation);
       this._midLayer.addChild(runningAnimation.sprite);

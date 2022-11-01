@@ -5,8 +5,8 @@ import { IPhysicsComponent } from './physics.js';
 import { Rectangle, Sprite } from './pixi/pixi.js';
 import { IPlayerInput } from './input.js';
 import { kenResource2 } from './fighters/kenResource.js';
-import { IAnimation } from './animation/animation.js';
 import {
+  Direction,
   IRunningAnimation,
   newAnimation,
   refreshAnimation,
@@ -41,19 +41,12 @@ interface ICharacterState {
   update: (input: IPlayerInput) => void;
 }
 
-export enum Facing {
-  Right = 1,
-  Left = -1,
-}
-
-export type Direction = Facing.Right | Facing.Left;
-
 export class CharacterSimulation implements ICharacter, ISprite {
   private readonly _physics: IPhysicsComponent;
 
   private _bodyRect: IRectangle = { x: 0, y: 0, width: 0, height: 0 };
 
-  private _direction: Direction = 1;
+  private _direction: Direction = Direction.Right;
   private _currentState?: ICharacterState = undefined;
   private _opponent?: ICharacter;
   private _sprite: Sprite;
@@ -185,19 +178,6 @@ export class CharacterSimulation implements ICharacter, ISprite {
   private render2(runningAnimation: IRunningAnimation): void {
     refreshAnimation(runningAnimation);
 
-    const frameName =
-      runningAnimation.definition.frameSequence[
-        runningAnimation.currentSequenceIndex
-      ].frameName;
-
-    const frame = runningAnimation.spriteSheetFrames.get(frameName)!;
-
-    // todo: set position and direction via a function
-    this._sprite.x =
-      this._physics.position.x + frame.offset!.x * this.direction;
-    this._sprite.y = this._physics.position.y + frame.offset!.y;
-    this._sprite.scale.x = this._direction;
-
     const shadowScale =
       1 - (groundLevel - this._physics.position.y) / (groundLevel + 50);
     this._shadowSprite.scale.x = shadowScale;
@@ -214,6 +194,11 @@ export class CharacterSimulation implements ICharacter, ISprite {
       this._physics.velocity.y = 0;
     } else {
       this._physics.velocity.y += gravity;
+    }
+
+    if (this._runningAnimation) {
+      this._runningAnimation.position = this._physics.position;
+      this._runningAnimation.directionX = this._direction;
     }
   }
 
@@ -650,12 +635,12 @@ export class CharacterSimulation implements ICharacter, ISprite {
 
   private hasDirectionChanged(): boolean {
     if (this.body.x + this.body.width - 4 <= this._opponent!.body.x) {
-      return this._direction !== Facing.Right;
+      return this._direction !== Direction.Right;
     } else if (
       this.body.x >=
       this._opponent!.body.x + this._opponent!.body.width - 4
     ) {
-      return this._direction !== Facing.Left;
+      return this._direction !== Direction.Left;
     }
 
     return false;

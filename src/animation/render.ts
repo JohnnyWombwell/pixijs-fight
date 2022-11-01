@@ -1,5 +1,11 @@
+import { IVector2D } from '../geometry.js';
 import { Rectangle, Sprite } from '../pixi/pixi.js';
 import { IAnimation, ISpriteFrame } from './animation.js';
+
+export enum Direction {
+  Right = 1,
+  Left = -1,
+}
 
 export interface IRunningAnimation {
   definition: IAnimation;
@@ -7,6 +13,8 @@ export interface IRunningAnimation {
   sprite: Sprite;
   currentSequenceIndex: number;
   frameRefreshes: number;
+  position: IVector2D;
+  directionX: Direction;
 }
 
 export function newAnimation(
@@ -20,6 +28,8 @@ export function newAnimation(
     sprite: spriteSheet,
     currentSequenceIndex: -1,
     frameRefreshes: 0,
+    position: { x: 0, y: 0 },
+    directionX: Direction.Right,
   };
 }
 
@@ -78,7 +88,12 @@ function renderCurrentAnimationFrame(animation: IRunningAnimation) {
     spriteFrame.frame.height
   );
 
-  // TODO: offsets on the sprite would be applied to the sprite
-  // position here - implies the object has a current position
-  // independent of the pixi sprite position
+  animation.sprite.x =
+    animation.position.x +
+    (spriteFrame.offset ? spriteFrame.offset.x * animation.directionX : 0);
+
+  animation.sprite.y =
+    animation.position.y + (spriteFrame.offset ? spriteFrame.offset.y : 0);
+
+  animation.sprite.scale.x = animation.directionX;
 }
