@@ -10,8 +10,7 @@ Attempting to improve my Typescript skills with a simple fighting game.
 2. [x] Payse and frame advance
 3. [x] Animated stage (+ skewed foreground) ...in progress
 4. [x] FPS counter
-5. [ ] Check sprite alignment (esp. jumps - follow neutral jump heavy kick) - do this after refactoring resources
-6. [ ] The task list?
+5. [ ] The task list?
 
 **Proposed features that may or may not see the light of day**
 
@@ -41,6 +40,8 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [ ] Proximity blocking
 - [x] Peripherals other than keyboard
 - [ ] Special moves (with input buffer)
+- [ ] Jump sprite vertical offset should vary with character jump height
+- [ ] Check sprite alignment (esp. jumps)
 - [ ] Proximity normals
 - [ ] Event emitter for accurate processing of events and state changes
       (e.g. playing sound effects)
@@ -53,12 +54,12 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [x] github repo
 - [x] Migrate to use a rendering / game framework (this repo - using PixiJS)
 - [x] Better dev build - e.g. copy-and-watch
-- [ ] Avoid duplication in animation assets (define frames then animations contain keys for each frame)
+- [x] Avoid duplication in animation assets (define frames then animations contain keys for each frame)
 - [ ] Convert `RunningAnimation` to an object.
 - [ ] Load POJOs into pixi specific resources at run time - e.g. `Rectange` etc
 - [ ] Refactor char / app into renderers - e.g. char simulation + renderer that wraps it
       Simple items may just have a renderer (e.g. the stage, char shadows)
-- [ ] Automated tests (esp for collisions)
+- [ ] Automated tests (esp for collisions and animation logic)
 - [ ] Refactor state machine to be less verbose / easier to maintain
       States should be composable?
 - [ ] Rework render loop as per zinac
