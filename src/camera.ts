@@ -15,8 +15,8 @@ const StageSize: ISize = {
 const ScrollRegionWidth = 100;
 
 export class Camera {
-  private _fighters: ICharacter[];
-  private _viewPort: IRectangle;
+  private readonly _fighters: ICharacter[];
+  private readonly _viewPort: IRectangle;
 
   public constructor(initialPosition: IVector2D, fighters: ICharacter[]) {
     this._viewPort = {
@@ -35,17 +35,7 @@ export class Camera {
   public update(): void {
     this.updateHorizontal();
     this.updateVertical();
-
-    this._viewPort.x = Math.min(
-      this._viewPort.x,
-      StageSize.width - this._viewPort.width - 1
-    );
-    this._viewPort.x = Math.max(this._viewPort.x, 0);
-    this._viewPort.y = Math.min(
-      this._viewPort.y,
-      StageSize.height - this._viewPort.height - 1
-    );
-    this._viewPort.y = Math.max(this._viewPort.y, 0);
+    this.ensureInStageBounds();
   }
 
   private updateHorizontal(): void {
@@ -85,29 +75,13 @@ export class Camera {
     }
 
     if (left < centreViewport.x) {
-      this._viewPort.x -= centreViewport.x - left;
+      this._viewPort.x -= 1;
       return;
     }
 
     if (right > centreViewport.x + centreViewport.width) {
-      this._viewPort.x += right - (centreViewport.x + centreViewport.width);
+      this._viewPort.x += 1;
     }
-  }
-
-  private fightersAreInCentre(
-    centreViewport: { x: number; width: number },
-    leftEdge: number,
-    rightEdge: number
-  ): boolean {
-    if (leftEdge < centreViewport.x) {
-      return false;
-    }
-
-    if (rightEdge > centreViewport.x + centreViewport.width) {
-      return false;
-    }
-
-    return true;
   }
 
   private updateVertical(): void {
@@ -120,5 +94,34 @@ export class Camera {
 
     this._viewPort.y =
       (StageSize.height - ViewportSize.height) / 2 - heightAdjust;
+  }
+
+  private ensureInStageBounds(): void {
+    this._viewPort.x = Math.min(
+      this._viewPort.x,
+      StageSize.width - this._viewPort.width
+    );
+    this._viewPort.x = Math.max(this._viewPort.x, 0);
+    this._viewPort.y = Math.min(
+      this._viewPort.y,
+      StageSize.height - this._viewPort.height
+    );
+    this._viewPort.y = Math.max(this._viewPort.y, 0);
+  }
+
+  private fightersAreInCentre(
+    centreViewport: { x: number; width: number },
+    leftEdge: number,
+    rightEdge: number
+  ): boolean {
+    if (leftEdge < centreViewport.x - 4) {
+      return false;
+    }
+
+    if (rightEdge > centreViewport.x + centreViewport.width + 4) {
+      return false;
+    }
+
+    return true;
   }
 }

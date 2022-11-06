@@ -7,7 +7,8 @@
     "clean": "rimraf ./dist",
     "build": "tsc && copyfiles index.html ./assets/**/* dist && copyfiles -u 1 src/pixi/**/* dist",
     "clean:build": "npm run clean && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "web-test-runner",
+    "test:watch": "web-test-runner --watch"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,10 @@
   },
   "homepage": "https://github.com/JohnnyWombwell/pixijs-fight#readme",
   "devDependencies": {
+    "@esm-bundle/chai": "^4.3.4-fix.0",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@web/dev-server-esbuild": "^0.3.3",
+    "@web/test-runner": "^0.15.0",
     "copyfiles": "^2.4.1",
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",
