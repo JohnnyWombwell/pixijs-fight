@@ -44,7 +44,10 @@ describe('Camera', () => {
         charactersAtLeftEdge
       );
 
-      sut.update();
+      // Allow the camera to scroll more than the width of the stage
+      for (let n = 0; n < StageSize.width; n++) {
+        sut.update();
+      }
 
       expect(sut.viewPort.x).to.equal(0);
     });
@@ -68,7 +71,10 @@ describe('Camera', () => {
         charactersAtLeftEdge
       );
 
-      sut.update();
+      // Allow the camera to scroll more than the width of the stage
+      for (let n = 0; n < StageSize.width; n++) {
+        sut.update();
+      }
 
       expect(sut.viewPort.x).to.equal(StageSize.width - ViewSize.width);
     });
