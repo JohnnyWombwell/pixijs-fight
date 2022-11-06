@@ -15,8 +15,8 @@ const StageSize: ISize = {
 const ScrollRegionWidth = 100;
 
 export class Camera {
-  private _fighters: ICharacter[];
-  private _viewPort: IRectangle;
+  private readonly _fighters: ICharacter[];
+  private readonly _viewPort: IRectangle;
 
   public constructor(initialPosition: IVector2D, fighters: ICharacter[]) {
     this._viewPort = {
@@ -35,17 +35,7 @@ export class Camera {
   public update(): void {
     this.updateHorizontal();
     this.updateVertical();
-
-    this._viewPort.x = Math.min(
-      this._viewPort.x,
-      StageSize.width - this._viewPort.width - 1
-    );
-    this._viewPort.x = Math.max(this._viewPort.x, 0);
-    this._viewPort.y = Math.min(
-      this._viewPort.y,
-      StageSize.height - this._viewPort.height - 1
-    );
-    this._viewPort.y = Math.max(this._viewPort.y, 0);
+    this.ensureInStageBounds();
   }
 
   private updateHorizontal(): void {
@@ -94,6 +84,31 @@ export class Camera {
     }
   }
 
+  private updateVertical(): void {
+    const minHeight = Math.min(
+      this._fighters[0].physics.position.y,
+      this._fighters[1].physics.position.y
+    );
+
+    const heightAdjust = Math.floor((216 - minHeight) / 6);
+
+    this._viewPort.y =
+      (StageSize.height - ViewportSize.height) / 2 - heightAdjust;
+  }
+
+  private ensureInStageBounds(): void {
+    this._viewPort.x = Math.min(
+      this._viewPort.x,
+      StageSize.width - this._viewPort.width
+    );
+    this._viewPort.x = Math.max(this._viewPort.x, 0);
+    this._viewPort.y = Math.min(
+      this._viewPort.y,
+      StageSize.height - this._viewPort.height
+    );
+    this._viewPort.y = Math.max(this._viewPort.y, 0);
+  }
+
   private fightersAreInCentre(
     centreViewport: { x: number; width: number },
     leftEdge: number,
@@ -108,17 +123,5 @@ export class Camera {
     }
 
     return true;
-  }
-
-  private updateVertical(): void {
-    const minHeight = Math.min(
-      this._fighters[0].physics.position.y,
-      this._fighters[1].physics.position.y
-    );
-
-    const heightAdjust = Math.floor((216 - minHeight) / 6);
-
-    this._viewPort.y =
-      (StageSize.height - ViewportSize.height) / 2 - heightAdjust;
   }
 }
