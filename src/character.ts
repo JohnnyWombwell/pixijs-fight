@@ -143,10 +143,8 @@ export class CharacterSimulation implements ICharacter, ISprite {
       this._physics.velocity.y += gravity;
     }
 
-    if (this._runningAnimation) {
-      this._runningAnimation.position = this._physics.position;
-      this._runningAnimation.directionX = this._direction;
-    }
+    this._runningAnimation.position = this._physics.position;
+    this._runningAnimation.directionX = this._direction;
   }
 
   private resetVelocities() {

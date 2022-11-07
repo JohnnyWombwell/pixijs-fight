@@ -56,7 +56,7 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [x] Better dev build - e.g. copy-and-watch
 - [x] Avoid duplication in animation assets (define frames then animations contain keys for each frame)
 - [ ] Convert `RunningAnimation` to an object.
-- [ ] Load POJOs into pixi specific resources at run time - e.g. `Rectange` etc
+- [ ] Load POJOs into pixi specific resources at run time - e.g. `Rectangle` etc
 - [ ] Refactor char / app into renderers - e.g. char simulation + renderer that wraps it
       Simple items may just have a renderer (e.g. the stage, char shadows)
 - [ ] Automated tests (esp for collisions and animation logic)
