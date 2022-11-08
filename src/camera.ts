@@ -75,12 +75,12 @@ export class Camera {
     }
 
     if (left < centreViewport.x) {
-      this._viewPort.x -= 1;
+      this._viewPort.x -= centreViewport.x - left;
       return;
     }
 
     if (right > centreViewport.x + centreViewport.width) {
-      this._viewPort.x += 1;
+      this._viewPort.x += right - (centreViewport.x + centreViewport.width);
     }
   }
 
@@ -114,11 +114,11 @@ export class Camera {
     leftEdge: number,
     rightEdge: number
   ): boolean {
-    if (leftEdge < centreViewport.x - 4) {
+    if (leftEdge < centreViewport.x) {
       return false;
     }
 
-    if (rightEdge > centreViewport.x + centreViewport.width + 4) {
+    if (rightEdge > centreViewport.x + centreViewport.width) {
       return false;
     }
 
