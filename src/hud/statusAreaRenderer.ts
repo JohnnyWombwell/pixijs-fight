@@ -7,7 +7,7 @@ import {
   Texture,
 } from '../pixi/pixi.js';
 import { IRectangle, pixiRectFromRect } from '../geometry.js';
-import { ISpriteFrame } from '../animation/animation.js';
+import { ISpriteSheetFrame } from '../animation/animation.js';
 
 export class StatusAreaRenderer {
   private readonly _battle: IBattle;
@@ -119,7 +119,7 @@ export class StatusAreaRenderer {
   }
 }
 
-const koFrames: ISpriteFrame[] = [
+const koFrames: ISpriteSheetFrame[] = [
   {
     frame: { x: 161, y: 16, width: 32, height: 14 },
   },

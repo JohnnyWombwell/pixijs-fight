@@ -10,7 +10,8 @@ Attempting to improve my Typescript skills with a simple fighting game.
 2. [x] Payse and frame advance
 3. [x] Animated stage (+ skewed foreground) ...in progress
 4. [x] FPS counter
-5. [ ] The task list?
+5. [ ] Multiple body rects per state - i.e. transition states: jumping and crouching
+6. [ ] Verify push boxes against the game
 
 **Proposed features that may or may not see the light of day**
 
@@ -31,7 +32,7 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [x] FPS counter
 - [x] Switch player direction (based on relative position)
 - [ ] Hurt and collision boxes per animation frame / state
-- [ ] Hit boxes per attack animation from
+- [ ] Hit boxes per attack animation frame
 - [ ] Audio - in progress...
 - [x] Scrolling playfield
 - [x] Walls to left and right
@@ -55,6 +56,7 @@ Attempting to improve my Typescript skills with a simple fighting game.
 - [x] Migrate to use a rendering / game framework (this repo - using PixiJS)
 - [x] Better dev build - e.g. copy-and-watch
 - [x] Avoid duplication in animation assets (define frames then animations contain keys for each frame)
+- [ ] Still need simple sprite animations but need a 'Body' entity that has physics states / sequences and associated texture animations
 - [ ] Convert `RunningAnimation` to an object.
 - [ ] Load POJOs into pixi specific resources at run time - e.g. `Rectangle` etc
 - [ ] Refactor char / app into renderers - e.g. char simulation + renderer that wraps it

@@ -1,17 +1,28 @@
-import { IVector2D } from '../geometry.js';
+import { IRectangle, IVector2D } from '../geometry.js';
 import { Rectangle, Sprite } from '../pixi/pixi.js';
-import { Forever, IAnimation, ISpriteFrame } from './animation.js';
+import { Forever, IAnimation, ISpriteSheetFrame } from './animation.js';
 
 export enum Direction {
   Right = 1,
   Left = -1,
 }
 
+// TODO: Create a body Animation
+// That animates body models with sprites
 export interface IRunningAnimation {
   definition: IAnimation;
-  spriteSheetFrames: Map<string, ISpriteFrame>;
+  spriteSheetFrames: Map<string, ISpriteSheetFrame>;
   sprite: Sprite;
+  totalFrames: number;
+  framesElapsed: number;
   currentSequenceIndex: number;
+  currentFrame: ISpriteSheetFrame;
+  currentBody: {
+    push: {
+      body: IRectangle;
+      untilFrame: number;
+    };
+  };
   frameRefreshes: number;
   ended: boolean;
   position: IVector2D;
@@ -20,14 +31,23 @@ export interface IRunningAnimation {
 
 export function newAnimation(
   definition: IAnimation,
-  spriteSheetFrames: Map<string, ISpriteFrame>,
+  spriteSheetFrames: Map<string, ISpriteSheetFrame>,
   spriteSheet: Sprite
 ): IRunningAnimation {
   return {
     definition,
     spriteSheetFrames,
     sprite: spriteSheet,
+    totalFrames: definition.frameSequence.reduce((a, f) => (a += f.period), 0),
+    framesElapsed: 0,
     currentSequenceIndex: -1,
+    currentFrame: spriteSheetFrames.values().next().value,
+    currentBody: {
+      push: {
+        body: { x: 0, y: 0, width: 0, height: 0 },
+        untilFrame: 0,
+      },
+    },
     frameRefreshes: 0,
     ended: false,
     position: { x: 0, y: 0 },
@@ -40,17 +60,62 @@ export function switchAnimation(
   newAnimation: IAnimation
 ) {
   animation.definition = newAnimation;
+  animation.totalFrames = newAnimation.frameSequence.reduce(
+    (a, f) => (a += f.period),
+    0
+  );
+  animation.framesElapsed = 0;
+
+  if (
+    animation.definition.pushBoxSequence &&
+    animation.definition.pushBoxSequence.length > 0
+  )
+    // TODO: handle case with multiple body animations per frame
+    animation.currentBody.push = {
+      body: animation.definition.pushBoxSequence![0].body,
+      untilFrame: 9999,
+    };
+
   animation.currentSequenceIndex = -1;
   animation.frameRefreshes = 0;
   animation.ended = false;
 }
 
 export function refreshAnimation(animation: IRunningAnimation): void {
+  updateBody(animation);
+
+  // Note: probably should just do an update
+  // A graphics specifc class should the apply the current frame (on change)
   if (updateFrame(animation)) {
     renderCurrentAnimationFrame(animation);
   }
 
   updateSpritePosition(animation);
+
+  if (animation.ended) {
+    return;
+  }
+
+  animation.framesElapsed += 1;
+  if (animation.framesElapsed === animation.totalFrames) {
+    animation.framesElapsed = 0;
+  }
+}
+
+function updateBody(animation: IRunningAnimation): void {
+  // have a refreshesElapsed that we use for all body animations
+  // if a single push box return
+  if (
+    animation.definition.pushBoxSequence &&
+    animation.definition.pushBoxSequence.length > 1
+  ) {
+    if (
+      animation.framesElapsed === 0 ||
+      animation.framesElapsed >= animation.currentBody.push.untilFrame
+    ) {
+      // animation.currentBody = animation.definition.pushBoxSequence
+    }
+  }
 }
 
 function updateFrame(animation: IRunningAnimation): boolean {
@@ -87,6 +152,10 @@ function updateFrame(animation: IRunningAnimation): boolean {
     animation.currentSequenceIndex = 0;
   }
 
+  animation.currentFrame = animation.spriteSheetFrames.get(
+    animation.definition.frameSequence[animation.currentSequenceIndex].frameName
+  )!;
+
   animation.frameRefreshes = 1;
   if (
     animation.definition.repeat === 0 &&
@@ -106,34 +175,24 @@ export function animationEnded(animation: IRunningAnimation) {
 }
 
 function renderCurrentAnimationFrame(animation: IRunningAnimation) {
-  /// TODO: cache current frame on this object - update in this method
-  const frameName =
-    animation.definition.frameSequence[animation.currentSequenceIndex]
-      .frameName;
-
-  const spriteFrame = animation.spriteSheetFrames.get(frameName)!;
-
   animation.sprite.texture.frame = new Rectangle(
-    spriteFrame.frame.x,
-    spriteFrame.frame.y,
-    spriteFrame.frame.width,
-    spriteFrame.frame.height
+    animation.currentFrame.frame.x,
+    animation.currentFrame.frame.y,
+    animation.currentFrame.frame.width,
+    animation.currentFrame.frame.height
   );
 }
 
 function updateSpritePosition(animation: IRunningAnimation) {
-  const frameName =
-    animation.definition.frameSequence[animation.currentSequenceIndex]
-      .frameName;
-
-  const spriteFrame = animation.spriteSheetFrames.get(frameName)!;
-
   animation.sprite.x =
     animation.position.x +
-    (spriteFrame.offset ? spriteFrame.offset.x * animation.directionX : 0);
+    (animation.currentFrame.offset
+      ? animation.currentFrame.offset.x * animation.directionX
+      : 0);
 
   animation.sprite.y =
-    animation.position.y + (spriteFrame.offset ? spriteFrame.offset.y : 0);
+    animation.position.y +
+    (animation.currentFrame.offset ? animation.currentFrame.offset.y : 0);
 
   animation.sprite.scale.x = animation.directionX;
 }
