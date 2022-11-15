@@ -1,6 +1,11 @@
 import { IRectangle, IVector2D } from '../geometry.js';
 import { Rectangle, Sprite } from '../pixi/pixi.js';
-import { Forever, IAnimation, ISpriteSheetFrame } from './animation.js';
+import {
+  Forever,
+  IAnimation,
+  IPushBoxFrame,
+  ISpriteSheetFrame,
+} from './animation.js';
 
 export enum Direction {
   Right = 1,
@@ -66,15 +71,12 @@ export function switchAnimation(
   );
   animation.framesElapsed = 0;
 
-  if (
-    animation.definition.pushBoxSequence &&
-    animation.definition.pushBoxSequence.length > 0
-  )
-    // TODO: handle case with multiple body animations per frame
-    animation.currentBody.push = {
-      body: animation.definition.pushBoxSequence![0].body,
-      untilFrame: 9999,
-    };
+  if (animation.definition.pushBoxSequence) {
+    animation.currentBody.push = setBody(
+      animation.definition.pushBoxSequence,
+      0
+    );
+  }
 
   animation.currentSequenceIndex = -1;
   animation.frameRefreshes = 0;
@@ -103,19 +105,41 @@ export function refreshAnimation(animation: IRunningAnimation): void {
 }
 
 function updateBody(animation: IRunningAnimation): void {
-  // have a refreshesElapsed that we use for all body animations
-  // if a single push box return
   if (
-    animation.definition.pushBoxSequence &&
-    animation.definition.pushBoxSequence.length > 1
+    !animation.definition.pushBoxSequence ||
+    animation.definition.pushBoxSequence.length <= 1
   ) {
+    return;
+  }
+
+  if (animation.framesElapsed < animation.currentBody.push.untilFrame) {
+    return;
+  }
+
+  for (let i = 0; i < animation.definition.pushBoxSequence.length; i++) {
     if (
-      animation.framesElapsed === 0 ||
-      animation.framesElapsed >= animation.currentBody.push.untilFrame
+      animation.definition.pushBoxSequence[i].fromFrame ===
+      animation.framesElapsed
     ) {
-      // animation.currentBody = animation.definition.pushBoxSequence
+      animation.currentBody.push = setBody(
+        animation.definition.pushBoxSequence,
+        i
+      );
+      return;
     }
   }
+}
+
+function setBody(bodyFrames: IPushBoxFrame[], bodyIndex: number) {
+  const untilFrame =
+    bodyFrames.length > bodyIndex + 1
+      ? bodyFrames[bodyIndex + 1].fromFrame
+      : 9999;
+
+  return {
+    body: bodyFrames[bodyIndex].body,
+    untilFrame: untilFrame,
+  };
 }
 
 function updateFrame(animation: IRunningAnimation): boolean {

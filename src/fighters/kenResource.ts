@@ -547,8 +547,12 @@ export const kenResource: ISpriteSheet = {
         ],
         pushBoxSequence: [
           {
-            body: jumpingPushBox,
+            body: standingPushBox,
             fromFrame: 0,
+          },
+          {
+            body: jumpingPushBox,
+            fromFrame: 1,
           },
         ],
         repeat: 0,
@@ -568,8 +572,12 @@ export const kenResource: ISpriteSheet = {
         ],
         pushBoxSequence: [
           {
-            body: jumpingPushBox,
+            body: standingPushBox,
             fromFrame: 0,
+          },
+          {
+            body: jumpingPushBox,
+            fromFrame: 1,
           },
         ],
         repeat: 0,
@@ -588,8 +596,12 @@ export const kenResource: ISpriteSheet = {
         ],
         pushBoxSequence: [
           {
-            body: jumpingPushBox,
+            body: standingPushBox,
             fromFrame: 0,
+          },
+          {
+            body: jumpingPushBox,
+            fromFrame: 1,
           },
         ],
         repeat: 0,
